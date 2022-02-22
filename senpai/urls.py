@@ -7,5 +7,6 @@ urlpatterns = [
     # home page
     path('', views.home, name='home'),
     # user - my note
+    path('mynote/<int:mynote_page_id>/', views.mynote, name='mynote'),
     path('mynote/', views.mynote, name='mynote'),
 ] 

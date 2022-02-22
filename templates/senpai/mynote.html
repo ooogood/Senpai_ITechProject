@@ -11,6 +11,7 @@
 	
 {% block body_block %}
 	{% if user %}
+		{{ note_num }}
 		{% if note_list %}
 		<ul>
 			{% for note in note_list %}

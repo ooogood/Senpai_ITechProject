@@ -25,14 +25,18 @@ def home(request):
 		context_dict['other_modules'] = None
 	response = render( request, 'senpai/home.html', context=context_dict)
 	return response
+    
 # user - my note
-def mynote(request):
+def mynote(request,mynote_page_id=1):
     context_dict = {}
     if request.user.is_authenticated:
-        note_list = Note.objects.filter(User=request.user).order_by('Date')[:5]
+        # get note_list
+        note_list = Note.objects.filter(user=request.user).order_by('Date')[mynote_page_id*5-5:mynote_page_id*5]
+        # note_num = Note.objects.filter(user=request.user).count()
         context_dict['note'] = note_list
         context_dict['user'] = request.user
+        # context_dict['note_num'] = note_num
     else:
-        return render(request,'users/login_error.html')
-    response = render(request,'users/mynote.html',context=context_dict)
+        return render(request,'senpai/login_error.html')
+    response = render(request,'senpai/mynote.html',context=context_dict)
     return response 
