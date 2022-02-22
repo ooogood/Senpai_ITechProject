@@ -16,14 +16,13 @@ def home(request):
 	context_dict = {}
 	# add my modules to context_dict
 	this_user = request.user
-	# try:
-	# 	my_enrollments = Enrollment.objects.filter(user=this_user)
-	# 	my_modules = 
-	# 	context_dict['my_modules'] = my_modules
-	# 	context_dict['other_modules'] = None
-	# except Exception:
-	# 	context_dict['my_modules'] = None
-	# 	context_dict['other_modules'] = None
+	try:
+		my_enrollments = Enrollment.objects.filter(user=this_user)
+		context_dict['my_modules'] =Module.objects.filter(enrollment__in=my_enrollments) 
+		context_dict['other_modules'] = Module.objects.exclude(enrollment__in=my_enrollments)
+	except Exception:
+		context_dict['my_modules'] = None
+		context_dict['other_modules'] = None
 	response = render( request, 'senpai/home.html', context=context_dict)
 	return response
 # user - my note
