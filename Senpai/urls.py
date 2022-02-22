@@ -4,6 +4,8 @@ from senpai import views
 app_name = 'senpai'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    # home page
+    path('', views.home, name='home'),
+    # user - my note
     path('mynote/', views.mynote, name='mynote'),
 ] 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-{% load Senpai_template_tags %}
+<!--  load Senpai_template_tags  -->
 
 <html>
 	<head>
@@ -11,18 +11,18 @@
 		</title>
 	</head>
 	<body>
-		<div>
+		<div class="body_block">
 			{% block body_block %}
 			{% endblock %}
 		</div>
-		<div>
+		<div class="user_icon">
 			<ul>
-				{% if user.is_authenticated %}
-					<li><a href="{% url 'Senpai:userProfile' %}">User</a></li>
-				{% endif %}
-				{% if perms.Senpai.view_managerIcon %}
+				<!--  if user.is_authenticated 
+					<li><a href=" url 'Senpai:userProfile' ">User</a></li>
+				 endif 
+				 if perms.Senpai.view_managerIcon 
 					You can see the manager icon.
-				{% endif %}
+				 endif  -->
 			</ul>
 		</div>
 	</body>
