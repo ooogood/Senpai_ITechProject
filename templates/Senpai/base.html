@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load Senpai_template_tags %}
+
+<html>
+	<head>
+		<title>
+			Senpai -
+			{% block title_block %}
+			{% endblock %}
+		</title>
+	</head>
+	<body>
+		<div>
+			{% block body_block %}
+			{% endblock %}
+		</div>
+		<div>
+			<ul>
+				{% if user.is_authenticated %}
+					<li><a href="{% url 'Senpai:userProfile' %}">User</a></li>
+				{% endif %}
+				{% if perms.Senpai.view_managerIcon %}
+					You can see the manager icon.
+				{% endif %}
+			</ul>
+		</div>
+	</body>
+</html>
