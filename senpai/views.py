@@ -8,6 +8,8 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+## helper
+import math
 
 # Create your views here.
 # home page
@@ -26,19 +28,27 @@ def home(request):
 	return response
     
 # user - my note
+@login_required
 def mynote(request,mynote_page_id=1):
-    context_dict = {}
-    if request.user.is_authenticated:
-        # get note_list
-        note_list = Note.objects.filter(user=request.user).order_by('Date')[mynote_page_id*5-5:mynote_page_id*5]
-        # note_num = Note.objects.filter(user=request.user).count()
-        context_dict['note'] = note_list
-        context_dict['user'] = request.user
-        # context_dict['note_num'] = note_num
-    else:
-        return render(request,'senpai/login_error.html')
-    response = render(request,'senpai/mynote.html',context=context_dict)
-    return response 
+	context_dict = {}
+	if request.user.is_authenticated:
+		# get note_list
+		note_list = Note.objects.filter(user=request.user).order_by('date')[mynote_page_id*8-8:mynote_page_id*8]
+		i = 1
+		for n in note_list:
+			cstring = 'c{a}'.format(a=i)
+			i = i+1
+			context_dict[cstring] = Comment.objects.filter(note=n).count()
+		
+		note_num = Note.objects.filter(user=request.user).count()
+		page_maximum = math.ceil(note_num/8)
+		context_dict['note'] = note_list
+		context_dict['user'] = request.user
+		context_dict['page'] = range(1,page_maximum+1)
+	else:
+		return render(request,'senpai/login_error.html')
+	response = render(request,'senpai/mynote.html',context=context_dict)
+	return response 
 
 def user_login(request):
 	# If the request is a HTTP POST, try to pull out the relevant information.

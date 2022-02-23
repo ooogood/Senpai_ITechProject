@@ -7,33 +7,77 @@ from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 from django.contrib.auth.models import User
 
 def populate():
+	Joseph_notes = [
+	{'mod' : 'Programming', 'title' : 'Jotest_note1'},
+	{'mod' : 'Programming', 'title' : 'Jotest_note2'},
+	{'mod' : 'Software Engineering', 'title' : 'Jotest_note3'},
+	{'mod' : 'Software Engineering', 'title' : 'Jotest_note4'},
+	{'mod' : 'Cyber Security', 'title' : 'Jotest_note5'},
+	{'mod' : 'Cyber Security', 'title' : 'Jotest_note6'},
+	{'mod' : 'Cyber Security', 'title' : 'Jotest_note7'},
+	]
+	
+	Jin_notes = [
+	{'mod' : 'Programming', 'title' : 'Jitest_note1'},
+	{'mod' : 'Programming', 'title' : 'Jitest_note2'},
+	{'mod' : 'Internet Technology', 'title' : 'Jitest_note3'},
+	{'mod' : 'Internet Technology', 'title' : 'Jitest_note4'},
+	{'mod' : 'Internet Technology', 'title' : 'Jitest_note5'},
+	{'mod' : 'Computer System', 'title' : 'Jitest_note6'},
+	{'mod' : 'Computer System', 'title' : 'Jitest_note7'},
+	]
+	
+	Marco_notes = []
+	Xiaowei_notes = []
+	
 	user_module = [
 	{'uname': 'Joseph',
 	'module':['Programming', 'Software Engineering', 'Cyber Security'],
+	'notes':Joseph_notes,
 	},
 	{'uname': 'Jin',
 	'module':['Programming', 'Internet Technology', 'Computer System'],
+	'notes':Jin_notes,
 	},
 	{'uname': 'Marco',
 	'module':['Computer Network', 'Human Computer Interface', 'Computer System'],
+	'notes':Marco_notes,
 	},
 	{'uname': 'Xiaowei',
 	'module':['Artificial Intelligence', 'Big Data', 'Digital Forensics'],
+	'notes':Xiaowei_notes,
 	},
 	]
+	
+	
+
 
 	# If you want to add more data, add them to the dictionaries above.
+	i=1 # this line is used for add comments
 	for um in user_module:
 		u = add_user( um['uname'], 0 )
 		for ms in um['module']:
 			m = add_module(ms)
 			add_enrollment(m, u)
+			# note and comment add tests
+			for ns in um['notes']:
+				if ns['mod'] == m.name:
+					n = add_note(m,u,ns['title'])
+					for j in range(0,i+1):
+						add_comment(n,u,'hello!'+str(i+j))
+				i=i+1
+		
 	# Print out all data we have added.
 	for u in User.objects.all():
 		print(f'User: {u}')
+        
 	for m in Module.objects.all():
 		print(f'Module: {m}')
-
+    
+	for n in Note.objects.all():
+		print(f'Note: {n}')
+		print(Comment.objects.filter(note=n).count())
+	
 def add_user(uname, r):
 	email= uname + '@fakemail.com'
 	pw = uname + 'isnumber1!'
@@ -52,7 +96,7 @@ def add_note(mod, user, title):
 	# django will auto generate id
 	# date will be auto generated
 	# file can be empty for testing. Make sure to change it back when deploying.
-	n = Module.objects.get_or_create(module=mod, user=user, title=title)[0]
+	n = Note.objects.get_or_create(module=mod, user=user, title=title)[0]
 	n.save()
 	return n
 def add_enrollment(module, user):

@@ -11,16 +11,25 @@
 	
 {% block body_block %}
 	{% if user %}
-		{{ note_num }}
-		{% if note_list %}
+		{% if note %}
 		<ul>
-			{% for note in note_list %}
-			<li><a href="{{ note.url }}">{{ note.title }}</a></li>
+			{% for n in note %}
+			<li><!--<a href="/senpai/note/{{ n.title }}/">-->{{ n.title }} {{n.date}}
+			{% cycle c1 c2 c3 c4 c5 c6 c7 c8 %} {{n.likes}}</a></li>
 			{% endfor %}
 		</ul>
+		<div>
+			{% if page > 2 %}
+			{% for i in page %}
+			<a href="/senpai/mynote/{{i}}/">{{ i }}</a>
+			{% endfor %}
+			{% endif %}
+		</div>
 		{% else %}
 			You have not upload any note.
 		{% endif %}
+		<a href="/senpai/mylikes/">My likes</a>
+		<a href="/senpai/mymodules/">My Modules</a>
 	{% else %}
 		This user does not exist.
 	{% endif %}
