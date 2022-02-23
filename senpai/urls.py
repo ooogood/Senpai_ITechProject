@@ -9,4 +9,5 @@ urlpatterns = [
     # user - my note
     path('mynote/<int:mynote_page_id>/', views.mynote, name='mynote'),
     path('mynote/', views.mynote, name='mynote'),
+    path('login/', views.user_login, name='login'),
 ] 
