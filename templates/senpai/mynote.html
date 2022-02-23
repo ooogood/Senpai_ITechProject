@@ -10,11 +10,14 @@
 {% endblock %}
 	
 {% block body_block %}
+		<a href="/senpai/mylikes/">My likes</a>
+		<a href="/senpai/mymodules/">My Modules</a>
+		<h1>{{ user.username }}'s notes</h1>
 	{% if user %}
 		{% if note %}
 		<ul>
 			{% for n in note %}
-			<li><!--<a href="/senpai/note/{{ n.title }}/">-->{{ n.title }} <!--</a>-->
+			<li><!--<a href="/senpai/note/{{ n.title }}/">-->{{ n.title }} <!--</a>--><br>
 			upload date:{{n.date}}
 			comments:{% cycle c1 c2 c3 c4 c5 c6 c7 c8 %}
 			likes:{{n.likes}}
@@ -23,16 +26,32 @@
 		</ul>
 		<div>
 			{% if page.1 %}
-			{% for i in page %}
-			<a href="/senpai/mynote/{{i}}/">{{ i }}</a>
-			{% endfor %}
+			{% if page_now != 1 %}
+			<a href="/senpai/mynote/1/">&lt&lt</a>
+			<a href="/senpai/mynote/{{page_last}}/">&lt</a>
+			{% else %}
+			&lt&lt 
+			&lt
+			{% endif %}
+				{% for i in page %}
+					{% if i == page_now %}
+						{{i}}
+					{% else %}
+						<a href="/senpai/mynote/{{i}}/">{{ i }}</a>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+			{% if page_now != page|last %}
+			<a href="/senpai/mynote/{{page_next}}/">&gt</a>
+			<a href="/senpai/mynote/{{page|last}}/">&gt&gt</a>
+			{% else %}
+			&gt 
+			&gt&gt
 			{% endif %}
 		</div>
 		{% else %}
-			You have not upload any note.
+			<strong>You have not upload any note.</strong>
 		{% endif %}
-		<a href="/senpai/mylikes/">My likes</a>
-		<a href="/senpai/mymodules/">My Modules</a>
 	{% else %}
 		This user does not exist.
 	{% endif %}

@@ -45,6 +45,9 @@ def mynote(request,mynote_page_id=1):
 		context_dict['note'] = note_list
 		context_dict['user'] = request.user
 		context_dict['page'] = range(1,page_maximum+1)
+		context_dict['page_now'] = mynote_page_id
+		context_dict['page_last'] = mynote_page_id-1
+		context_dict['page_next'] = mynote_page_id+1
 	else:
 		return render(request,'senpai/login_error.html')
 	response = render(request,'senpai/mynote.html',context=context_dict)
