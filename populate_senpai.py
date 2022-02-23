@@ -25,6 +25,9 @@ def populate():
 	{'mod' : 'Internet Technology', 'title' : 'Jitest_note5'},
 	{'mod' : 'Computer System', 'title' : 'Jitest_note6'},
 	{'mod' : 'Computer System', 'title' : 'Jitest_note7'},
+	{'mod' : 'Computer System', 'title' : 'Jitest_note8'},
+	{'mod' : 'Computer System', 'title' : 'Jitest_note9'},
+	{'mod' : 'Computer System', 'title' : 'Jitest_note10'},
 	]
 	
 	Marco_notes = []

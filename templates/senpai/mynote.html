@@ -14,12 +14,15 @@
 		{% if note %}
 		<ul>
 			{% for n in note %}
-			<li><!--<a href="/senpai/note/{{ n.title }}/">-->{{ n.title }} {{n.date}}
-			{% cycle c1 c2 c3 c4 c5 c6 c7 c8 %} {{n.likes}}</a></li>
+			<li><!--<a href="/senpai/note/{{ n.title }}/">-->{{ n.title }} <!--</a>-->
+			upload date:{{n.date}}
+			comments:{% cycle c1 c2 c3 c4 c5 c6 c7 c8 %}
+			likes:{{n.likes}}
+			</li>
 			{% endfor %}
 		</ul>
 		<div>
-			{% if page > 2 %}
+			{% if page.1 %}
 			{% for i in page %}
 			<a href="/senpai/mynote/{{i}}/">{{ i }}</a>
 			{% endfor %}

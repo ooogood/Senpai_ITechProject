@@ -50,6 +50,7 @@ def mynote(request,mynote_page_id=1):
 	response = render(request,'senpai/mynote.html',context=context_dict)
 	return response 
 
+# login
 def user_login(request):
 	# If the request is a HTTP POST, try to pull out the relevant information.
 	if request.method == 'POST':
@@ -88,3 +89,8 @@ def user_login(request):
 		# No context variables to pass to the template system, hence the
 		# blank dictionary object...
 		return render(request, 'senpai/login.html')
+
+@login_required
+def user_logout(request):
+	logout(request)
+	return redirect(reverse('senpai:login'))
