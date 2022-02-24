@@ -1,12 +1,19 @@
 {% extends 'senpai/base.html' %}
-{% load senpai_template_tags %} 
 {% load staticfiles %}
+{% load senpai_template_tags %} 
 
 {% block title_block %}
 	Home
 {% endblock %}
 	
 {% block body_block %}
+	<div class="top_links">
+		<li>
+			<a href="{% url 'senpai:home' %}">Home Page</a>
+			<a href="{% url 'senpai:mynote' %}">UserProfile</a>
+			<a href="{% url 'senpai:logout' %}">Log out</a>
+		</li>
+	</div>
 	<h2>{{ user.username }}'s Homepage</h2>
 	<div class="home_my_module"> 
 		<h3>My Modules</h3>

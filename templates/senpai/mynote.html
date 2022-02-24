@@ -1,5 +1,6 @@
 {% extends 'senpai/base.html' %}
 {% load staticfiles %}
+{% load senpai_template_tags %} 
 
 {% block title_block %}
 	{% if user %}
@@ -10,29 +11,37 @@
 {% endblock %}
 	
 {% block body_block %}
-		<a href="/senpai/mylikes/">My likes</a>
-		<a href="/senpai/mymodules/">My Modules</a>
-		<h1>{{ user.username }}'s notes</h1>
+	<div class="top_links">
+		<a href="{% url 'senpai:home' %}">Home Page</a>
+		<a href="{% url 'senpai:logout' %}">Log out</a>
+		<a href="{% url 'senpai:mylike' %}">My likes</a>
+		<a href="{% url 'senpai:mymodule' %}">My Modules</a>
+	</div>
+	<h1>{{ user.username }}'s notes</h1>
 	{% if user %}
 		{% if note %}
+		<div class="user_notes">
 		<ul>
 			{% for n in note %}
-			<li><!--<a href="/senpai/note/{{ n.title }}/">-->{{ n.title }} <!--</a>--><br>
-			upload date:{{n.date}}
-			comments:{% cycle c1 c2 c3 c4 c5 c6 c7 c8 %}
-			likes:{{n.likes}}
+			<li><a href="/senpai/note/{{ n.id }}/">{{ n.title }}</a>
+			    <a href="/senpai/note/{{ n.id }}/delete/">delete this note</a>
+			<br>
+			upload date:{{ n.date }}
+			comments:{{ comments|get_dict_item:n.id }}
+			likes:{{ n.likes }}
 			</li>
 			{% endfor %}
 		</ul>
-		<div>
+		</div>
+		<div class="page_control">
 			{% if page.1 %}
-			{% if page_now != 1 %}
-			<a href="/senpai/mynote/1/">&lt&lt</a>
-			<a href="/senpai/mynote/{{page_last}}/">&lt</a>
-			{% else %}
-			&lt&lt 
-			&lt
-			{% endif %}
+				{% if page_now != 1 %}
+					<a href="{% url 'senpai:mynote' 1 %}">&lt&lt</a>
+					<a href="{% url 'senpai:mynote' page_last %}">&lt</a>
+				{% else %}
+					&lt&lt 
+					&lt
+				{% endif %}
 				{% for i in page %}
 					{% if i == page_now %}
 						{{i}}
@@ -40,18 +49,18 @@
 						<a href="/senpai/mynote/{{i}}/">{{ i }}</a>
 					{% endif %}
 				{% endfor %}
+				{% if page_now != page|last %}
+					<a href="{% url 'senpai:mynote' page_next %}">&gt</a>
+					<a href="{% url 'senpai:mynote' page|last %}">&gt&gt</a>
+				{% else %}
+					&gt 
+					&gt&gt
+				{% endif %}
 			{% endif %}
-			{% if page_now != page|last %}
-			<a href="/senpai/mynote/{{page_next}}/">&gt</a>
-			<a href="/senpai/mynote/{{page|last}}/">&gt&gt</a>
-			{% else %}
-			&gt 
-			&gt&gt
-			{% endif %}
-		</div>
 		{% else %}
 			<strong>You have not upload any note.</strong>
 		{% endif %}
+		</div>
 	{% else %}
 		This user does not exist.
 	{% endif %}

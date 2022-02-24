@@ -52,11 +52,9 @@ def mynote(request,mynote_page_id=1):
 	if request.user.is_authenticated:
 		# get note_list
 		note_list = Note.objects.filter(user=request.user).order_by('date')[mynote_page_id*8-8:mynote_page_id*8]
-		i = 1
+		comment = {}
 		for n in note_list:
-			cstring = 'c{a}'.format(a=i)
-			i = i+1
-			context_dict[cstring] = Comment.objects.filter(note=n).count()
+			comment[n.id] = Comment.objects.filter(note=n).count()
 		
 		note_num = Note.objects.filter(user=request.user).count()
 		page_maximum = math.ceil(note_num/8)
@@ -66,11 +64,32 @@ def mynote(request,mynote_page_id=1):
 		context_dict['page_now'] = mynote_page_id
 		context_dict['page_last'] = mynote_page_id-1
 		context_dict['page_next'] = mynote_page_id+1
+		context_dict['comments'] = comment
 	else:
 		return render(request,'senpai/login_error.html')
 	response = render(request,'senpai/mynote.html',context=context_dict)
 	return response 
+	
+# user - mylike
+@login_required
+def mylike(request,mylike_page_id=1):	
+	response = HttpResponse('developing')
+	return response 
 
+@login_required
+def mymodule(request):
+	response = HttpResponse('developing')
+	return response 
+
+@login_required
+def delete_note(request,note_id):
+	if Note.objects.filter(id=note_id).exists():
+		Note.objects.filter(id=note_id).delete()
+		response = HttpResponse('Delete successed.')
+	else:
+		response = HttpResponse('This note does not exist.')
+	return response 
+	
 # login
 def user_login(request):
 	# If the request is a HTTP POST, try to pull out the relevant information.

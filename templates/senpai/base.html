@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-<!--  load Senpai_template_tags  -->
 
 <html>
 	<head>
@@ -11,12 +10,6 @@
 		</title>
 	</head>
 	<body>
-		<div class = "links">
-			<li>
-				<a href="{% url 'senpai:home' %}">Home Page</a>
-				<a href="{% url 'senpai:mynote' %}">UserProfile</a>
-				<a href="{% url 'senpai:logout' %}">Log out</a>
-			</li>
 		<div class="body_block">
 			{% block body_block %}
 			{% endblock %}
