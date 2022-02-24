@@ -33,7 +33,7 @@ class Note(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
-    date = models.DateField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
     likes = models.IntegerField(default=0)
     # file can be blank for testing for now
     file = models.FileField(upload_to='pdf', blank=True)
@@ -50,7 +50,7 @@ class Comment(models.Model):
     id = models.AutoField(primary_key=True)
     note = models.ForeignKey(Note, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
     content = models.CharField(max_length=COMMENT_MAX_LENGTH)
 
     def __str__(self):

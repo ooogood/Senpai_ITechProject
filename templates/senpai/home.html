@@ -1,4 +1,5 @@
 {% extends 'senpai/base.html' %}
+{% load senpai_template_tags %} 
 {% load staticfiles %}
 
 {% block title_block %}
@@ -12,7 +13,13 @@
 		{% if my_modules %}
 		<ul> 
 			{% for my_module in my_modules %} 
-				<li>{{ my_module.name }}</li>
+				<li>{{ my_module.name }}
+					<ul>
+						{% for note in my_modules_dict|get_dict_item:my_module.name %}
+						<li> {{ note.title }} </li>
+						{% endfor %}
+					</ul>
+				</li>
 			{% endfor %} 
 		</ul> 
 		{% else %} 
@@ -25,7 +32,13 @@
 		{% if other_modules %}
 		<ul> 
 			{% for other_module in other_modules %} 
-				<li>{{ other_module.name }}</li>
+				<li>{{ other_module.name }}
+					<ul>
+						{% for note in other_modules_dict|get_dict_item:other_module.name %}
+						<li> {{ note.title }} </li>
+						{% endfor %}
+					</ul>
+				</li>
 			{% endfor %} 
 		</ul> 
 		{% else %} 

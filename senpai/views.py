@@ -19,8 +19,26 @@ def home(request):
 	# add my modules to context_dict
 	try:
 		my_enrollments = Enrollment.objects.filter(user=request.user)
-		context_dict['my_modules'] =Module.objects.filter(enrollment__in=my_enrollments) 
+		context_dict['my_modules'] = Module.objects.filter(enrollment__in=my_enrollments) 
+		# get 3 notes for each my_modules
+		my_dict = {}
+		for mod in context_dict['my_modules']:
+			# module name as my_dict's key and map to a note list
+			note_list = []
+			for note in Note.objects.filter(module=mod).order_by("-likes")[:3]:
+				note_list.append( note )
+			my_dict[ mod.name ] = note_list
+		context_dict['my_modules_dict'] = my_dict
 		context_dict['other_modules'] = Module.objects.exclude(enrollment__in=my_enrollments)
+		other_dict = {}
+		for mod in context_dict['other_modules']:
+			# module name as other_dict's key and map to a note list
+			note_list = []
+			for note in Note.objects.filter(module=mod).order_by("-likes")[:3]:
+				note_list.append( note )
+			other_dict[ mod.name ] = note_list
+		context_dict['other_modules_dict'] = other_dict
+		# get 3 notes for each other_modules
 	except Exception:
 		context_dict['my_modules'] = None
 		context_dict['other_modules'] = None
