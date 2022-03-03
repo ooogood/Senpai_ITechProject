@@ -24,7 +24,7 @@
 		<ul>
 			{% for n in note %}
 			<li><a href="/senpai/note/{{ n.id }}/">{{ n.title }}</a>
-			    <a href="/senpai/note/{{ n.id }}/delete/">delete this note</a>
+			    <a href="/senpai/note/{{ n.id }}/delete/?next={% url 'senpai:mynote' %}">delete this note</a>
 			<br>
 			upload date:{{ n.date }}
 			comments:{{ comments|get_dict_item:n.id }}

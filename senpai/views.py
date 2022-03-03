@@ -83,12 +83,12 @@ def mymodule(request):
 
 @login_required
 def delete_note(request,note_id):
+	next = request.GET.get('next','/senpai/mynote/');
+	
 	if Note.objects.filter(id=note_id).exists():
 		Note.objects.filter(id=note_id).delete()
-		response = HttpResponse('Delete successed.')
-	else:
-		response = HttpResponse('This note does not exist.')
-	return response 
+	
+	return redirect(next)
 	
 # login
 def user_login(request):
