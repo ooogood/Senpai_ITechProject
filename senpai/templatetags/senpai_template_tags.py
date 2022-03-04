@@ -6,3 +6,6 @@ register = template.Library()
 @register.filter
 def get_dict_item(dic, key):
 	return dic.get( key )
+@register.filter
+def get_username(user):
+	return user.username

@@ -36,7 +36,7 @@ class Note(models.Model):
     date = models.DateTimeField(auto_now=True)
     likes = models.IntegerField(default=0)
     # file can be blank for testing for now
-    file = models.FileField(upload_to='pdf', blank=True)
+    file = models.FileField(upload_to='notes', blank=True)
     def __str__(self):
         return self.title
 

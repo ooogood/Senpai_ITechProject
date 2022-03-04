@@ -1,0 +1,48 @@
+{% extends 'senpai/base.html' %}
+{% load senpai_template_tags %} 
+
+{% block title_block %}
+	{{ module.name }}-{{ note.title }}
+{% endblock %}
+	
+{% block body_block %}
+	<div class="top_links">
+		<a href="{% url 'senpai:home' %}">Home Page</a>
+		<a href="{% url 'senpai:mynote' %}">UserProfile</a>
+		<a href="{% url 'senpai:logout' %}">Log out</a>
+	</div>
+	<h2 class="note_header"> {{ module.name }}::{{ note.title }} </h2>
+	<div class="note_preview">
+		<h2>Note preview(should be on the left)</h2>
+		<p>
+			uploaded by: 
+			{% if note.user|get_username == user.username %}
+				Me
+			{% else %}
+				{{ note.user|get_username }}
+			{% endif %}
+		</p>
+		<iframe src="{{ note.file.url }}" frameborder="1" width="50%" height="512px"></iframe>
+	</div>
+	<div class="comments">
+		<h2>Comments(should be on the right)</h2>
+		{% if comments %}
+			<ul> 
+				{% for comment in comments %} 
+					<li>{{ comment.content }} 
+						<ul><li>
+							Auth:
+							{% if comment.user|get_username == user.username %}
+								Me
+							{% else %}
+								{{ comment.user|get_username }}
+							{% endif %}
+							 Date:{{comment.date}}
+						</li></ul>
+				{% endfor %}
+			</ul> 
+		{% else %}
+			<strong>This note has no comment yet.</strong> 
+		{% endif %}
+	</div>
+{% endblock %}

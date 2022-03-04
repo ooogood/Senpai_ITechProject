@@ -44,7 +44,41 @@ def home(request):
 		context_dict['other_modules'] = None
 	response = render( request, 'senpai/home.html', context=context_dict)
 	return response
-    
+# module page
+@login_required 
+def show_module(request, module_name_slug):
+	context_dict = {}
+	note_dict = {}
+	try:
+		module = Module.objects.get(slug=module_name_slug)
+		notes = Note.objects.filter(module=module)
+		context_dict['module'] = module
+		context_dict['notes'] = notes
+		context_dict['all_modules'] = Module.objects.all()
+		# calculate comment count for each note
+		for note in notes:
+			cnt = Comment.objects.filter(note=note).count()
+			note_dict[ note.title ] = cnt
+		context_dict['note_dict'] = note_dict
+	except Module.DoesNotExist:
+		context_dict['module'] = None
+		context_dict['notes'] = None
+		context_dict['all_modules'] = None
+		context_dict['note_dict'] = None
+	return render(request, 'senpai/module.html', context=context_dict)
+# note page
+@login_required 
+def show_note(request, note_id):
+	context_dict = {}
+	try:
+		context_dict['note'] = Note.objects.get(id=note_id)
+		context_dict['module'] = context_dict['note'].module
+		context_dict['comments'] = Comment.objects.filter(note=context_dict['note'])
+	except Note.DoesNotExist:
+		context_dict['module'] = None
+		context_dict['note'] = None
+		context_dict['comments'] = None
+	return render(request, 'senpai/note.html', context=context_dict)
 # user - my note
 @login_required
 def mynote(request,mynote_page_id=1):

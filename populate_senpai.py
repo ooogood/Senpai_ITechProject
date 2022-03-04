@@ -5,6 +5,7 @@ import django
 django.setup()
 from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 from django.contrib.auth.models import User
+from django.core.files import File
 
 def populate():
 	Joseph_notes = [
@@ -52,9 +53,12 @@ def populate():
 	},
 	]
 	
+	# create and write a temperary example note file
+	note_path = 'example_note.txt'
+	example_note = open( note_path, 'w+' )
+	example_note.write('Example note Example note\nExample Example \nnote note\nExample Example \nnote note\nExample Example \nnote note\nExample Example \nnote note\nExample Example \nnote note\nExample Example \nnote note\nExample Example \nnote note')
+	example_note.close()
 	
-
-
 	# If you want to add more data, add them to the dictionaries above.
 	i=1 # this line is used for add comments
 	for um in user_module:
@@ -65,10 +69,13 @@ def populate():
 			# note and comment add tests
 			for ns in um['notes']:
 				if ns['mod'] == m.name:
-					n = add_note(m,u,ns['title'])
+					n = add_note(m,u,ns['title'],note_path)
 					for j in range(0,i+1):
 						add_comment(n,u,'hello!'+str(i+j))
 				i=i+1
+
+	# delete temperary file
+	os.remove(note_path)
 		
 	# Print out all data we have added.
 	for u in User.objects.all():
@@ -95,11 +102,16 @@ def add_module(name):
 	m = Module.objects.get_or_create(name=name)[0]
 	m.save()
 	return m
-def add_note(mod, user, title):
+def add_note(mod, user, title, note_path):
 	# django will auto generate id
 	# date will be auto generated
-	# file can be empty for testing. Make sure to change it back when deploying.
 	n = Note.objects.get_or_create(module=mod, user=user, title=title)[0]
+	# all note are associated to pdf/Design Specification.pdf for now
+	fhandle = open( note_path, 'rb' )
+	if fhandle:
+		fcontent = File(fhandle)
+		n.file.save((title+'.txt'), fcontent)
+	fhandle.close()
 	n.save()
 	return n
 def add_enrollment(module, user):
