@@ -72,6 +72,7 @@ def populate():
 					n = add_note(m,u,ns['title'],note_path)
 					for j in range(0,i+1):
 						add_comment(n,u,'hello!'+str(i+j))
+						add_like(u,n)
 				i=i+1
 
 	# delete temperary file

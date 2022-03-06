@@ -107,7 +107,25 @@ def mynote(request,mynote_page_id=1):
 # user - mylike
 @login_required
 def mylike(request,mylike_page_id=1):	
-	response = HttpResponse('developing')
+	context_dict = {}
+	if request.user.is_authenticated:
+		# get note_list
+		like_list = Like.objects.filter(user=request.user)[mylike_page_id*8-8:mylike_page_id*8]
+		note = []
+		for likes in like_list:
+			note.append(likes.note)
+			
+		like_num = Like.objects.filter(user=request.user).count()
+		page_maximum = math.ceil(like_num/8)
+		context_dict['note'] = like_list
+		context_dict['user'] = request.user
+		context_dict['page'] = range(1,page_maximum+1)
+		context_dict['page_now'] = mylike_page_id
+		context_dict['page_last'] = mylike_page_id-1
+		context_dict['page_next'] = mylike_page_id+1
+	else:
+		return render(request,'senpai/login_error.html')
+	response = render(request,'senpai/mylike.html',context=context_dict)
 	return response 
 
 @login_required

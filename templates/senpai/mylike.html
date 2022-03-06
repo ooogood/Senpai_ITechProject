@@ -4,31 +4,26 @@
 
 {% block title_block %}
 	{% if user %}
-		{{ user.username }} 's notes
+		{{ user.username }} 's likes
 	{% else %}
 		Unknown User
 	{% endif %}
 {% endblock %}
-	
+
 {% block body_block %}
 	<div class="top_links">
 		<a href="{% url 'senpai:home' %}">Home Page</a>
 		<a href="{% url 'senpai:logout' %}">Log out</a>
-		<a href="{% url 'senpai:mylike' %}">My likes</a>
+		<a href="{% url 'senpai:mynote' %}">My Notes</a>
 		<a href="{% url 'senpai:mymodule' %}">My Modules</a>
 	</div>
-	<h1>{{ user.username }}'s notes</h1>
+	<h1>{{ user.username }}'s likes</h1>
 	{% if user %}
 		{% if note %}
-		<div class="user_notes">
+		<div class="user_liked_notes">
 		<ul>
 			{% for n in note %}
-			<li><a href="{% url 'senpai:show_note' n.id %}">{{ n.title }}</a>
-			    <a href="{% url 'senpai:show_note' n.id %}/delete/?next={% url 'senpai:mynote' %}">delete this note</a>
-			<br>
-			upload date:{{ n.date }}
-			comments:{{ comments|get_dict_item:n.id }}
-			likes:{{ n.likes }}
+			<li><a href="{% url 'senpai:show_note' n.note.id %}">{{ n.note.title }}</a>
 			</li>
 			{% endfor %}
 		</ul>
@@ -36,8 +31,8 @@
 		<div class="page_control">
 			{% if page.1 %}
 				{% if page_now != 1 %}
-					<a href="{% url 'senpai:mynote' 1 %}">&lt&lt</a>
-					<a href="{% url 'senpai:mynote' page_last %}">&lt</a>
+					<a href="{% url 'senpai:mylike' 1 %}">&lt&lt</a>
+					<a href="{% url 'senpai:mylike' page_last %}">&lt</a>
 				{% else %}
 					&lt&lt 
 					&lt
@@ -46,19 +41,19 @@
 					{% if i == page_now %}
 						{{i}}
 					{% else %}
-						<a href="/senpai/mynote/{{i}}/">{{ i }}</a>
+						<a href="/senpai/mylike/{{i}}/">{{ i }}</a>
 					{% endif %}
 				{% endfor %}
 				{% if page_now != page|last %}
-					<a href="{% url 'senpai:mynote' page_next %}">&gt</a>
-					<a href="{% url 'senpai:mynote' page|last %}">&gt&gt</a>
+					<a href="{% url 'senpai:mylike' page_next %}">&gt</a>
+					<a href="{% url 'senpai:mylike' page|last %}">&gt&gt</a>
 				{% else %}
 					&gt 
 					&gt&gt
 				{% endif %}
 			{% endif %}
 		{% else %}
-			<strong>You have not upload any note.</strong>
+			<strong>You have no liked notes.</strong>
 		{% endif %}
 		</div>
 	{% else %}

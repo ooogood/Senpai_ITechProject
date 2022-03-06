@@ -13,9 +13,15 @@ urlpatterns = [
     # user - my note
     path('mynote/<int:mynote_page_id>/', views.mynote, name='mynote'),
     path('mynote/', views.mynote, name='mynote'),
+	# my like
 	path('mylike/',views.mylike, name='mylike'),
+	path('mylike/<int:mylike_page_id>/',views.mylike, name='mylike'),
+	# note delete
 	path('note/<int:note_id>/delete/',views.delete_note,name='del_note'),
+	# my module
 	path('mymodule/',views.mymodule, name='mymodule'),
+	# login
     path('login/', views.user_login, name='login'),
+	# logout
 	path('logout/',views.user_logout, name='logout'),
 ] 
