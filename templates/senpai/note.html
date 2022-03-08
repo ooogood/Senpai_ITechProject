@@ -1,10 +1,17 @@
 {% extends 'senpai/base.html' %}
 {% load senpai_template_tags %} 
+{% load staticfiles %}
 
 {% block title_block %}
 	{{ module.name }}-{{ note.title }}
 {% endblock %}
 	
+{% block header_block %}
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			crossorigin="anonymous"></script>
+	<script src="{% static 'js/note_page.js' %}"></script>
+{% endblock %}
+
 {% block body_block %}
 	<div class="top_links">
 		<a href="{% url 'senpai:home' %}">Home Page</a>
@@ -21,28 +28,15 @@
 			{% else %}
 				{{ note.user|get_username }}
 			{% endif %}
+			at {{note.date}}
 		</p>
 		<embed src="{{ note.file.url }}" width="50%" height="512px"></iframe>
 	</div>
+
+	<h2>Comments(should be on the right)</h2>
 	<div class="comments">
-		<h2>Comments(should be on the right)</h2>
-		{% if comments %}
-			<ul> 
-				{% for comment in comments %} 
-					<li>{{ comment.content }} 
-						<ul><li>
-							Auth:
-							{% if comment.user|get_username == user.username %}
-								Me
-							{% else %}
-								{{ comment.user|get_username }}
-							{% endif %}
-							 Date:{{comment.date}}
-						</li></ul>
-				{% endfor %}
-			</ul> 
-		{% else %}
-			<strong>This note has no comment yet.</strong> 
-		{% endif %}
+		{% get_comments note %}
 	</div>
+	<textarea id="txt_comment" rows="4" cols="50">add a comment...</textarea>
+	<button type="button" id="btn_add_comment">Send</button>
 {% endblock %}

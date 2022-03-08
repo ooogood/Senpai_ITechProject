@@ -13,7 +13,7 @@ from datetime import datetime
 ## helper
 import math
 
-from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules
+from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments
 
 # Create your views here.
 # home page
@@ -45,18 +45,26 @@ class ModulePage(View):
 		context_dict['all_modules'] = Module.objects.all()
 		return render(request, 'senpai/module.html', context=context_dict)
 # note page
-@login_required 
-def show_note(request, note_id):
-	context_dict = {}
-	try:
-		context_dict['note'] = Note.objects.get(id=note_id)
-		context_dict['module'] = context_dict['note'].module
-		context_dict['comments'] = Comment.objects.filter(note=context_dict['note'])
-	except Note.DoesNotExist:
-		context_dict['module'] = None
-		context_dict['note'] = None
-		context_dict['comments'] = None
-	return render(request, 'senpai/note.html', context=context_dict)
+class NotePage(View):
+	@method_decorator(login_required)
+	def get(self, request, note_id):
+		context_dict = {}
+		if request.is_ajax():
+			# add a comment to this note
+			print(note_id)
+			note = Note.objects.get(id=note_id)
+			c = Comment.objects.get_or_create(note=note, user=request.user, content=request.GET['txt'])[0]
+			c.save()
+			result_dict = get_comments(note)
+			return render(request, 'senpai/commentlist.html', context=result_dict)
+		try:
+			context_dict['note'] = Note.objects.get(id=note_id)
+			context_dict['module'] = context_dict['note'].module
+		except Note.DoesNotExist:
+			context_dict['module'] = None
+			context_dict['note'] = None
+		return render(request, 'senpai/note.html', context=context_dict)
+
 # user - my note
 @login_required
 def mynote(request,mynote_page_id=1):

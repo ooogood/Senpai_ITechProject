@@ -69,3 +69,10 @@ def get_sorted_notes(module=None, sort_type='lik'):
 		notes.order_by('date')
 	return {'notes': notes,
 			'note_dict': note_dict}
+
+# for note pages
+@register.inclusion_tag('senpai/commentlist.html')
+def get_comments(note):
+	context_dict = {}
+	context_dict['comments'] = Comment.objects.filter(note=note).order_by('-date')
+	return context_dict

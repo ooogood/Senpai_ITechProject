@@ -9,7 +9,7 @@ urlpatterns = [
     # module page
     path('module/<slug:module_name_slug>/', views.ModulePage.as_view(), name='show_module'),
     # note page
-    path('note/<int:note_id>', views.show_note, name='show_note'),
+    path('note/<int:note_id>', views.NotePage.as_view(), name='show_note'),
     # user - my note
     path('mynote/<int:mynote_page_id>/', views.mynote, name='mynote'),
     path('mynote/', views.mynote, name='mynote'),
