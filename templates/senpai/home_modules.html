@@ -8,6 +8,11 @@
 				{% for search_result in search_results %} 
 					<li>
 						<a href="{% url 'senpai:show_module' search_result.slug %}">{{ search_result.name }}</a>
+						<ul>
+							{% for note in search_dict|get_dict_item:search_result.name %}
+							<li> {{ note.title }} </li>
+							{% endfor %}
+						</ul>
 					</li>
 				{% endfor %} 
 			</ul> 

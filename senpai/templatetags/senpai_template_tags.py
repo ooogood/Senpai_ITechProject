@@ -35,6 +35,11 @@ def get_home_modules(user, query=''):
 	else:
 		# get search result
 		context_dict['search_results'] = Module.objects.filter(name__istartswith=query)
+		search_dict = {}
+		for mod in context_dict['search_results']:
+			# module name as other_dict's key and map to a note list
+			search_dict[ mod.name ] = get_three_notes_list(mod)
+		context_dict['search_dict'] = search_dict 
 		context_dict['is_search_result'] = 'true'
 	return context_dict
 
