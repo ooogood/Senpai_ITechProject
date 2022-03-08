@@ -13,41 +13,18 @@ from datetime import datetime
 ## helper
 import math
 
-from senpai.templatetags.senpai_template_tags import get_sorted_notes
+from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules
 
 # Create your views here.
 # home page
-@login_required 
-def home(request):
-	context_dict = {}
-	# add my modules to context_dict
-	try:
-		my_enrollments = Enrollment.objects.filter(user=request.user)
-		context_dict['my_modules'] = Module.objects.filter(enrollment__in=my_enrollments) 
-		# get 3 notes for each my_modules
-		my_dict = {}
-		for mod in context_dict['my_modules']:
-			# module name as my_dict's key and map to a note list
-			note_list = []
-			for note in Note.objects.filter(module=mod).order_by("-likes")[:3]:
-				note_list.append( note )
-			my_dict[ mod.name ] = note_list
-		context_dict['my_modules_dict'] = my_dict
-		context_dict['other_modules'] = Module.objects.exclude(enrollment__in=my_enrollments)
-		other_dict = {}
-		for mod in context_dict['other_modules']:
-			# module name as other_dict's key and map to a note list
-			note_list = []
-			for note in Note.objects.filter(module=mod).order_by("-likes")[:3]:
-				note_list.append( note )
-			other_dict[ mod.name ] = note_list
-		context_dict['other_modules_dict'] = other_dict
-		# get 3 notes for each other_modules
-	except Exception:
-		context_dict['my_modules'] = None
-		context_dict['other_modules'] = None
-	response = render( request, 'senpai/home.html', context=context_dict)
-	return response
+class HomePage(View):
+	@method_decorator(login_required)
+	def get(self, request):
+		if request.is_ajax():
+			context_dict = get_home_modules(request.user, request.GET['search'])
+			return render( request, 'senpai/home_modules.html', context=context_dict)
+		context_dict = get_home_modules(request.user)
+		return render( request, 'senpai/home.html', context=context_dict)
 # module page
 class ModulePage(View):
 	@method_decorator(login_required)

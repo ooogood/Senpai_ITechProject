@@ -5,7 +5,7 @@ app_name = 'senpai'
 
 urlpatterns = [
     # home page
-    path('', views.home, name='home'),
+    path('', views.HomePage.as_view(), name='home'),
     # module page
     path('module/<slug:module_name_slug>/', views.ModulePage.as_view(), name='show_module'),
     # note page
