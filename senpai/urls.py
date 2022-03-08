@@ -7,7 +7,7 @@ urlpatterns = [
     # home page
     path('', views.home, name='home'),
     # module page
-    path('module/<slug:module_name_slug>/', views.show_module, name='show_module'),
+    path('module/<slug:module_name_slug>/', views.ModulePage.as_view(), name='show_module'),
     # note page
     path('note/<int:note_id>', views.show_note, name='show_note'),
     # user - my note

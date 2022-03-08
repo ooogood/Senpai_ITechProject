@@ -1,28 +1,28 @@
 {% extends 'senpai/base.html' %}
 {% load senpai_template_tags %} 
+{% load staticfiles %}
 
 {% block title_block %}
 	{{ module.name }}
 {% endblock %}
-	
+{% block header_block %}
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			crossorigin="anonymous"></script>
+	<script src="{% static 'js/module_page.js' %}"></script>
+{% endblock %}
 {% block body_block %}
 	<div class="top_links">
 		<a href="{% url 'senpai:home' %}">Home Page</a>
 		<a href="{% url 'senpai:mynote' %}">UserProfile</a>
 		<a href="{% url 'senpai:logout' %}">Log out</a>
 	</div>
-	<h2 class="module_header"> {{ module.name }} </h2>
+	<h2 class="module_name">{{ module.name }}</h2>
+	<button type="button" id="btn_sort_lik">Sort by Likes</button>
+	<button type="button" id="btn_sort_cmt">Sort by Comments</button>
+	<button type="button" id="btn_sort_new">Newest</button>
+	<button type="button" id="btn_sort_old">Oldest</button>
 	<div class="module_body">
-		{% if notes %}
-			<ul> 
-				{% for note in notes %} 
-					<li><a href="{% url 'senpai:show_note' note.id %}">{{ note.title }}</a>
-					<ul><li>Auth:{{ note.user|get_username }} Comments:{{note_dict|get_dict_item:note.title}} Likes:{{note.likes}} Date:{{note.date}}</li></ul>
-				{% endfor %}
-			</ul> 
-		{% else %}
-			<strong>This module has no note yet.</strong> 
-		{% endif %}
+		{% get_sorted_notes module %}
 	</div>
 	<div class="side_bar">
 		<h2>Other modules(should be in side bar)</h2>
