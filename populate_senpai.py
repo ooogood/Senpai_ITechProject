@@ -127,6 +127,8 @@ def add_comment(note, user, content):
 def add_like(user, note):
 	# django will auto generate id
 	l = Like.objects.get_or_create(user=user, note=note)[0]
+	note.likes = note.likes+1
+	note.save()
 	l.save()
 	return l
 

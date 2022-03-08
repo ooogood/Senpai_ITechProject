@@ -16,6 +16,7 @@ urlpatterns = [
 	# my like
 	path('mylike/',views.mylike, name='mylike'),
 	path('mylike/<int:mylike_page_id>/',views.mylike, name='mylike'),
+	path('note_like/', views.note_like, name='note_like'),
 	# note delete
 	path('note/<int:note_id>/delete/',views.delete_note,name='del_note'),
 	# my module

@@ -25,6 +25,7 @@
 			{% for n in note %}
 			<li><a href="{% url 'senpai:show_note' n.note.id %}">{{ n.note.title }}</a>
 			</li>
+			<button id=like data-note = {{note.id}} >Like note</button>
 			{% endfor %}
 		</ul>
 		</div>
