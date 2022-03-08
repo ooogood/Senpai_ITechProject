@@ -39,6 +39,7 @@ class Note(models.Model):
     file = models.FileField(upload_to='notes', blank=True)
     def __str__(self):
         return self.title
+		
 
 class Enrollment(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)

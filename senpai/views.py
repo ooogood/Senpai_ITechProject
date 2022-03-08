@@ -92,6 +92,20 @@ def mynote(request,mynote_page_id=1):
 	
 # user - mylike
 @login_required
+def note_like(request):
+	user = request.user
+	note_id = request.GET.get('note_id')
+	note = Note.objects.filter(id = note_id)
+	likenote = Like.objects.filter(user=user, note=note).count()
+	
+	if likenote:
+		Like.objects.filter(user=user, note=note).delete
+	else:
+		Like.objects.get_or_create(user=user, note=note)
+	
+	return response
+
+@login_required
 def mylike(request,mylike_page_id=1):	
 	context_dict = {}
 	if request.user.is_authenticated:
