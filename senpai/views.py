@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.views.generic.base import View
 from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 ## import modelForms
@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 ## helper
-import math
+import os, math, mimetypes
 
 from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments
 
@@ -85,6 +85,18 @@ def note_like_clicked(request, note_id):
 	context_dict['likes'] = like.count()
 	context_dict['liked'] = like.filter(user=request.user).count()
 	return render(request, 'senpai/note_like_info.html', context=context_dict)
+
+@login_required
+def note_download(request, note_id):
+	note=Note.objects.get(id=note_id)
+	print(note.file.path)
+	if os.path.exists(note.file.path):
+		with open(note.file.path, 'rb') as fh:
+			mime_type, _ = mimetypes.guess_type(note.file.path)
+			response = HttpResponse(fh.read(), content_type=mime_type)
+			response['Content-Disposition']='attachment; filename=' + note.file.name
+			return response
+	raise Http404
 
 # user - my note
 @login_required

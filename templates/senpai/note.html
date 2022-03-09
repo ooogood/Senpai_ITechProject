@@ -35,6 +35,9 @@
 	<div class="note_like_info">
 		{% include "senpai/note_like_info.html" %}
 	</div>
+	<form id="download_form" method="get" action="{% url 'senpai:show_note' note.id %}/download">
+	<button type="submit">Download</button>
+	</form>
 
 	<h2>Comments(should be on the right)</h2>
 	<div class="comments">

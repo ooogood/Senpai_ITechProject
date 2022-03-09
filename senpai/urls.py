@@ -11,6 +11,7 @@ urlpatterns = [
     # note page
     path('note/<int:note_id>', views.NotePage.as_view(), name='show_note'),
     path('note/<int:note_id>/like_clicked', views.note_like_clicked, name='note_like_clicked'),
+    path('note/<int:note_id>/download', views.note_download, name='note_download'),
     # user - my note
     path('mynote/<int:mynote_page_id>/', views.mynote, name='mynote'),
     path('mynote/', views.mynote, name='mynote'),
