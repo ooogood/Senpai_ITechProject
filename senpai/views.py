@@ -1,5 +1,6 @@
 import hashlib
 
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.views.generic.base import View
@@ -234,7 +235,7 @@ def delete_note(request, note_id):
 
     return redirect(next)
 
-
+'''
 def user_register(request):
     registered = False
 
@@ -245,22 +246,25 @@ def user_register(request):
         key = request.POST.get('adminKey', "")
 
         if user_form.is_valid() and profile_form.is_valid():
-            if key != 0:
+
+            if key != '0':
                 keySet = UserProfile.objects.filter(admin_key=key)
                 if keySet:
-                    UserProfile.is_admin = 1
+                    UserProfile.is_admin = '1'
                 else:
                     print("Admin Key error or non-existent, please re-input")
+
             user = user_form.save()
 
             user.set_password(user.password)
             user.save()
-
+            print("test1\n")
             profile = profile_form.save(commit=False)
+            print("test2\n")
             profile.user = user
-
+            print("test3\n")
             profile.save()
-
+            print("test4\n")
             registered = True
         else:
             print(user_form.errors, profile_form.errors)
@@ -271,6 +275,40 @@ def user_register(request):
         return render(request,
                       'senpai/register.html',
                       {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+'''
+
+
+def register(request):
+    registered = False
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+        key = request.POST.get('adminKey', "")
+        if user_form.is_valid() and profile_form.is_valid():
+
+            if key != '0':
+                keySet = UserProfile.objects.filter(admin_key=key)
+                if keySet:
+                    UserProfile.is_admin = '1'
+                else:
+                    print("Admin Key error or non-existent, please re-input")
+
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.save()
+            registered = True
+        else:
+            print(user_form.errors, profile_form.errors)
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+
+    return render(request,
+                  'senpai/register.html',
+                  {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 
 # login
@@ -302,10 +340,12 @@ def user_logout(request):
     logout(request)
     return redirect(reverse('senpai:index'))
 
-
-def generateAdminKey(request, user):
+'''
+def generateAdminKey(request, UserProfile):
     """This function generate 10 character long hash"""
     hashCode = hashlib.sha1()
     hashCode.update(str(time.time()))
-    user.generate_statue = True  # 修改生成key的状态
+    UserProfile.admin_key = hashCode.hexdigest()[:-10]
+    # user.generate_statue = True  # 修改生成key的状态
     return hashCode.hexdigest()[:-10]
+'''

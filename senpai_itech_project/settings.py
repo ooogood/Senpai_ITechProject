@@ -2,17 +2,18 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
-STATIC_DIR = os.path.join( BASE_DIR, 'static' )
-MEDIA_DIR = os.path.join( BASE_DIR, 'media' )
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+STATIC_DIR = os.path.join(BASE_DIR, 'static' )
+MEDIA_DIR = os.path.join(BASE_DIR, 'media' )
 MEDIA_ROOT = MEDIA_DIR # define the full path to a directory where you’d like Django to store uploaded files.
-STATICFILES_DIRS = [STATIC_DIR,]
+STATICFILES_DIRS = [STATIC_DIR, ]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'zrs*%!)ac6*mpqe)i5@@y^aqq-u^=lq0_9gmlr2d_vee_wvpqp'
+
 password_hashers = (
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher'

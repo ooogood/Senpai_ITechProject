@@ -26,8 +26,8 @@ urlpatterns = [
     path('unenrollment/<int:module_id>/', views.unenrollment, name='del_module'),
     path('enrollment/<int:module_id>/', views.enrollment, name='add_module'),
     # register/log
+    path('register/', views.register, name='register'),
     path('login/', views.user_login, name='login'),
     path('restricted/', views.restricted, name='restricted'),
-    path('register/', views.user_register, name='register'),
     path('logout/', views.user_logout, name='logout'),
 ]

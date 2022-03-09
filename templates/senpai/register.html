@@ -6,13 +6,13 @@
 {% endblock %}
 
 {% block body_block %}
-	<h1>Register for senpai</h1>
+	<h1>Register for Rango</h1>
 	{% if registered %}
-		Senpai says: <strong>thank you for registering!</strong>
+		Rango says: <strong>thank you for registering!</strong>
 		<a href="{% url 'senpai:home' %}">Return to the homepage.</a><br />
 	{% else %}
-		Senpai says: <strong>register here!</strong><br />
-		<form id="user_form" method="post" action="{% url 'senpai:user_register' %}"
+		Rango says: <strong>register here!</strong><br />
+		<form id="user_form" method="post" action="{% url 'senpai:register' %}"
 			enctype="multipart/form-data">
 
 			{% csrf_token %}
@@ -20,7 +20,7 @@
 			<!-- Display each form -->
 			{{ user_form.as_p }}
 			{{ profile_form.as_p }}
-
+	
 			<!-- Provide a button to click to submit the form. -->
 			<input type="submit" name="submit" value="Register" />
 		</form>

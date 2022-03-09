@@ -14,7 +14,8 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('admin_key',)  # adminKey default==0
+        fields = ('is_admin', 'admin_key')
+
 
 # class AdminKeyForm(forms.ModelForm):
 #    class Meta:

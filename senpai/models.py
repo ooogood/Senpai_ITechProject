@@ -5,18 +5,10 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-
-class User(models.Model):
-    uid = models.CharField(verbose_name='Username', max_length=16, unique=True)  # uid==username
-    password = models.CharField(verbose_name='password', max_length=16)
-    email = models.CharField(verbose_name='Email', max_length=16, unique=True)
-
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # 新增自定义状态
-    is_admin = models.IntegerField(default=0)
-    admin_key = models.IntegerField(default=0)  # 生成key后，修改该字段，不限定key使用次数
+    is_admin = models.CharField(default='0', max_length=16)
+    admin_key = models.CharField(default='0', max_length=16)  # 生成key后，修改该字段，不限定key使用次数
 
     def __str__(self):
         return self.user.username
