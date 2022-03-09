@@ -60,10 +60,31 @@ class NotePage(View):
 		try:
 			context_dict['note'] = Note.objects.get(id=note_id)
 			context_dict['module'] = context_dict['note'].module
+			like = Like.objects.filter(note=context_dict['note'])
+			context_dict['likes'] = like.count()
+			context_dict['liked'] = like.filter(user=request.user).count()
 		except Note.DoesNotExist:
 			context_dict['module'] = None
 			context_dict['note'] = None
+			context_dict['likes'] = None
+			context_dict['liked'] = None
 		return render(request, 'senpai/note.html', context=context_dict)
+@login_required
+def note_like_clicked(request, note_id):
+	context_dict = {}
+	note=Note.objects.get(id=note_id)
+	liked = Like.objects.filter(note=note).filter(user=request.user).count()
+	l = Like.objects.get_or_create(user=request.user, note=note)[0]
+	if liked == 0:
+		# like
+		l.save()
+	else:
+		#dislike
+		l.delete()
+	like = Like.objects.filter(note=note)
+	context_dict['likes'] = like.count()
+	context_dict['liked'] = like.filter(user=request.user).count()
+	return render(request, 'senpai/note_like_info.html', context=context_dict)
 
 # user - my note
 @login_required
@@ -170,7 +191,7 @@ def enrollment(request,module_id):
 
 @login_required
 def delete_note(request,note_id):
-	next = request.GET.get('next','/senpai/mynote/');
+	next = request.GET.get('next','/senpai/mynote/')
 	
 	if Note.objects.filter(id=note_id).exists():
 		Note.objects.filter(id=note_id).delete()
