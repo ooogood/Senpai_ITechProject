@@ -80,7 +80,7 @@ def populate():
     # If you want to add more data, add them to the dictionaries above.
     i = 1  # this line is used for add comments
     for um in user_module:
-        u = add_user(um['uname'], um['email'],um['psw'],um['adminKey'])
+        u = add_user(um['uname'])
         for ms in um['module']:
             m = add_module(ms)
             add_enrollment(m, u)
