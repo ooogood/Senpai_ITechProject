@@ -2,16 +2,31 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
+
 # Create your models here.
+
+
+class User(models.Model):
+    uid = models.CharField(verbose_name='Username', max_length=16, unique=True)  # uid==username
+    password = models.CharField(verbose_name='password', max_length=16)
+    email = models.CharField(verbose_name='Email', max_length=16, unique=True)
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # User model has already had fields:
-    #   username, email, password, ...
-    role = models.IntegerField(default=0)
+    # 新增自定义状态
+    is_admin = models.IntegerField(default=0)
+    admin_key = models.IntegerField(default=0)  # 生成key后，修改该字段，不限定key使用次数
 
     def __str__(self):
         return self.user.username
+
+
+# class AdminKey(models.Model):
+#    user = models.OneToOneField(User, on_delete=models.CASCADE)
+#    adminKey = models.CharField(default='adminKey', max_length=16, unique=True)
+#    adminKeyStatus = models.IntegerField(default=0)
+
 
 class Module(models.Model):
     NAME_MAX_LENGTH = 32
@@ -23,8 +38,10 @@ class Module(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Module, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
+
 
 class Note(models.Model):
     TITLE_MAX_LENGTH = 32
@@ -37,13 +54,15 @@ class Note(models.Model):
     likes = models.IntegerField(default=0)
     # file can be blank for testing for now
     file = models.FileField(upload_to='notes', blank=True)
+
     def __str__(self):
         return self.title
-		
+
 
 class Enrollment(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
 class Comment(models.Model):
     COMMENT_MAX_LENGTH = 65535
@@ -56,6 +75,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
+
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
