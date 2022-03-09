@@ -1,19 +1,27 @@
 {% load senpai_template_tags %} 
-	{% if comments %}
-		<ul> 
-			{% for comment in comments %} 
-				<li>{{ comment.content }} 
-					<ul><li>
-						Auth:
-						{% if comment.user|get_username == user.username %}
-							Me
-						{% else %}
-							{{ comment.user|get_username }}
-						{% endif %}
-						 Date:{{comment.date}}
-					</li></ul>
-			{% endfor %}
-		</ul> 
-	{% else %}
-		<strong>This note has no comment yet.</strong> 
-	{% endif %}
+{% if comments %}
+	<ul> 
+		{% for comment in comments %} 
+			<li>{{ comment.content }} 
+				<ul><li>
+					Auth:
+					{% if comment.user|get_username == user.username %}
+						Me
+					{% else %}
+						{{ comment.user|get_username }}
+					{% endif %}
+					 Date:{{comment.date}}
+				</li></ul>
+		{% endfor %}
+	</ul> 
+{% else %}
+	<strong>This note has no comment yet.</strong> 
+{% endif %}
+<br>
+{% if has_prev == True %}
+<button type="button" id="prev_cmt_page">Prev</button>
+{% endif %}
+Page <span id="cmt_page_num">{{ cmt_page_num }}</span>
+{% if has_next == True %}
+<button type="button" id="next_cmt_page">Next</button>
+{% endif %}
