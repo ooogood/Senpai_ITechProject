@@ -18,7 +18,7 @@
 		<a href="{% url 'senpai:mynote' %}">UserProfile</a>
 		<a href="{% url 'senpai:logout' %}">Log out</a>
 	</div>
-	<h2 class="note_header"> {{ module.name }}::{{ note.title }} </h2>
+	<h2 class="note_header"> <a href="{% url 'senpai:show_module' module.slug %}">{{ module.name }}</a>::{{ note.title }} </h2>
 	<div class="note_preview">
 		<h2>Note preview(should be on the left)</h2>
 		<p>
