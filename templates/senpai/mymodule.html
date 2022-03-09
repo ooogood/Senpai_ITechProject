@@ -1,0 +1,46 @@
+{% extends 'senpai/base.html' %}
+{% load staticfiles %}
+{% load senpai_template_tags %} 
+
+{% block title_block %}
+	{% if user %}
+		{{ user.username }} 's module
+	{% else %}
+		Unknown User
+	{% endif %}
+{% endblock %}
+
+{% block body_block %}
+	<div class="top_links">
+		<a href="{% url 'senpai:home' %}">Home Page</a>
+		<a href="{% url 'senpai:logout' %}">Log out</a>
+		<a href="{% url 'senpai:mynote' %}">My Notes</a>
+		<a href="{% url 'senpai:mylike' %}">My Likes</a>
+	</div>
+	<h1>{{ user.username }}'s modules</h1>
+	{% if user %}
+		<div class = "user_modules">
+		{% if user_modules %}
+			<h2>Added Modules</h2>
+			{% for m in user_modules %}
+				<li>
+				<a href="{% url 'senpai:show_module' m.slug %}">{{ m.name }}</a>
+				<a href="{% url 'senpai:del_module' m.id %}?next={% url 'senpai:mymodule' %}">Delete</a>
+				</li>
+			{% endfor %}
+		{% endif %}
+		</div>
+		<div class = "other_modules">
+		<h2>Avaliable Modules</h2>
+		{% for m in other_modules %}
+			<li>
+			<a href="{% url 'senpai:show_module' m.slug %}">{{ m.name }}</a>
+			<a href="{% url 'senpai:add_module' m.id %}?next={% url 'senpai:mymodule' %}">Select</a>
+			</li>
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}
+	
+		
+				

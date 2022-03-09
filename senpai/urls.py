@@ -21,6 +21,8 @@ urlpatterns = [
 	path('note/<int:note_id>/delete/',views.delete_note,name='del_note'),
 	# my module
 	path('mymodule/',views.mymodule, name='mymodule'),
+	path('unenrollment/<int:module_id>/',views.unenrollment, name='del_module'),
+	path('enrollment/<int:module_id>/',views.enrollment, name='add_module'),
 	# login
     path('login/', views.user_login, name='login'),
 	# logout

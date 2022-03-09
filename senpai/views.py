@@ -130,8 +130,43 @@ def mylike(request,mylike_page_id=1):
 
 @login_required
 def mymodule(request):
-	response = HttpResponse('developing')
+	context_dict = {}
+	if request.user.is_authenticated:
+		my_module = []
+		other_module = []
+		# get module_list
+		my_enrollment = Enrollment.objects.filter(user=request.user)
+		for e in my_enrollment:
+			my_module.append(e.module)
+		
+		all_modules = Module.objects.all()
+		for m in all_modules:
+			if not m in my_module:
+				other_module.append(m)
+		
+		context_dict['user_modules'] = my_module
+		context_dict['other_modules'] = other_module
+	response = render(request,'senpai/mymodule.html',context=context_dict)
 	return response 
+	
+def unenrollment(request,module_id):
+	next = request.GET.get('next','/senpai/mymodule/');
+	
+	this_module = Module.objects.get(id=module_id)
+	if Enrollment.objects.filter(module=this_module, user=request.user).exists():
+		Enrollment.objects.filter(module=this_module, user=request.user).delete()
+	
+	return redirect(next)
+	
+def enrollment(request,module_id):
+	next = request.GET.get('next','/senpai/mymodule/');
+	
+	this_module = Module.objects.get(id=module_id)
+	if not Enrollment.objects.filter(module=this_module, user=request.user).exists():
+		e = Enrollment.objects.get_or_create(module=this_module, user=request.user)[0]
+		e.save()
+	
+	return redirect(next)
 
 @login_required
 def delete_note(request,note_id):
