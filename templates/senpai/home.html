@@ -12,16 +12,15 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/home_css.css' %}"/>
 {% endblock %}
 {% block navigation %}
-	<a class="navigation content homepage" href="{% url 'senpai:home' %}">Home Page</a>
-	<a class="navigation content userprofile" href="{% url 'senpai:mynote' %}">UserProfile</a>
-	<a class="navigation content logout" href="{% url 'senpai:logout' %}">Log out</a>
+	<div class="navigation component search">
+		<input class="navigation input search" type="search" id="search-input" placeholder="Search For Modules..." />
+	</div>
+	
+	<a class="navigation component userprofile" href="{% url 'senpai:mynote' %}"></a>
 {% endblock %}
 {% block body_block %}
-	<h2 class="home_header">{{ user.username }}'s Homepage</h2>
-	<input type="search"
-			id="search-input"
-			placeholder="Search for module..." />
-	<div class="home_modules">
+	<h2 class="content header">{{ user.username }}'s Homepage</h2>
+	<div class="content links">
 		{% get_home_modules user %}
 	</div>
 {% endblock %}

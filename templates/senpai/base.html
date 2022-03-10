@@ -15,7 +15,7 @@
 	<body>
 		<div class="background"></div>
 		<div class="navigation frame">
-			<img class="navigation logo" src="{% static 'img/logo.webp' %}"  alt="navigation logo">
+			<a class="navigation component homepage" href="{% url 'senpai:home' %}"></a>
 			{% block navigation %}
 			{% endblock %}
 		</div>
