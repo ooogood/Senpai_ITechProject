@@ -286,10 +286,10 @@ def register(request):
         key = request.POST.get('adminKey', "")
         if user_form.is_valid() and profile_form.is_valid():
 
-            if key != '0':
+            if key != 0:
                 keySet = UserProfile.objects.filter(admin_key=key)
                 if keySet:
-                    UserProfile.is_admin = '1'
+                    UserProfile.is_admin = 1
                 else:
                     print("Admin Key error or non-existent, please re-input")
 
@@ -307,7 +307,7 @@ def register(request):
         profile_form = UserProfileForm()
 
     return render(request,
-                  'senpai/register.html',
+                  'senpai/combineLogReg.html',
                   {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 
@@ -327,7 +327,7 @@ def user_login(request):
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
     else:
-        return render(request, 'senpai/login.html')
+        return render(request, 'senpai/combineLogReg.html')
 
 
 @login_required

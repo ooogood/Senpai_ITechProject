@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+	<head>
+		<title>
+			Senpai -
+			{% block title_block %}
+			{% endblock %}
+		</title>
+		{% block header_block %}
+		{% endblock %}
+	</head>
+	<body>
+		<div class="body_block">
+			{% block body_block %}
+			{% endblock %}
+		</div>
+		<div class="user_icon">
+        <ul>
+			{% if user.is_authenticated %}
+				<li><a href="{% url 'senpai:restricted' %}">Restricted Page</a></li>
+			{% else %}
+			{% endif %}
+        </ul>
+		</div>
+	</body>
+</html>

@@ -12,6 +12,9 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
+    is_admin = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    admin_key = forms.IntegerField( initial=0)
+
     class Meta:
         model = UserProfile
         fields = ('is_admin', 'admin_key')

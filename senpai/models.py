@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    is_admin = models.CharField(default='0', max_length=16)
-    admin_key = models.CharField(default='0', max_length=16)  # 生成key后，修改该字段，不限定key使用次数
+    is_admin = models.IntegerField(default=0)
+    admin_key = models.IntegerField(default=0)  # 生成key后，修改该字段，不限定key使用次数
 
     def __str__(self):
         return self.user.username
