@@ -9,13 +9,14 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 			crossorigin="anonymous"></script>
 	<script src="{% static 'js/home_page.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/home_css.css' %}"/>
+{% endblock %}
+{% block navigation %}
+	<a class="navigation content homepage" href="{% url 'senpai:home' %}">Home Page</a>
+	<a class="navigation content userprofile" href="{% url 'senpai:mynote' %}">UserProfile</a>
+	<a class="navigation content logout" href="{% url 'senpai:logout' %}">Log out</a>
 {% endblock %}
 {% block body_block %}
-	<div class="top_links">
-		<a href="{% url 'senpai:home' %}">Home Page</a>
-		<a href="{% url 'senpai:mynote' %}">UserProfile</a>
-		<a href="{% url 'senpai:logout' %}">Log out</a>
-	</div>
 	<h2 class="home_header">{{ user.username }}'s Homepage</h2>
 	<input type="search"
 			id="search-input"
