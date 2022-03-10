@@ -66,11 +66,11 @@ class NotePage(View):
                 # add a comment to this note
                 c = Comment.objects.create(note=note, user=request.user, content=request.GET['txt'])
                 c.save()
-                result_dict = get_comments(note)
+                result_dict = get_comments(note, request.user)
                 return render(request, 'senpai/commentlist.html', context=result_dict)
             else:
                 # change comment page
-                result_dict = get_comments(note, change_page_num)
+                result_dict = get_comments(note, request.user, change_page_num)
                 return render(request, 'senpai/commentlist.html', context=result_dict)
         try:
             context_dict['note'] = Note.objects.get(id=note_id)

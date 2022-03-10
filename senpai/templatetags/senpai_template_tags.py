@@ -72,7 +72,7 @@ def get_sorted_notes(module=None, sort_type='lik'):
 
 # for note pages
 @register.inclusion_tag('senpai/commentlist.html')
-def get_comments(note, cmt_page=1):
+def get_comments(note, user, cmt_page=1):
 	context_dict = {}
 	cmt_per_page = 6
 	start_idx = cmt_per_page * (cmt_page - 1)
@@ -82,4 +82,5 @@ def get_comments(note, cmt_page=1):
 	context_dict['cmt_page_num'] = cmt_page
 	context_dict['has_prev'] = (cmt_page > 1)
 	context_dict['has_next'] = (end_idx < all_cmt.count())
+	context_dict['user'] = user
 	return context_dict
