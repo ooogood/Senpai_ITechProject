@@ -64,7 +64,7 @@ class NotePage(View):
             change_page_num = int(request.GET.get('page_num', -1))
             if change_page_num == -1:
                 # add a comment to this note
-                c = Comment.objects.get_or_create(note=note, user=request.user, content=request.GET['txt'])[0]
+                c = Comment.objects.create(note=note, user=request.user, content=request.GET['txt'])
                 c.save()
                 result_dict = get_comments(note)
                 return render(request, 'senpai/commentlist.html', context=result_dict)
@@ -206,7 +206,7 @@ def mymodule(request):
 
 
 def unenrollment(request, module_id):
-    next = request.GET.get('next', '/senpai/mymodule/');
+    next = request.GET.get('next', '/senpai/mymodule/')
 
     this_module = Module.objects.get(id=module_id)
     if Enrollment.objects.filter(module=this_module, user=request.user).exists():
@@ -216,7 +216,7 @@ def unenrollment(request, module_id):
 
 
 def enrollment(request, module_id):
-    next = request.GET.get('next', '/senpai/mymodule/');
+    next = request.GET.get('next', '/senpai/mymodule/')
 
     this_module = Module.objects.get(id=module_id)
     if not Enrollment.objects.filter(module=this_module, user=request.user).exists():
