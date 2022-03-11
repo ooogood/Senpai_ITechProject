@@ -1,26 +1,26 @@
-{% extends 'senpai/base.html' %}
+{% extends 'senpai/base_main_func.html' %}
 {% load staticfiles %}
 {% load senpai_template_tags %} 
 
 {% block title_block %}
 	Home
 {% endblock %}
-{% block header_block %}
+{% block header_block_mf %}
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 			crossorigin="anonymous"></script>
 	<script type="text/javascript" src="{% static 'js/scroll_plugin.js' %}"></script>
 	<script src="{% static 'js/home_page.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'css/home_css.css' %}"/>
 {% endblock %}
-{% block navigation %}
+{% block navigation_mf %}
 	<div class="navigation component search">
 		<input class="navigation input search" type="search" id="search-input" placeholder="Search For Modules..." />
 	</div>
-	<a class="navigation component userprofile" href="{% url 'senpai:mynote' %}"></a>
 {% endblock %}
 {% block body_block %}
 	<h2 class="content welcome">Hi, {{ user.username }}!</h2>
 	<div class="content links">
+		<!-- include home_modules.html through get_home_modules -->
 		{% get_home_modules user %}
 	</div>
 {% endblock %}

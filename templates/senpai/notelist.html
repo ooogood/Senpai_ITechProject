@@ -1,11 +1,15 @@
 {% load senpai_template_tags %} 
-{% if notes %}
-	<ul> 
-		{% for note in notes %} 
-			<li><a href="{% url 'senpai:show_note' note.id %}">{{ note.title }}</a>
-			<ul><li>Auth:{{ note.user|get_username }} Comments:{{note_dict|get_dict_item:note.title}} Likes:{{note.likes}} Date:{{note.date}}</li></ul>
-		{% endfor %}
-	</ul> 
-{% else %}
-	<strong>This module has no note yet.</strong> 
-{% endif %}
+<div class="content notelist section">
+	{% if notes %}
+		<ul class="notelist notes"> 
+			{% for note in notes %} 
+				<li class="notelist note">
+					<a href="{% url 'senpai:show_note' note.id %}">{{ note.title }}</a>
+					<ul class="notelist note_info"><li>{{ note.user|get_username }} <br>Comments {{note_dict|get_dict_item:note.title}} Likes {{note.likes}} <br>{{note.date}}</li></ul>
+				</li>
+			{% endfor %}
+		</ul> 
+	{% else %}
+		<strong>This module has no note yet.</strong> 
+	{% endif %}
+</div>

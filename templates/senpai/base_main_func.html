@@ -1,0 +1,13 @@
+{% extends 'senpai/base.html' %}
+{% load staticfiles %}
+
+{% block header_block %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/base_mf_css.css' %}"/>
+	{% block header_block_mf %}
+	{% endblock %}
+{% endblock %}
+{% block navigation %}
+	{% block navigation_mf %}
+	{% endblock %}
+	<a class="navigation component userprofile" href="{% url 'senpai:mynote' %}"></a>
+{% endblock %}

@@ -1,0 +1,9 @@
+
+.navigation.component.userprofile{
+    left: calc(100% - 72px);
+    width: 72px;
+    background-position: 22px 18px;
+    background-size: 28px 36px;
+    background-repeat: no-repeat;
+    background-image: url("/static/img/profile_icon.webp");
+}

@@ -1,30 +1,32 @@
-{% extends 'senpai/base.html' %}
+{% extends 'senpai/base_main_func.html' %}
 {% load senpai_template_tags %} 
 {% load staticfiles %}
 
 {% block title_block %}
 	{{ module.name }}
 {% endblock %}
-{% block header_block %}
+{% block header_block_mf %}
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 			crossorigin="anonymous"></script>
 	<script src="{% static 'js/module_page.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/scroll_plugin.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/module_css.css' %}"/>
+{% endblock %}
+{% block navigation_mf %}
+	<h2 class="navigation component moduletitle">{{ module.name }}</h2>
 {% endblock %}
 {% block body_block %}
-	<div class="top_links">
-		<a href="{% url 'senpai:home' %}">Home Page</a>
-		<a href="{% url 'senpai:mynote' %}">UserProfile</a>
-		<a href="{% url 'senpai:logout' %}">Log out</a>
+	<div class="content body">
+		<button type="button" class="content srtbtn" id="btn_sort_lik">Sort by Likes</button>
+		<button type="button" class="content srtbtn" id="btn_sort_cmt">Sort by Comments</button>
+		<button type="button" class="content srtbtn" id="btn_sort_new">Newest</button>
+		<button type="button" class="content srtbtn" id="btn_sort_old">Oldest</button>
+		<div class="content links">
+			<!-- include notelist.html through get_sorted_notes -->
+			{% get_sorted_notes module %}
+		</div>
 	</div>
-	<h2 class="module_name">{{ module.name }}</h2>
-	<button type="button" id="btn_sort_lik">Sort by Likes</button>
-	<button type="button" id="btn_sort_cmt">Sort by Comments</button>
-	<button type="button" id="btn_sort_new">Newest</button>
-	<button type="button" id="btn_sort_old">Oldest</button>
-	<div class="module_body">
-		{% get_sorted_notes module %}
-	</div>
-	<div class="side_bar">
+	<div class="content sidebar">
 		<h2>Other modules(should be in side bar)</h2>
 		{% for a_module in all_modules %} 
 			<li><a href="{% url 'senpai:show_module' a_module.slug %}">{{ a_module.name }}</a>
