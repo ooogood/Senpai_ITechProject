@@ -42,8 +42,9 @@
 	<div class="content commentarea">
 		<h2 class="content commentarea title">Comments(should be on the right)</h2>
 		<!-- include commentlist.html through get_comments -->
-		{% get_comments note user %}
-
+		<div class="content commentarea commentpage">
+			{% get_comments note user %}
+		</div>
 		<div class="content commentarea add_comment">
 			<textarea id="txt_comment" rows="4" cols="50">add a comment...</textarea>
 			<button type="button" id="btn_add_comment">Send</button>

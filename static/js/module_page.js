@@ -5,7 +5,7 @@ $(document).ready(function() {
 				sort_type: 'lik'
 			},
 			function(response) {
-				$('.module_body').html(response);
+				$('.content.links').html(response);
 			})
 	});
 	$("#btn_sort_cmt").click(function(){
@@ -14,7 +14,7 @@ $(document).ready(function() {
 				sort_type: 'cmt'
 			},
 			function(response) {
-				$('.module_body').html(response);
+				$('.content.links').html(response);
 			})
 	});
 	$("#btn_sort_new").click(function(){
@@ -23,7 +23,7 @@ $(document).ready(function() {
 				sort_type: 'new'
 			},
 			function(response) {
-				$('.module_body').html(response);
+				$('.content.links').html(response);
 			})
 	});
 	$("#btn_sort_old").click(function(){
@@ -32,7 +32,7 @@ $(document).ready(function() {
 				sort_type: 'old'
 			},
 			function(response) {
-				$('.module_body').html(response);
+				$('.content.links').html(response);
 			})
 	});
 });
