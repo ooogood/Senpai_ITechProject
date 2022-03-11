@@ -14,12 +14,11 @@ urlpatterns = [
     path('note/<int:note_id>/like_clicked', views.note_like_clicked, name='note_like_clicked'),
     path('note/<int:note_id>/download', views.note_download, name='note_download'),
     # user - my note
-    path('mynote/<int:mynote_page_id>/', views.mynote, name='mynote'),
-    path('mynote/', views.mynote, name='mynote'),
+    path('mynote/<int:mynote_page_id>/', views.Mynote.as_view(), name='mynote'),
+    path('mynote/', views.Mynote.as_view(), name='mynote'),
     # my like
     path('mylike/', views.mylike, name='mylike'),
     path('mylike/<int:mylike_page_id>/', views.mylike, name='mylike'),
-    path('note_like/', views.note_like, name='note_like'),
     # note delete
     path('note/<int:note_id>/delete/', views.delete_note, name='del_note'),
     # my module

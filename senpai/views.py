@@ -18,7 +18,7 @@ from datetime import datetime, time
 ## helper
 import os, math, mimetypes
 
-from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments
+from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments, get_mynote_notes
 
 
 # Create your views here.
@@ -129,47 +129,61 @@ def note_download(request, note_id):
 
 
 # user - my note
-@login_required
-def mynote(request, mynote_page_id=1):
-    context_dict = {}
-    if request.user.is_authenticated:
-        # get note_list
-        note_list = Note.objects.filter(user=request.user).order_by('date')[mynote_page_id * 8 - 8:mynote_page_id * 8]
-        comment = {}
-        for n in note_list:
-            comment[n.id] = Comment.objects.filter(note=n).count()
-
+class Mynote(View):
+    @method_decorator(login_required)
+    def get(self, request, mynote_page_id=1):
+        context_dict = {}
+        result_dict = get_mynote_notes(request.user,mynote_page_id)
         note_num = Note.objects.filter(user=request.user).count()
         page_maximum = math.ceil(note_num / 8)
-        context_dict['note'] = note_list
+        
+        context_dict['notes'] = result_dict['notes']
         context_dict['user'] = request.user
         context_dict['page'] = range(1, page_maximum + 1)
         context_dict['page_now'] = mynote_page_id
         context_dict['page_last'] = mynote_page_id - 1
         context_dict['page_next'] = mynote_page_id + 1
-        context_dict['comments'] = comment
-    else:
-        return render(request, 'senpai/login_error.html')
-    response = render(request, 'senpai/mynote.html', context=context_dict)
-    return response
+        context_dict['comments'] = result_dict['comments']
+        # if it is ajax request, only return the note list
+        if request.is_ajax():
+            need_del_note = request.GET.get('noteid')
+            print(need_del_note)
+            print(Note.objects.filter(id=need_del_note).exists())
+            if Note.objects.filter(id=need_del_note).exists():
+                Note.objects.filter(id=need_del_note).delete()
+            print(Note.objects.filter(id=need_del_note).exists())
+            result_dict = get_mynote_notes(request.user,mynote_page_id)
+            return render(request, 'senpai/mynote_notes.html', context=result_dict)
+        response = render(request, 'senpai/mynote.html', context=context_dict)
+        return response
+
+
+# @login_required
+# def mynote(request, mynote_page_id=1):
+    # context_dict = {}
+    # if request.user.is_authenticated:
+        # # get note_list
+        # note_list = Note.objects.filter(user=request.user).order_by('date')[mynote_page_id * 8 - 8:mynote_page_id * 8]
+        # comment = {}
+        # for n in note_list:
+            # comment[n.id] = Comment.objects.filter(note=n).count()
+
+        # note_num = Note.objects.filter(user=request.user).count()
+        # page_maximum = math.ceil(note_num / 8)
+        # context_dict['note'] = note_list
+        # context_dict['user'] = request.user
+        # context_dict['page'] = range(1, page_maximum + 1)
+        # context_dict['page_now'] = mynote_page_id
+        # context_dict['page_last'] = mynote_page_id - 1
+        # context_dict['page_next'] = mynote_page_id + 1
+        # context_dict['comments'] = comment
+    # else:
+        # return render(request, 'senpai/login_error.html')
+    # response = render(request, 'senpai/mynote.html', context=context_dict)
+    # return response
 
 
 # user - mylike
-@login_required
-def note_like(request):
-    user = request.user
-    note_id = request.GET.get('note_id')
-    note = Note.objects.filter(id=note_id)
-    likenote = Like.objects.filter(user=user, note=note).count()
-
-    if likenote:
-        Like.objects.filter(user=user, note=note).delete
-    else:
-        Like.objects.get_or_create(user=user, note=note)
-    response = render(request, 'senpai/note_like.html')
-    return response
-
-
 @login_required
 def mylike(request, mylike_page_id=1):
     context_dict = {}
@@ -196,7 +210,7 @@ def mylike(request, mylike_page_id=1):
     response = render(request, 'senpai/mylike.html', context=context_dict)
     return response
 
-
+# user - mymodule
 @login_required
 def mymodule(request):
     context_dict = {}

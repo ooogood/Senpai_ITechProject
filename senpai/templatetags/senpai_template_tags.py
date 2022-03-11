@@ -85,3 +85,16 @@ def get_comments(note, user, cmt_page=1):
 	context_dict['has_next'] = (end_idx < all_cmt.count())
 	context_dict['user'] = user
 	return context_dict
+	
+# for mynote page
+@register.inclusion_tag('senpai/mynote_notes.html')
+def get_mynote_notes(user, mynote_page_id=1):
+	context_dict = {}
+	note_list = Note.objects.filter(user=user).order_by('date')[mynote_page_id * 8 - 8:mynote_page_id * 8]
+	comment = {}
+	for n in note_list:
+		comment[n.id] = Comment.objects.filter(note=n).count()
+		
+	context_dict['notes'] = note_list
+	context_dict['comments'] = comment
+	return context_dict

@@ -1,4 +1,4 @@
-{% extends 'senpai/base.html' %}
+{% extends 'senpai/base_main_func.html' %}
 {% load staticfiles %}
 {% load senpai_template_tags %} 
 
@@ -9,7 +9,13 @@
 		Unknown User
 	{% endif %}
 {% endblock %}
-	
+
+{% block header_block_mf %}
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			crossorigin="anonymous"></script>
+	<script src="{% static 'js/my_note_delete.js' %}"></script>
+{% endblock %}
+
 {% block body_block %}
 	<div class="top_links">
 		<a href="{% url 'senpai:home' %}">Home Page</a>
@@ -19,19 +25,9 @@
 	</div>
 	<h1>{{ user.username }}'s notes</h1>
 	{% if user %}
-		{% if note %}
-		<div class="user_notes">
-		<ul>
-			{% for n in note %}
-			<li><a href="{% url 'senpai:show_note' n.id %}">{{ n.title }}</a>
-			    <a href="{% url 'senpai:show_note' n.id %}/delete/?next={% url 'senpai:mynote' %}">delete this note</a>
-			<br>
-			upload date:{{ n.date }}
-			comments:{{ comments|get_dict_item:n.id }}
-			likes:{{ n.likes }}
-			</li>
-			{% endfor %}
-		</ul>
+		<div class="notelist">
+			<!-- include notelist.html through get_sorted_notes -->
+			{% get_mynote_notes user page_now %}
 		</div>
 		<div class="page_control">
 			{% if page.1 %}
@@ -57,9 +53,6 @@
 					&gt&gt
 				{% endif %}
 			{% endif %}
-		{% else %}
-			<strong>You have not upload any note.</strong>
-		{% endif %}
 		</div>
 	{% else %}
 		This user does not exist.

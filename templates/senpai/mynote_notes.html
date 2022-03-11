@@ -1,0 +1,15 @@
+{% load senpai_template_tags %} 
+	{% if notes %}
+		{% for n in notes %}
+			<li class="note {{n.id}}">
+				<a href="{% url 'senpai:show_note' n.id %}">{{ n.title }}</a>
+				<button class="delete_note" data-noteid={{n.id}}>delete this note</button><br>
+				upload date:{{ n.date }}
+				Comments:{{ comments|get_dict_item:n.id }}
+				likes:{{ n.likes }}
+			</li>
+		{% endfor %}
+	{% else %}
+		<h3>No note in this page.</h3>
+	{% endif %}
+</div>
