@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.HomePage.as_view(), name='home'),
     # module page
     path('module/<slug:module_name_slug>/', views.ModulePage.as_view(), name='show_module'),
+    path('module/<slug:module_name_slug>/upload_note', views.upload_note, name='upload_note'),
     # note page
     path('note/<int:note_id>', views.NotePage.as_view(), name='show_note'),
     path('note/<int:note_id>/like_clicked', views.note_like_clicked, name='note_like_clicked'),

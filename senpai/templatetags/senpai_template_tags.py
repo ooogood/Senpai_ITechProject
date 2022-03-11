@@ -60,13 +60,14 @@ def get_sorted_notes(module=None, sort_type='lik'):
 		note_dict[ note.title ] = cnt
 	# sort the result
 	if sort_type == 'lik':
-		notes.order_by('-likes')
+		notes = notes.order_by('-likes')
 	elif sort_type == 'cmt':
 		notes = Note.objects.filter(module=module).annotate(cmtcnt=Count('comment')).order_by('-cmtcnt')
 	elif sort_type == 'new':
-		notes.order_by('-date')
+		notes = notes.order_by('-date')
 	elif sort_type == 'old':
-		notes.order_by('date')
+		notes = notes.order_by('date')
+	print(notes)
 	return {'notes': notes,
 			'note_dict': note_dict}
 

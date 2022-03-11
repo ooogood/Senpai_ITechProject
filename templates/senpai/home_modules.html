@@ -12,7 +12,7 @@
 								<h4>{{ search_result.name }}</h4>
 							</a>
 							{% for note in search_dict|get_dict_item:search_result.name %}
-							<a class="search_result note" href="">
+							<a class="search_result note" href="{% url 'senpai:show_note' note.id %}">
 								<h5>{{ note.title }}</h5>
 							</a>
 							{% endfor %}
@@ -36,7 +36,7 @@
 							<h4>{{ my_module.name }}</h4>
 						</a>
 						{% for note in my_modules_dict|get_dict_item:my_module.name %}
-						<a class="my_modules note" href="">
+						<a class="my_modules note" href="{% url 'senpai:show_note' note.id %}">
 							<h5>{{ note.title }}</h5>
 						</a>
 						{% endfor %}
@@ -60,7 +60,7 @@
 						<h4>{{ other_module.name }}</h4>
 					</a>
 					{% for note in other_modules_dict|get_dict_item:other_module.name %}
-					<a class="other_modules note" href="">
+					<a class="other_modules note" href="{% url 'senpai:show_note' note.id %}">
 						<h5>{{ note.title }}</h5>
 					</a>
 					{% endfor %}

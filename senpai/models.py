@@ -1,3 +1,5 @@
+from datetime import datetime
+import os
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
@@ -42,11 +44,19 @@ class Note(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now=False)
     likes = models.IntegerField(default=0)
     # file can be blank for testing for now
     file = models.FileField(upload_to='notes', blank=True)
 
+    def save(self, *args, **kwargs):
+        # if title not specified, auto-filled with file name
+        if not self.title:
+            self.title = os.path.splitext( os.path.basename(self.file.name) )[0]
+        # only save the upload date, instead of record date whenever it is saved
+        if not self.date:
+            self.date = datetime.now()
+        super(Note, self).save(*args, **kwargs)
     def __str__(self):
         return self.title
 

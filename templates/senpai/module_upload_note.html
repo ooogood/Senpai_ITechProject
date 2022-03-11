@@ -1,0 +1,7 @@
+<form method="post" 
+	  action="{% url 'senpai:upload_note' module.slug %}"
+	  enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ upload_note_form.as_p }}
+    <button type="submit">Upload</button>
+</form>

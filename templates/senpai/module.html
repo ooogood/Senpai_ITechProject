@@ -26,6 +26,9 @@
 			{% get_sorted_notes module %}
 		</div>
 	</div>
+	<div class="content upload">
+		{% include 'senpai/module_upload_note.html' %}
+	</div>
 	<div class="content sidebar">
 		<h2>Other modules(should be in side bar)</h2>
 		{% for a_module in all_modules %} 

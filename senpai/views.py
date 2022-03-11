@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.views.generic.base import View
 
-from senpai.forms import UserForm, UserProfileForm
+from senpai.forms import UploadNoteForm, UserForm, UserProfileForm
 from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 ## import modelForms
 from django.shortcuts import redirect
@@ -49,10 +49,19 @@ class ModulePage(View):
             sort_type = request.GET['sort_type']
             result_dict = get_sorted_notes(module, sort_type)
             return render(request, 'senpai/notelist.html', context=result_dict)
-
+        context_dict['upload_note_form'] = UploadNoteForm()
         context_dict['all_modules'] = Module.objects.all()
         return render(request, 'senpai/module.html', context=context_dict)
 
+@login_required
+def upload_note(request, module_name_slug):
+    file = request.FILES.get('file', False)
+    if file != False:
+        module = Module.objects.get(slug=module_name_slug)
+        new_note = Note.objects.create(module=module, user=request.user, file=file)
+        new_note.save()
+    return redirect(reverse('senpai:show_module',
+					kwargs={'module_name_slug':module_name_slug}))
 
 # note page
 class NotePage(View):
@@ -94,9 +103,13 @@ def note_like_clicked(request, note_id):
     l = Like.objects.get_or_create(user=request.user, note=note)[0]
     if liked == 0:
         # like
+        note.likes += 1
+        note.save()
         l.save()
     else:
         # dislike
+        note.likes -= 1
+        note.save()
         l.delete()
     like = Like.objects.filter(note=note)
     context_dict['likes'] = like.count()
@@ -107,7 +120,6 @@ def note_like_clicked(request, note_id):
 @login_required
 def note_download(request, note_id):
     note = Note.objects.get(id=note_id)
-    print(note.file.path)
     if os.path.exists(note.file.path):
         with open(note.file.path, 'rb') as fh:
             mime_type, _ = mimetypes.guess_type(note.file.path)
