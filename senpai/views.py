@@ -179,7 +179,9 @@ def mylike(request, mylike_page_id=1):
         note = []
         for likes in like_list:
             note.append(likes.note)
-
+        comment = {}
+        for n in like_list:
+            comment[n.note.id] = Comment.objects.filter(note=n.note).count()
         like_num = Like.objects.filter(user=request.user).count()
         page_maximum = math.ceil(like_num / 8)
         context_dict['note'] = like_list
@@ -188,6 +190,7 @@ def mylike(request, mylike_page_id=1):
         context_dict['page_now'] = mylike_page_id
         context_dict['page_last'] = mylike_page_id - 1
         context_dict['page_next'] = mylike_page_id + 1
+        context_dict['comments'] = comment
     else:
         return render(request, 'senpai/login_error.html')
     response = render(request, 'senpai/mylike.html', context=context_dict)
