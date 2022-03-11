@@ -116,6 +116,8 @@ h3{
 }
 
 li.module{
+    margin: 0;
+    padding: 0;
     margin-bottom: 72px;
     width: 35vw;
     height: 240px;
@@ -125,6 +127,8 @@ li.module{
 
 div.module{
     position: absolute;
+    margin: 0;
+    padding: 0;
     width: 35vw;
     height: 240px;
     min-width: 412px;
@@ -182,7 +186,7 @@ a.note:nth-child(3){
 }
 
 a.note:nth-child(4){
-    bottom: 0;
+    top: 168px;
 }
 
 hr{
