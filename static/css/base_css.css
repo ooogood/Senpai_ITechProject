@@ -28,6 +28,7 @@ body{
 .navigation.frame{
     top: 12px;
     height: 72px;
+    z-index: 1;
 }
 
 .navigation.component.homepage{
@@ -40,7 +41,7 @@ body{
 }
 
 .content.frame{
-    top: 96px;
+    top: 0;
     bottom: 0;
     overflow-y: scroll;
     overflow-x: hidden;

@@ -2,32 +2,33 @@
 
 {% if is_search_result %}
 	{% if search_results %}
-		<div class="content search_result section">
-			<h3>Search results</h3>
-			<ul class="search_result modules"> 
-				{% for search_result in search_results %} 
-					<li class="search_result module">
-						<div class="search_result module">
-							<a class="search_result module" href="{% url 'senpai:show_module' search_result.slug %}">
-								<h4>{{ search_result.name }}</h4>
-							</a>
-							{% for note in search_dict|get_dict_item:search_result.name %}
-							<a class="search_result note" href="{% url 'senpai:show_note' note.id %}">
-								<h5>{{ note.title }}</h5>
-							</a>
-							{% endfor %}
-						</div>
-					</li>
-				{% endfor %} 
-			</ul> 
-		</div>
+	<div class="content search_result section">
+		<h3>Search results</h3>
+		<ul class="search_result modules"> 
+			{% for search_result in search_results %} 
+				<li class="search_result module">
+					<div class="search_result module">
+						<a class="search_result module" href="{% url 'senpai:show_module' search_result.slug %}">
+							<h4>{{ search_result.name }}</h4>
+						</a>
+						{% for note in search_dict|get_dict_item:search_result.name %}
+						<a class="search_result note" href="{% url 'senpai:show_note' note.id %}">
+							<h5>{{ note.title }}</h5>
+						</a>
+						{% endfor %}
+					</div>
+				</li>
+			{% endfor %} 
+		</ul> 
+	</div>
 	{% else %}
-		<h3>There is no search result.</h3> 
-	{% endif %} 
+	<h3>There is no search result.</h3> 
+	{% endif %}
+	<br>
 {% else %}
+	{% if my_modules %}
 	<div class="content my_modules section"> 
 		<h3>My Modules</h3>
-		{% if my_modules %}
 		<ul class="my_modules modules"> 
 			{% for my_module in my_modules %} 
 				<li class="my_modules module">
@@ -43,15 +44,15 @@
 					</div>
 				</li>
 			{% endfor %} 
-		</ul> 
-		{% else %} 
-		<strong>There are no my_modules.</strong> 
-		{% endif %}
+		</ul>
 	</div>
+	{% else %} 
+	<h3>You haven't selected any module.</h3> 
+	{% endif %}
 	<hr>
+	{% if other_modules %}
 	<div class="content other_modules section">
 		<h3>Other Modules</h3>
-		{% if other_modules %}
 		<ul class="other_modules modules"> 
 			{% for other_module in other_modules %} 
 				<li class="other_modules module">
@@ -67,9 +68,8 @@
 					</div>
 				</li>
 			{% endfor %} 
-		</ul> 
-		{% else %} 
-		<strong>There are no other_modules.</strong> 
-		{% endif %} 
+		</ul>
 	</div>
+	{% endif %}
+	<br>
 {% endif %}	

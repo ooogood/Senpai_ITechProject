@@ -3,16 +3,16 @@
     top: 0;
     height: 100%;
     overflow: hidden;
-    background-color: rgba(255,255,255, 0.3);
-    box-shadow: 12px 24px 48px 0px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255,255,255, 0.2);
+    box-shadow: 12px 24px 48px 12px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255,255,255, 0.3);
     border-radius: 20px;
-    backdrop-filter: blur(12px) brightness(125%);
+    backdrop-filter: blur(48px) brightness(125%);
 }
 
 .component:hover, a.module:hover, a.note:hover{
     background-color: rgba(255,255,255, 0.5);
-    backdrop-filter: blur(12px) brightness(200%);
+    backdrop-filter: blur(48px) brightness(200%);
 }
 
 .navigation.component.homepage{
@@ -26,6 +26,15 @@
     background-size: auto 36px;
     background-repeat: no-repeat;
     background-image: url("/static/img/search_icon.webp");
+}
+
+.navigation.component.userprofile{
+    left: calc(100% - 72px);
+    width: 72px;
+    background-position: 22px 18px;
+    background-size: 28px 36px;
+    background-repeat: no-repeat;
+    background-image: url("/static/img/profile_icon.webp");
 }
 
 .navigation.input.search{
@@ -66,8 +75,9 @@
 .content.welcome{
     position: relative;
     margin: 0;
-    margin-top: 36px;
-    top: 12px;
+    margin-top: 120px;
+    margin-bottom: 24px;
+    top: 0;
     left: 100px;
     font-size: 72px;
     color: white;
@@ -75,11 +85,18 @@
 
 .content.links{
     position: relative;
-    top: 72px;
+    margin: 0;
+    padding: 0;
 }
 
 .content.section{
     position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.content.other_modules.section, .content.search_result.section{
+    margin-bottom: 48px;
 }
 
 h3{
@@ -135,7 +152,7 @@ a.module, a.note{
     background-color: rgba(255,255,255, 0.3);
     border: 1px solid rgba(255,255,255, 0.3);
     border-radius: 6px;
-    backdrop-filter: blur(12px) brightness(125%);
+    backdrop-filter: blur(48px) brightness(125%);
     text-decoration: none;
 }
 
