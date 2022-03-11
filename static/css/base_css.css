@@ -17,15 +17,19 @@ body{
     background-image: url("/static/img/background.webp");
 }
 
-.navigation.frame{
+.navigation.frame, .content.frame{
     position: fixed;
     margin: 0;
     padding: 0;
-    top: 12px;
     left: 12px;
     right: 12px;
+}
+
+.navigation.frame{
+    top: 12px;
     height: 72px;
 }
+
 .navigation.component.homepage{
     left: 0;
     min-width: 72px;
@@ -33,4 +37,11 @@ body{
     background-size: auto 36px;
     background-repeat: no-repeat;
     background-image: url("/static/img/logo.webp");
+}
+
+.content.frame{
+    top: 96px;
+    bottom: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }

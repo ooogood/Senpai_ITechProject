@@ -1,12 +1,21 @@
 $(document).ready(function() {
-	$("#search-input").keyup(function(){
+	$(".navigation.input.search").keyup(function(){
 		let query = $(this).val();
 		$.get($(location).attr('href'),
 			{
 				'search': query
 			},
 			function(response) {
-				$('.home_modules').html(response);
+				$('.content.links').html(response);
 			})
+	});
+
+	// scroll beautify
+	$('.content.frame').niceScroll({
+		cursorcolor: 'white',
+		cursorwidth: '12px',
+		cursorborder:'none',
+		autohidemode: 'leave',
+		horizrailenabled:false
 	});
 });

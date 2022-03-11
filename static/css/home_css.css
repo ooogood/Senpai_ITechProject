@@ -1,7 +1,5 @@
 .navigation.component{
     position: absolute;
-    margin: 0;
-    padding: 0;
     top: 0;
     height: 100%;
     overflow: hidden;
@@ -9,12 +7,12 @@
     box-shadow: 12px 24px 48px 0px rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255,255,255, 0.3);
     border-radius: 20px;
-    backdrop-filter: blur(10px) brightness(125%);
+    backdrop-filter: blur(12px) brightness(125%);
 }
 
-.component:hover{
-    background-color: rgba(255,255,255, 0.4);
-    backdrop-filter: blur(10px) brightness(175%);
+.component:hover, a.module:hover, a.note:hover{
+    background-color: rgba(255,255,255, 0.5);
+    backdrop-filter: blur(12px) brightness(200%);
 }
 
 .navigation.component.homepage{
@@ -52,7 +50,6 @@
     text-align: center;
     font-size: 24px;
     color: white;
-    transition: 0.4s;
 }
 
 .navigation.input.search::-webkit-input-placeholder{
@@ -75,8 +72,121 @@
     color: transparent;
 }
 
-.content{
-    position: absolute;
+.content.welcome{
+    position: relative;
+    margin: 0;
+    margin-top: 36px;
+    top: 12px;
+    left: 100px;
+    font-size: 72px;
+    color: white;
 }
 
+.content.links{
+    position: relative;
+    top: 72px;
+}
 
+.content.section{
+    position: relative;
+}
+
+h3{
+    position: relative;
+    margin: 0;
+    margin-bottom: 36px;
+    padding: 0;
+    left: 100px;
+    font-size: 36px;
+    font-weight: normal;
+    color: white;
+}
+
+.modules{
+    position: relative;
+    margin: 0;
+    padding: 0;
+    left: 100px;
+    width: calc(100vw - 224px);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    
+}
+
+li.module{
+    margin-bottom: 72px;
+    width: 35vw;
+    height: 240px;
+    min-width: 412px;
+    list-style: none;
+}
+
+div.module{
+    position: absolute;
+    width: 35vw;
+    height: 240px;
+    min-width: 412px;
+}
+
+a.module, a.note{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: calc(35vw / 2 - 6px);
+    min-width: 200px;
+    overflow: hidden;
+    background-color: rgba(255,255,255, 0.3);
+    border: 1px solid rgba(255,255,255, 0.3);
+    border-radius: 6px;
+    backdrop-filter: blur(12px) brightness(125%);
+    text-decoration: none;
+}
+
+a.module{
+    left: 0;
+    height: 240px;
+}
+
+h4, h5{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 12px;
+    left: 12px;
+    height: 240px;
+    font-weight: normal;
+    color: white;
+}
+
+h4{
+    font-size: 36px;
+}
+
+h5{
+    font-size: 18px;
+}
+
+a.note{
+    right: 0;
+    height: 72px;
+}
+
+a.note:nth-child(2){
+    top: 0;
+}
+
+a.note:nth-child(3){
+    top: 84px;
+}
+
+a.note:nth-child(4){
+    bottom: 0;
+}
+
+hr{
+    position: relative;
+    margin-bottom: 36px;
+    width: 100vw;
+}

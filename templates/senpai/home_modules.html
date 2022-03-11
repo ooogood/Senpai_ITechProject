@@ -2,57 +2,69 @@
 
 {% if is_search_result %}
 	{% if search_results %}
-		<div class="search_result">
+		<div class="content search_result section">
 			<h3>Search results</h3>
-			<ul> 
+			<ul class="search_result modules"> 
 				{% for search_result in search_results %} 
-					<li>
-						<a href="{% url 'senpai:show_module' search_result.slug %}">{{ search_result.name }}</a>
-						<ul>
+					<li class="search_result module">
+						<div class="search_result module">
+							<a class="search_result module" href="{% url 'senpai:show_module' search_result.slug %}">
+								<h4>{{ search_result.name }}</h4>
+							</a>
 							{% for note in search_dict|get_dict_item:search_result.name %}
-							<li> {{ note.title }} </li>
+							<a class="search_result note" href="">
+								<h5>{{ note.title }}</h5>
+							</a>
 							{% endfor %}
-						</ul>
+						</div>
 					</li>
 				{% endfor %} 
 			</ul> 
 		</div>
 	{% else %}
-		<strong>There is no search result.</strong> 
+		<h3>There is no search result.</h3> 
 	{% endif %} 
 {% else %}
-	<div class="home_my_modules"> 
+	<div class="content my_modules section"> 
 		<h3>My Modules</h3>
 		{% if my_modules %}
-		<ul> 
+		<ul class="my_modules modules"> 
 			{% for my_module in my_modules %} 
-				<li>
-					<a href="{% url 'senpai:show_module' my_module.slug %}">{{ my_module.name }}</a>
-					<ul>
+				<li class="my_modules module">
+					<div class="my_modules module">
+						<a class="my_modules module" href="{% url 'senpai:show_module' my_module.slug %}">
+							<h4>{{ my_module.name }}</h4>
+						</a>
 						{% for note in my_modules_dict|get_dict_item:my_module.name %}
-						<li> {{ note.title }} </li>
+						<a class="my_modules note" href="">
+							<h5>{{ note.title }}</h5>
+						</a>
 						{% endfor %}
-					</ul>
+					</div>
 				</li>
 			{% endfor %} 
 		</ul> 
 		{% else %} 
 		<strong>There are no my_modules.</strong> 
-		{% endif %} 
-		<hr>
+		{% endif %}
 	</div>
-	<div class="home_other_modules">
+	<hr>
+	<div class="content other_modules section">
 		<h3>Other Modules</h3>
 		{% if other_modules %}
-		<ul> 
+		<ul class="other_modules modules"> 
 			{% for other_module in other_modules %} 
-				<li>
-					<a href="{% url 'senpai:show_module' other_module.slug %}">{{ other_module.name }}</a>
-					<ul>
-						{% for note in other_modules_dict|get_dict_item:other_module.name %}
-						<li> {{ note.title }} </li>
-						{% endfor %}
-					</ul>
+				<li class="other_modules module">
+					<div class="other_modules module">
+					<a class="other_modules module" href="{% url 'senpai:show_module' other_module.slug %}">
+						<h4>{{ other_module.name }}</h4>
+					</a>
+					{% for note in other_modules_dict|get_dict_item:other_module.name %}
+					<a class="other_modules note" href="">
+						<h5>{{ note.title }}</h5>
+					</a>
+					{% endfor %}
+					</div>
 				</li>
 			{% endfor %} 
 		</ul> 
