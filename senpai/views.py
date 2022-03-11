@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.views.generic.base import View
 
-from senpai.forms import UploadNoteForm, UserForm, UserProfileForm
+from senpai.forms import UserForm, UserProfileForm
 from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 ## import modelForms
 from django.shortcuts import redirect
@@ -49,7 +49,6 @@ class ModulePage(View):
             sort_type = request.GET['sort_type']
             result_dict = get_sorted_notes(module, sort_type)
             return render(request, 'senpai/notelist.html', context=result_dict)
-        context_dict['upload_note_form'] = UploadNoteForm()
         context_dict['all_modules'] = Module.objects.all()
         return render(request, 'senpai/module.html', context=context_dict)
 
