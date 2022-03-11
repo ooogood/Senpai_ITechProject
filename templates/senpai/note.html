@@ -13,12 +13,15 @@
 	<script type="text/javascript" src="{% static 'js/scroll_plugin.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'css/note_css.css' %}"/>
 {% endblock %}
+{% block navigation_mf %}
+	<h2 class="navigation component moduletitle"> <a href="{% url 'senpai:show_module' module.slug %}">{{ module.name }}</a></h2>
+	<h2 class="navigation component notetitle">{{ note.title }}</h2>
+{% endblock %}
 
 {% block body_block %}
-	<h2 class="note_header"> <a href="{% url 'senpai:show_module' module.slug %}">{{ module.name }}</a>::{{ note.title }} </h2>
-	<div class="note_preview">
-		<h2>Note preview(should be on the left)</h2>
-		<p>
+	<div class="content preview">
+		<h2 class="content preview title">Note preview(should be on the left)</h2>
+		<p class="content preview info">
 			uploaded by: 
 			{% if note.user|get_username == user.username %}
 				Me
@@ -27,20 +30,23 @@
 			{% endif %}
 			at {{note.date}}
 		</p>
-		<embed src="{{ note.file.url }}" width="50%" height="512px"></iframe>
+		<embed class="content preview note" src="{{ note.file.url }}" width="50%" height="512px"></iframe>
+		<div class="content preview like_info">
+			{% include "senpai/note_like_info.html" %}
+		</div>
+		<form class="content preview download" id="download_form" method="get" action="{% url 'senpai:show_note' note.id %}/download">
+		<button type="submit">Download</button>
+		</form>
 	</div>
-	<div class="note_like_info">
-		{% include "senpai/note_like_info.html" %}
-	</div>
-	<form id="download_form" method="get" action="{% url 'senpai:show_note' note.id %}/download">
-	<button type="submit">Download</button>
-	</form>
 
-	<h2>Comments(should be on the right)</h2>
-	<div class="comments">
+	<div class="content commentarea">
+		<h2 class="content commentarea title">Comments(should be on the right)</h2>
 		<!-- include commentlist.html through get_comments -->
 		{% get_comments note user %}
+
+		<div class="content commentarea add_comment">
+			<textarea id="txt_comment" rows="4" cols="50">add a comment...</textarea>
+			<button type="button" id="btn_add_comment">Send</button>
+		</div>
 	</div>
-	<textarea id="txt_comment" rows="4" cols="50">add a comment...</textarea>
-	<button type="button" id="btn_add_comment">Send</button>
 {% endblock %}
