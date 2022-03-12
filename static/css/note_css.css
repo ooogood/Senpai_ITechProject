@@ -5,7 +5,7 @@
 }
 
 .navigation.component.moduletitle{
-    left: min(calc(36vw + 12px), 372px);
+    left: min(36vw, 360px);
     width: 24vw;
     border-radius: 62px 10px 62px 10px;
 }
@@ -27,7 +27,61 @@ h2{
 }
 
 h2.notetitle{
-    left: calc(calc(min(calc(36vw + 12px), 372px) + 24vw) + 30px);
-    width: calc(100% - 96px - calc(calc(min(calc(36vw + 12px), 372px) + 24vw) + 30px));
+    left: calc(min(36vw, 360px) + 24vw + 30px);
+    width: calc(100% - 96px - calc(min(36vw, 360px) + 24vw + 30px));
     font-size: 48px;
 }
+
+.preview.frame, .commentarea.frame{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 96px;
+    width: 50%;
+    bottom: 0;
+}
+
+.preview.frame{
+    left: 0;
+}
+
+.commentarea.frame{
+    left: 50%;
+}
+
+h3{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    padding-left: 18px;
+    top: 10vh;
+    left: max(calc(50% - 300px), 5%);
+    width: calc(90% - 18px);
+    max-width: 582px;
+    height: 60px;
+    background-color: rgba(255,255,255, 0.3);
+    border: 1px solid rgba(255,255,255, 0.3);
+    border-radius: 6px;
+    backdrop-filter: blur(60px) brightness(125%);
+    overflow: hidden;
+    font-weight: normal;
+    line-height: 60px;
+    font-size: 24px;
+    color: white;
+    white-space: nowrap;
+}
+
+embed{
+    position: absolute;
+    top: calc(10vh + 72px);
+    height: calc(100% - calc(10vh + 72px) * 2);
+    left: max(calc(50% - 300px), 5%);
+    width: 90%;
+    max-width: 600px;
+    border-radius: 6px;
+    opacity: 0.9;
+    border-radius: 6px;
+}
+
+
+

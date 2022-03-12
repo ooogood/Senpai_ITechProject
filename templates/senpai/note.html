@@ -17,22 +17,23 @@
 	<a class="navigation component moduletitle" href="{% url 'senpai:show_module' module.slug %}">
 		<h2>{{ module.name }}</h2>
 	</a>
-	<h2 class="navigation notetitle">{{ note.title }}</h2>
+	<h2 class="navigation notetitle">Note</h2>
 {% endblock %}
 
 {% block body_block %}
-	<div class="content preview">
-		<h2 class="content preview title">Note preview(should be on the left)</h2>
+	<div class="content preview frame">
+		<h3 class="content preview title">{{ note.title }}</h3>
 		<p class="content preview info">
-			uploaded by: 
+			Creator: 
 			{% if note.user|get_username == user.username %}
 				Me
 			{% else %}
 				{{ note.user|get_username }}
 			{% endif %}
-			at {{note.date}}
 		</p>
-		<embed class="content preview note" src="{{ note.file.url }}" width="50%" height="512px"></iframe>
+		<p>{{note.date}}</p>
+		
+		<embed class="eee" src="{{ note.file.url }}"></embed>
 		<div class="content preview like_info">
 			{% include "senpai/note_like_info.html" %}
 		</div>
@@ -41,7 +42,7 @@
 		</form>
 	</div>
 
-	<div class="content commentarea">
+	<div class="content commentarea frame">
 		<h2 class="content commentarea title">Comments(should be on the right)</h2>
 		<!-- include commentlist.html through get_comments -->
 		<div class="content commentarea commentpage">
