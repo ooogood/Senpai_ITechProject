@@ -1,4 +1,5 @@
 import os
+import random
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'senpai_itech_project.settings')
@@ -34,51 +35,80 @@ def populate():
         {'mod': 'Computer System', 'title': 'Jitest_note10'},
     ]
 
-    Marco_notes = []
-    Xiaowei_notes = []
+    Marco_notes = [
+        {'mod': 'Robotics', 'title': 'Mrtest_note1'},
+        {'mod': 'Robotics', 'title': 'Mrtest_note2'},
+        {'mod': 'Robotics', 'title': 'Mrtest_note3'},
+        {'mod': 'Robotics', 'title': 'Mrtest_note4'},
+        {'mod': 'Robotics', 'title': 'Mrtest_note5'},
+        {'mod': 'Robotics', 'title': 'Mrtest_note6'},
+        {'mod': 'Robotics', 'title': 'Mrtest_note7'},
+        {'mod': 'Robotics', 'title': 'Mrtest_note8'},
+        {'mod': 'Robotics', 'title': 'Mrtest_note9'},
+        {'mod': 'Robotics', 'title': 'Mrtest_note10'},
+        {'mod': 'Robotics', 'title': 'Mrtest_note11'},
+        {'mod': 'Robotics', 'title': 'Mrtest_note12'},
+    ]
+
+    Xiaowei_notes = [
+        {'mod': 'Spanish', 'title': 'Xwtest_note1'},
+        {'mod': 'Spanish', 'title': 'Xwtest_note2'},
+        {'mod': 'Japanese', 'title': 'Xwtest_note3'},
+        {'mod': 'Japanese', 'title': 'Xwtest_note4'},
+        {'mod': 'Japanese', 'title': 'Xwtest_note5'},
+        {'mod': 'Embedded System', 'title': 'Xwtest_note6'},
+        {'mod': 'Embedded System', 'title': 'Xwtest_note7'},
+        {'mod': 'Embedded System', 'title': 'Xwtest_note8'},
+        {'mod': 'Embedded System', 'title': 'Xwtest_note9'},
+        {'mod': 'Embedded System', 'title': 'Xwtest_note10'},
+    ]
 
     user_module = [
         {'uname': 'Joseph',
-         'email': '12345625@qq.com',
-         'psw': 'dawdsadasdc',
-         'adminKey': '0',
-         'module': ['Programming', 'Software Engineering', 'Cyber Security'],
+         'module': ['Programming', 'Software Engineering', 'Cyber Security', 'Robotics', 'Advance Manufacturing', 'Signal Processing'],
          'notes': Joseph_notes,
          },
         {'uname': 'Jin',
-         'email': 'eqfsdfa213@qq.com',
-         'psw': 'cdwgrwdadef',
-         'adminKey': '0',
-         'module': ['Programming', 'Internet Technology', 'Computer System'],
+         'module': ['Programming', 'Internet Technology', 'Computer System', 'Robotics', 'Embedded System', 'Linear Algebra'],
          'notes': Jin_notes,
          },
         {'uname': 'Marco',
-         'email': 'addecrww@qq.com',
-         'psw': 'cwqfercfd',
-         'adminKey': '0',
-         'module': ['Computer Network', 'Human Computer Interface', 'Computer System'],
+         'module': ['Computer Network', 'Human Computer Interface', 'Computer System', 'Robotics', 'Embedded System', 'Signal Processing', 'Japanese'],
          'notes': Marco_notes,
          },
         {'uname': 'Xiaowei',
-         'email': 'dsadex44@qq.com',
-         'psw': 'ewrwx4tdsa',
-         'adminKey': '0',
-         'module': ['Artificial Intelligence', 'Big Data', 'Digital Forensics'],
+         'module': ['Artificial Intelligence', 'Big Data', 'Digital Forensics', 'Robotics', 'Japanese', 'Spanish', 'Chinese'],
          'notes': Xiaowei_notes,
+         },
+        {'uname': 'Amy',
+         'module': [],
+         'notes': [],
+         },
+        {'uname': 'Betty',
+         'module': [],
+         'notes': [],
+         },
+        {'uname': 'Charlotte',
+         'module': [],
+         'notes': [],
+         },
+        {'uname': 'Diana',
+         'module': [],
+         'notes': [],
+         },
+        {'uname': 'Emma',
+         'module': [],
+         'notes': [],
+         },
+        {'uname': 'Faye',
+         'module': [],
+         'notes': [],
          },
     ]
 
-    # create and write a temperary example note file
-    note_path = 'example_note.txt'
-    example_note = open(note_path, 'w+')
-    example_note.write(
-        'Example note Example note\nExample Example \nnote note\nExample Example \nnote note\nExample Example \nnote '
-        'note\nExample Example \nnote note\nExample Example \nnote note\nExample Example \nnote note\nExample Example '
-        '\nnote note')
-    example_note.close()
+    note_path = 'example_note.pdf'
 
     # If you want to add more data, add them to the dictionaries above.
-    i = 1  # this line is used for add comments
     for um in user_module:
         u = add_user(um['uname'])
         for ms in um['module']:
@@ -88,13 +118,17 @@ def populate():
             for ns in um['notes']:
                 if ns['mod'] == m.name:
                     n = add_note(m, u, ns['title'], note_path)
-                    for j in range(0, i + 1):
-                        add_comment(n, u, 'hello!' + str(i + j))
-                        add_like(u, n)
-                i = i + 1
 
-    # delete temperary file
-    os.remove(note_path)
+    # randomly add comments and likes to every note
+    for n in Note.objects.all():
+        comment_cnt = random.randint(0, 10)
+        like_cnt = random.randint(0, 10)
+        for i in range( 0, len(user_module) ):
+            u = User.objects.get(username=user_module[i]['uname'])
+            if comment_cnt > i:
+                add_comment(n, u, u.username+' says nice note!')
+            if like_cnt > i:
+                add_like(u, n)
 
     # Print out all data we have added.
     for u in User.objects.all():
@@ -106,7 +140,6 @@ def populate():
     for n in Note.objects.all():
         print(f'Note: {n}')
         print(Comment.objects.filter(note=n).count())
-
 
 def add_user(uname):
     email = uname + '@fakemail.com'
@@ -134,7 +167,7 @@ def add_note(mod, user, title, note_path):
     fhandle = open(note_path, 'rb')
     if fhandle:
         fcontent = File(fhandle)
-        n.file.save((title + '.txt'), fcontent)
+        n.file.save((title + '.pdf'), fcontent)
     fhandle.close()
     n.save()
     return n
