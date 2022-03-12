@@ -18,7 +18,7 @@ from datetime import datetime, time
 ## helper
 import os, math, mimetypes
 
-from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments, get_mynote_notes
+from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments, get_mynote_notes, get_mymodule_modules
 
 
 # Create your views here.
@@ -131,79 +131,41 @@ def note_download(request, note_id):
 # user - my note
 class Mynote(View):
     @method_decorator(login_required)
-    def get(self, request, mynote_page_id=1):
+    def get(self, request):
         context_dict = {}
-        result_dict = get_mynote_notes(request.user,mynote_page_id)
-        note_num = Note.objects.filter(user=request.user).count()
-        page_maximum = math.ceil(note_num / 8)
+        result_dict = get_mynote_notes(request.user)
         
         context_dict['notes'] = result_dict['notes']
         context_dict['user'] = request.user
-        context_dict['page'] = range(1, page_maximum + 1)
-        context_dict['page_now'] = mynote_page_id
-        context_dict['page_last'] = mynote_page_id - 1
-        context_dict['page_next'] = mynote_page_id + 1
         context_dict['comments'] = result_dict['comments']
         # if it is ajax request, only return the note list
         if request.is_ajax():
             need_del_note = request.GET.get('noteid')
-            print(need_del_note)
-            print(Note.objects.filter(id=need_del_note).exists())
+            # there should add delete file lines
             if Note.objects.filter(id=need_del_note).exists():
                 Note.objects.filter(id=need_del_note).delete()
-            print(Note.objects.filter(id=need_del_note).exists())
-            result_dict = get_mynote_notes(request.user,mynote_page_id)
+            result_dict = get_mynote_notes(request.user)
             return render(request, 'senpai/mynote_notes.html', context=result_dict)
         response = render(request, 'senpai/mynote.html', context=context_dict)
         return response
 
 
-# @login_required
-# def mynote(request, mynote_page_id=1):
-    # context_dict = {}
-    # if request.user.is_authenticated:
-        # # get note_list
-        # note_list = Note.objects.filter(user=request.user).order_by('date')[mynote_page_id * 8 - 8:mynote_page_id * 8]
-        # comment = {}
-        # for n in note_list:
-            # comment[n.id] = Comment.objects.filter(note=n).count()
-
-        # note_num = Note.objects.filter(user=request.user).count()
-        # page_maximum = math.ceil(note_num / 8)
-        # context_dict['note'] = note_list
-        # context_dict['user'] = request.user
-        # context_dict['page'] = range(1, page_maximum + 1)
-        # context_dict['page_now'] = mynote_page_id
-        # context_dict['page_last'] = mynote_page_id - 1
-        # context_dict['page_next'] = mynote_page_id + 1
-        # context_dict['comments'] = comment
-    # else:
-        # return render(request, 'senpai/login_error.html')
-    # response = render(request, 'senpai/mynote.html', context=context_dict)
-    # return response
-
-
 # user - mylike
 @login_required
-def mylike(request, mylike_page_id=1):
+def mylike(request):
     context_dict = {}
     if request.user.is_authenticated:
         # get note_list
-        like_list = Like.objects.filter(user=request.user)[mylike_page_id * 8 - 8:mylike_page_id * 8]
+        like_list = Like.objects.filter(user=request.user)
         note = []
         for likes in like_list:
             note.append(likes.note)
         comment = {}
         for n in like_list:
             comment[n.note.id] = Comment.objects.filter(note=n.note).count()
-        like_num = Like.objects.filter(user=request.user).count()
-        page_maximum = math.ceil(like_num / 8)
+			
         context_dict['note'] = like_list
         context_dict['user'] = request.user
-        context_dict['page'] = range(1, page_maximum + 1)
-        context_dict['page_now'] = mylike_page_id
-        context_dict['page_last'] = mylike_page_id - 1
-        context_dict['page_next'] = mylike_page_id + 1
         context_dict['comments'] = comment
     else:
         return render(request, 'senpai/login_error.html')
@@ -213,55 +175,23 @@ def mylike(request, mylike_page_id=1):
 # user - mymodule
 @login_required
 def mymodule(request):
-    context_dict = {}
-    if request.user.is_authenticated:
-        my_module = []
-        other_module = []
-        # get module_list
-        my_enrollment = Enrollment.objects.filter(user=request.user)
-        for e in my_enrollment:
-            my_module.append(e.module)
-
-        all_modules = Module.objects.all()
-        for m in all_modules:
-            if not m in my_module:
-                other_module.append(m)
-
-        context_dict['user_modules'] = my_module
-        context_dict['other_modules'] = other_module
-    response = render(request, 'senpai/mymodule.html', context=context_dict)
-    return response
-
-
-def unenrollment(request, module_id):
-    next = request.GET.get('next', '/senpai/mymodule/')
-
-    this_module = Module.objects.get(id=module_id)
-    if Enrollment.objects.filter(module=this_module, user=request.user).exists():
-        Enrollment.objects.filter(module=this_module, user=request.user).delete()
-
-    return redirect(next)
-
-
-def enrollment(request, module_id):
-    next = request.GET.get('next', '/senpai/mymodule/')
-
-    this_module = Module.objects.get(id=module_id)
-    if not Enrollment.objects.filter(module=this_module, user=request.user).exists():
-        e = Enrollment.objects.get_or_create(module=this_module, user=request.user)[0]
-        e.save()
-
-    return redirect(next)
-
-
-@login_required
-def delete_note(request, note_id):
-    next = request.GET.get('next', '/senpai/mynote/')
-
-    if Note.objects.filter(id=note_id).exists():
-        Note.objects.filter(id=note_id).delete()
-
-    return redirect(next)
+	user = request.user
+	context_dict = get_mymodule_modules(user)
+	if request.is_ajax():
+		action_type = request.GET.get('action_type')
+		module_id = request.GET.get('module_id')
+		this_module = Module.objects.get(id=module_id)
+		if (action_type == 'select'):
+			if not Enrollment.objects.filter(module=this_module, user=request.user).exists():
+				e = Enrollment.objects.get_or_create(module=this_module, user=request.user)[0]
+				e.save()
+		if (action_type == 'delete'):
+			if Enrollment.objects.filter(module=this_module, user=request.user).exists():
+				Enrollment.objects.filter(module=this_module, user=request.user).delete()
+		returned_dict = get_mymodule_modules(user)
+		return render(request, 'senpai/mymodule_modules.html', context=returned_dict)
+	response = render(request, 'senpai/mymodule.html', context=context_dict)
+	return response
 
 '''
 def user_register(request):

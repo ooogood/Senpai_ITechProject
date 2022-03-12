@@ -26,33 +26,7 @@
 	<h1>{{ user.username }}'s notes</h1>
 	{% if user %}
 		<div class="notelist">
-			<!-- include notelist.html through get_sorted_notes -->
-			{% get_mynote_notes user page_now %}
-		</div>
-		<div class="page_control">
-			{% if page.1 %}
-				{% if page_now != 1 %}
-					<a href="{% url 'senpai:mynote' 1 %}">&lt&lt</a>
-					<a href="{% url 'senpai:mynote' page_last %}">&lt</a>
-				{% else %}
-					&lt&lt 
-					&lt
-				{% endif %}
-				{% for i in page %}
-					{% if i == page_now %}
-						{{i}}
-					{% else %}
-						<a href="/senpai/mynote/{{i}}/">{{ i }}</a>
-					{% endif %}
-				{% endfor %}
-				{% if page_now != page|last %}
-					<a href="{% url 'senpai:mynote' page_next %}">&gt</a>
-					<a href="{% url 'senpai:mynote' page|last %}">&gt&gt</a>
-				{% else %}
-					&gt 
-					&gt&gt
-				{% endif %}
-			{% endif %}
+			{% get_mynote_notes user %}
 		</div>
 	{% else %}
 		This user does not exist.

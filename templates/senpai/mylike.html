@@ -31,30 +31,6 @@
 			{% endfor %}
 		</ul>
 		</div>
-		<div class="page_control">
-			{% if page.1 %}
-				{% if page_now != 1 %}
-					<a href="{% url 'senpai:mylike' 1 %}">&lt&lt</a>
-					<a href="{% url 'senpai:mylike' page_last %}">&lt</a>
-				{% else %}
-					&lt&lt 
-					&lt
-				{% endif %}
-				{% for i in page %}
-					{% if i == page_now %}
-						{{i}}
-					{% else %}
-						<a href="/senpai/mylike/{{i}}/">{{ i }}</a>
-					{% endif %}
-				{% endfor %}
-				{% if page_now != page|last %}
-					<a href="{% url 'senpai:mylike' page_next %}">&gt</a>
-					<a href="{% url 'senpai:mylike' page|last %}">&gt&gt</a>
-				{% else %}
-					&gt 
-					&gt&gt
-				{% endif %}
-			{% endif %}
 		{% else %}
 			<strong>You have no liked notes.</strong>
 		{% endif %}

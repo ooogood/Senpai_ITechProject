@@ -1,4 +1,4 @@
-{% extends 'senpai/base.html' %}
+{% extends 'senpai/base_main_func.html' %}
 {% load staticfiles %}
 {% load senpai_template_tags %} 
 
@@ -10,6 +10,12 @@
 	{% endif %}
 {% endblock %}
 
+{% block header_block_mf %}
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			crossorigin="anonymous"></script>
+	<script src="{% static 'js/mymodule_mod.js' %}"></script>
+{% endblock %}
+
 {% block body_block %}
 	<div class="top_links">
 		<a href="{% url 'senpai:home' %}">Home Page</a>
@@ -19,25 +25,8 @@
 	</div>
 	<h1>{{ user.username }}'s modules</h1>
 	{% if user %}
-		<div class = "user_modules">
-		{% if user_modules %}
-			<h2>Added Modules</h2>
-			{% for m in user_modules %}
-				<li>
-				<a href="{% url 'senpai:show_module' m.slug %}">{{ m.name }}</a>
-				<a href="{% url 'senpai:del_module' m.id %}?next={% url 'senpai:mymodule' %}">Delete</a>
-				</li>
-			{% endfor %}
-		{% endif %}
-		</div>
-		<div class = "other_modules">
-		<h2>Avaliable Modules</h2>
-		{% for m in other_modules %}
-			<li>
-			<a href="{% url 'senpai:show_module' m.slug %}">{{ m.name }}</a>
-			<a href="{% url 'senpai:add_module' m.id %}?next={% url 'senpai:mymodule' %}">Select</a>
-			</li>
-		{% endfor %}
+		<div class = "modulelist">
+		{% get_mymodule_modules user %}
 		</div>
 	{% endif %}
 {% endblock %}

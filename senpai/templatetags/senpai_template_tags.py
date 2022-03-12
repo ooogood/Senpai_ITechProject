@@ -88,13 +88,34 @@ def get_comments(note, user, cmt_page=1):
 	
 # for mynote page
 @register.inclusion_tag('senpai/mynote_notes.html')
-def get_mynote_notes(user, mynote_page_id=1):
+def get_mynote_notes(user):
 	context_dict = {}
-	note_list = Note.objects.filter(user=user).order_by('date')[mynote_page_id * 8 - 8:mynote_page_id * 8]
+	note_list = Note.objects.filter(user=user).order_by('-date')
 	comment = {}
 	for n in note_list:
 		comment[n.id] = Comment.objects.filter(note=n).count()
 		
 	context_dict['notes'] = note_list
 	context_dict['comments'] = comment
+	return context_dict
+	
+@register.inclusion_tag('senpai/mymodule_modules.html')
+def get_mymodule_modules(user):
+	context_dict = {}
+	my_module = []
+	other_module = []
+	# get module_list
+	my_enrollment = Enrollment.objects.filter(user=user)
+	for e in my_enrollment:
+		my_module.append(e.module)
+
+	all_modules = Module.objects.all()
+	for m in all_modules:
+		if not m in my_module:
+			other_module.append(m)
+		
+	context_dict['user_modules']=my_module
+	context_dict['other_modules']=other_module
+	context_dict['user']=user
+	
 	return context_dict
