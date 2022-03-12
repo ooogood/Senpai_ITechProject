@@ -19,13 +19,3 @@
 	<strong>This note has no comment yet.</strong> 
 {% endif %}
 <br>
-
-<div class="content commentarea switch_page">
-	{% if has_prev == True %}
-		<button class="content commentarea prev_page" type="button" id="prev_cmt_page">Prev</button>
-	{% endif %}
-	<div class="content commentarea page_id">Page <span id="cmt_page_num">{{ cmt_page_num }}</span></div>
-	{% if has_next == True %}
-		<button class="content commentarea next_page" type="button" id="next_cmt_page">Next</button>
-	{% endif %}
-</div>

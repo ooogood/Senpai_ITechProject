@@ -69,17 +69,11 @@ class NotePage(View):
         context_dict = {}
         if request.is_ajax():
             note = Note.objects.get(id=note_id)
-            change_page_num = int(request.GET.get('page_num', -1))
-            if change_page_num == -1:
-                # add a comment to this note
-                c = Comment.objects.create(note=note, user=request.user, content=request.GET['txt'])
-                c.save()
-                result_dict = get_comments(note, request.user)
-                return render(request, 'senpai/commentlist.html', context=result_dict)
-            else:
-                # change comment page
-                result_dict = get_comments(note, request.user, change_page_num)
-                return render(request, 'senpai/commentlist.html', context=result_dict)
+            # add a comment to this note
+            c = Comment.objects.create(note=note, user=request.user, content=request.GET['txt'])
+            c.save()
+            result_dict = get_comments(note, request.user)
+            return render(request, 'senpai/commentlist.html', context=result_dict)
         try:
             context_dict['note'] = Note.objects.get(id=note_id)
             context_dict['module'] = context_dict['note'].module
