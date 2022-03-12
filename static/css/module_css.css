@@ -1,15 +1,165 @@
-.navigation.component{
-    position: absolute;
-    top: 0;
-    height: 100%;
-    overflow: hidden;
-    background-color: rgba(255,255,255, 0.3);
-    box-shadow: 12px 24px 48px 0px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255,255,255, 0.3);
-    border-radius: 20px;
-    backdrop-filter: blur(12px) brightness(125%);
+.navigation.component.homepage{
+    width: 36vw;
+    max-width: 360px;
+    border-radius: 20px 10px 62px 20px;
 }
 
-.navigation.component.homepage{
-    width: calc(100% - 25vw - 96px);
+h2{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    left: min(calc(36vw + 30px), 390px);
+    width: calc(100% - 96px - min(calc(36vw + 30px), 390px));
+    overflow: hidden;
+    font-size: 48px;
+    font-weight: normal;
+    color: white;
+    line-height: 72px;
+}
+
+.moduleframe, .noteframe{
+    position: absolute;
+    margin: 0;
+    padding-top: 120px;
+    padding-bottom: 72px;
+    top: 0;
+    bottom: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.moduleframe{
+    left: 0;
+    width: 36vw;
+    max-width: 360px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.noteframe{
+    left: min(calc(36vw + 30px), 390px);
+    right: 0;
+    z-index: -1;
+}
+
+.module.component{
+    margin: 0;
+    margin-bottom: 12px;
+    padding: 0;
+    width: calc(36vw - 24px);
+    max-width: 336px;
+    height: 60px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+h4{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 18px;
+    left: 12px;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: normal;
+    color: white;
+}
+
+h4.module{
+    white-space: nowrap;
+}
+
+p{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: normal;
+    color: white;
+}
+
+.sort.component p{
+    top: 8px;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.note.component p{
+    bottom: 14px;
+    right: 12px;
+    width: 100%;
+    line-height: 24px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+label.component{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 120px;
+    right: min(calc(15vw + 36px), 156px);
+    width: 15vw;
+    max-width: 120px;
+    height: 36px;
+    background-position: center;
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+    background-image: url("/static/img/add_icon.webp");
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#upload_note{
+    display: none;
+}
+
+.sort.component{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 120px;
+    right: 24px;
+    width: 15vw;
+    max-width: 120px;
+    height: 36px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.notes{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    padding-top: 144px;
+    padding-bottom: 72px;
+    top: 72px;
+    left: 0;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+li.note{
+    margin: 36px;
+    padding: 0;
+    width: 32vw;
+    max-width: 360px;
+    height: 240px;
+    list-style: none;
+}
+
+.note.component{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: 32vw;
+    max-width: 360px;
+    height: 240px;
+    overflow: hidden;
+    border-radius: 6px;
+    text-decoration: none;
 }

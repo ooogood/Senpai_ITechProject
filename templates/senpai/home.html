@@ -20,7 +20,6 @@
 {% block body_block %}
 	<h2 class="content welcome">Hi, {{ user.username }}!</h2>
 	<div class="content links">
-		<!-- include home_modules.html through get_home_modules -->
 		{% get_home_modules user %}
 	</div>
 {% endblock %}

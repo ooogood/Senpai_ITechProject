@@ -2,5 +2,7 @@
 	  action="{% url 'senpai:upload_note' module.slug %}"
 	  enctype="multipart/form-data">
     {% csrf_token %}
-    <input id="upload_note" type="file" name="file" onchange="form.submit()"/>
+    <label class="component">
+        <input id="upload_note" type="file" name="file" onchange="form.submit()"/>
+    </label>
 </form>

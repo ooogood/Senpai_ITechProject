@@ -14,8 +14,10 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/note_css.css' %}"/>
 {% endblock %}
 {% block navigation_mf %}
-	<h2 class="navigation component moduletitle"> <a href="{% url 'senpai:show_module' module.slug %}">{{ module.name }}</a></h2>
-	<h2 class="navigation component notetitle">{{ note.title }}</h2>
+	<a class="navigation component moduletitle" href="{% url 'senpai:show_module' module.slug %}">
+		<h2>{{ module.name }}</h2>
+	</a>
+	<h2 class="navigation notetitle">{{ note.title }}</h2>
 {% endblock %}
 
 {% block body_block %}

@@ -1,11 +1,20 @@
 {% load senpai_template_tags %} 
 <div class="content notelist section">
 	{% if notes %}
-		<ul class="notelist notes"> 
+		<ul class="notes"> 
 			{% for note in notes %} 
-				<li class="notelist note">
-					<a href="{% url 'senpai:show_note' note.id %}">{{ note.title }}</a>
-					<ul class="notelist note_info"><li>{{ note.user|get_username }} <br>Comments {{note_dict|get_dict_item:note.title}} Likes {{note.likes}} <br>{{note.date}}</li></ul>
+				<li class="note">
+					<div class="note">
+						<a class="note component" href="{% url 'senpai:show_note' note.id %}">
+							<h4>{{ note.title }}</h4>
+							<p>
+								{{ note.user|get_username }}
+								<br>Comments {{note_dict|get_dict_item:note.title}} Likes {{note.likes}} 
+								<br>{{note.date}}
+							</p>
+						</a>
+					</div>
+					
 				</li>
 			{% endfor %}
 		</ul> 

@@ -1,15 +1,33 @@
-.navigation.component{
-    position: absolute;
-    top: 0;
-    height: 100%;
-    overflow: hidden;
-    background-color: rgba(255,255,255, 0.3);
-    box-shadow: 12px 24px 48px 0px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255,255,255, 0.3);
-    border-radius: 20px;
-    backdrop-filter: blur(12px) brightness(125%);
+.navigation.component.homepage{
+    width: 36vw;
+    max-width: 360px;
+    border-radius: 20px 10px 62px 20px;
 }
 
-.navigation.component.homepage{
-    width: calc(100% - 25vw - 96px);
+.navigation.component.moduletitle{
+    left: min(calc(36vw + 12px), 372px);
+    width: 24vw;
+    border-radius: 62px 10px 62px 10px;
+}
+
+h2{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-weight: normal;
+    color: white;
+    line-height: 72px;
+    white-space: nowrap;
+}
+
+.moduletitle h2{
+    left: 36px;
+    font-size: 36px;
+}
+
+h2.notetitle{
+    left: calc(calc(min(calc(36vw + 12px), 372px) + 24vw) + 30px);
+    width: calc(100% - 96px - calc(calc(min(calc(36vw + 12px), 372px) + 24vw) + 30px));
+    font-size: 48px;
 }
