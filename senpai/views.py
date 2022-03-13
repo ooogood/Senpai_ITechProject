@@ -49,7 +49,7 @@ class ModulePage(View):
             sort_type = request.GET['sort_type']
             result_dict = get_sorted_notes(module, sort_type)
             return render(request, 'senpai/notelist.html', context=result_dict)
-        context_dict['all_modules'] = Module.objects.all()
+        context_dict['all_modules'] = Module.objects.all().order_by('name')
         return render(request, 'senpai/module.html', context=context_dict)
 
 @login_required

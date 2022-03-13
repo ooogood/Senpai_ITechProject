@@ -19,14 +19,14 @@ def get_home_modules(user, query=''):
 	if query == '':
 		# get my modules
 		my_enrollments = Enrollment.objects.filter(user=user)
-		context_dict['my_modules'] = Module.objects.filter(enrollment__in=my_enrollments) 
+		context_dict['my_modules'] = Module.objects.filter(enrollment__in=my_enrollments).order_by('name')
 		my_dict = {}
 		for mod in context_dict['my_modules']:
 			# module name as my_dict's key and map to a note list
 			my_dict[ mod.name ] = get_three_notes_list(mod)
 		context_dict['my_modules_dict'] = my_dict
 		# get other modules
-		context_dict['other_modules'] = Module.objects.exclude(enrollment__in=my_enrollments)
+		context_dict['other_modules'] = Module.objects.exclude(enrollment__in=my_enrollments).order_by('name')
 		other_dict = {}
 		for mod in context_dict['other_modules']:
 			# module name as other_dict's key and map to a note list
@@ -34,7 +34,7 @@ def get_home_modules(user, query=''):
 		context_dict['other_modules_dict'] = other_dict
 	else:
 		# get search result
-		context_dict['search_results'] = Module.objects.filter(name__icontains=query)
+		context_dict['search_results'] = Module.objects.filter(name__icontains=query).order_by('name')
 		search_dict = {}
 		for mod in context_dict['search_results']:
 			# module name as other_dict's key and map to a note list
@@ -43,7 +43,7 @@ def get_home_modules(user, query=''):
 		context_dict['is_search_result'] = 'true'
 	return context_dict
 
-# helper function
+# helper function: get 3 most liked notes in this module
 def get_three_notes_list(module):
 	note_list = []
 	for note in Note.objects.filter(module=module).order_by("-likes")[:3]:
@@ -67,7 +67,6 @@ def get_sorted_notes(module=None, sort_type='lik'):
 		notes = notes.order_by('-date')
 	elif sort_type == 'old':
 		notes = notes.order_by('date')
-	print(notes)
 	return {'notes': notes,
 			'note_dict': note_dict}
 
@@ -96,20 +95,10 @@ def get_mynote_notes(user):
 @register.inclusion_tag('senpai/mymodule_modules.html')
 def get_mymodule_modules(user):
 	context_dict = {}
-	my_module = []
-	other_module = []
 	# get module_list
 	my_enrollment = Enrollment.objects.filter(user=user)
-	for e in my_enrollment:
-		my_module.append(e.module)
-
-	all_modules = Module.objects.all()
-	for m in all_modules:
-		if not m in my_module:
-			other_module.append(m)
-		
-	context_dict['user_modules']=my_module
-	context_dict['other_modules']=other_module
+	context_dict['user_modules'] = Module.objects.filter(enrollment__in=my_enrollment).order_by('name')
+	context_dict['other_modules'] = Module.objects.exclude(enrollment__in=my_enrollment).order_by('name')
 	context_dict['user']=user
 	
 	return context_dict
