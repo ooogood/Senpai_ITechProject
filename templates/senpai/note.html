@@ -21,9 +21,9 @@
 {% endblock %}
 
 {% block body_block %}
-	<div class="content preview frame">
+	<div class="content previewframe">
 		<h3 class="content preview title">{{ note.title }}</h3>
-		<p class="content preview info">
+		<p class="content previewcreator">
 			Creator: 
 			{% if note.user|get_username == user.username %}
 				Me
@@ -31,26 +31,24 @@
 				{{ note.user|get_username }}
 			{% endif %}
 		</p>
-		<p>{{note.date}}</p>
-		
-		<embed class="eee" src="{{ note.file.url }}"></embed>
-		<div class="content preview like_info">
+		<p class="content previewdate">{{note.date}}</p>
+		<div class="component previewpdf"><embed type="application/pdf" src="{{ note.file.url }}"></embed></div>
+		<div class="component like">
 			{% include "senpai/note_like_info.html" %}
 		</div>
-		<form class="content preview download" id="download_form" method="get" action="{% url 'senpai:show_note' note.id %}/download">
-		<button type="submit">Download</button>
+		<form class="form download" id="download_form" method="get" action="{% url 'senpai:show_note' note.id %}/download">
+			<div class="button download" type="button"></div>
 		</form>
 	</div>
 
-	<div class="content commentarea frame">
-		<h2 class="content commentarea title">Comments(should be on the right)</h2>
+	<div class="content commentareaframe">
 		<!-- include commentlist.html through get_comments -->
-		<div class="content commentarea commentpage">
+		<div class="commentsframe">
 			{% get_comments note user %}
 		</div>
-		<div class="content commentarea add_comment">
-			<textarea id="txt_comment" rows="4" cols="50">add a comment...</textarea>
-			<button type="button" id="btn_add_comment">Send</button>
+		<div class="add_commentframe">
+			<textarea class="component add_comment" id="txt_comment" rows="4" cols="50" placeholder="Input your idea..."></textarea>
+			<div class="button add_comment" type="button" id="btn_add_comment"></div>
 		</div>
 	</div>
 {% endblock %}

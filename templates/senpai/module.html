@@ -23,10 +23,8 @@
 		<p>Most Likes</p>
 	</div>
 	<div class="content noteframe">
-		<div class="content links">
-			<!-- include notelist.html through get_sorted_notes -->
-			{% get_sorted_notes module %}
-		</div>
+		<!-- include notelist.html through get_sorted_notes -->
+		{% get_sorted_notes module %}
 	</div>
 	<div class="moduleframe">
 		{% for a_module in all_modules %} 

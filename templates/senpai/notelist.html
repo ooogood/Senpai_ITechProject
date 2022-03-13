@@ -1,24 +1,22 @@
 {% load senpai_template_tags %} 
-<div class="content notelist section">
-	{% if notes %}
-		<ul class="notes"> 
-			{% for note in notes %} 
-				<li class="note">
-					<div class="note">
-						<a class="note component" href="{% url 'senpai:show_note' note.id %}">
-							<h4>{{ note.title }}</h4>
-							<p>
-								{{ note.user|get_username }}
-								<br>Comments {{note_dict|get_dict_item:note.title}} Likes {{note.likes}} 
-								<br>{{note.date}}
-							</p>
-						</a>
-					</div>
-					
-				</li>
-			{% endfor %}
-		</ul> 
-	{% else %}
-		<strong>This module has no note yet.</strong> 
-	{% endif %}
-</div>
+{% if notes %}
+	<ul class="notes"> 
+		{% for note in notes %} 
+			<li class="note">
+				<div class="note">
+					<a class="note component" href="{% url 'senpai:show_note' note.id %}">
+						<h4>{{ note.title }}</h4>
+						<p>
+							{{ note.user|get_username }}
+							<br>Comments {{note_dict|get_dict_item:note.title}} Likes {{note.likes}} 
+							<br>{{note.date}}
+						</p>
+					</a>
+				</div>
+				
+			</li>
+		{% endfor %}
+	</ul> 
+{% else %}
+	<h4 class="blank">Nothing here!<br>You can be the first one to upload notes for this module!</h4> 
+{% endif %}

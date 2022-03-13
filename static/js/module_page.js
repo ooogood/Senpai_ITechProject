@@ -10,7 +10,7 @@ $(document).ready(function() {
 					sort_type: 'cmt'
 				},
 				function(response) {
-					$('.content.links').html(response);
+					$('.content.noteframe').html(response);
 			});
 
 		}else if(order == "Most Comments"){
@@ -21,7 +21,7 @@ $(document).ready(function() {
 					sort_type: 'new'
 				},
 				function(response) {
-					$('.content.links').html(response);
+					$('.content.noteframe').html(response);
 			})
 
 		}else if(order == "Newest"){
@@ -32,7 +32,7 @@ $(document).ready(function() {
 					sort_type: 'old'
 				},
 				function(response) {
-					$('.content.links').html(response);
+					$('.content.noteframe').html(response);
 			})
 
 		}else if(order == "Oldest"){
@@ -43,7 +43,7 @@ $(document).ready(function() {
 					sort_type: 'lik'
 				},
 				function(response) {
-					$('.content.links').html(response);
+					$('.content.noteframe').html(response);
 			})
 
 		}

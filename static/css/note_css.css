@@ -6,7 +6,7 @@
 
 .navigation.component.moduletitle{
     left: min(36vw, 360px);
-    width: 24vw;
+    width: 36vw;
     border-radius: 62px 10px 62px 10px;
 }
 
@@ -27,26 +27,52 @@ h2{
 }
 
 h2.notetitle{
-    left: calc(min(36vw, 360px) + 24vw + 30px);
-    width: calc(100% - 96px - calc(min(36vw, 360px) + 24vw + 30px));
+    left: calc(min(36vw, 360px) + 36vw + 30px);
+    width: calc(100% - 96px - calc(min(36vw, 360px) + 36vw + 30px));
     font-size: 48px;
 }
 
-.preview.frame, .commentarea.frame{
+.previewframe, .commentareaframe{
     position: absolute;
     margin: 0;
     padding: 0;
-    top: 96px;
-    width: 50%;
-    bottom: 0;
+    top: max(15vh, 96px);
+    width: calc(50% - 6px);
+    max-width: 600px;
+    bottom: 10vh;
 }
 
-.preview.frame{
+.previewframe{
+    left: max(0%, calc(25% - 300px));
+}
+
+.commentareaframe{
+    left: max(calc(50% + 6px), calc(75% - 300px));
+}
+
+p{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: normal;
+    color: white;
+    white-space: nowrap;
+}
+
+.previewcreator{
+    top: 0;
     left: 0;
+    width: calc(50% - 6px);
 }
 
-.commentarea.frame{
-    left: 50%;
+.previewdate{
+    top: 0;
+    right: 0;
+    width: calc(50% - 6px);
+    text-align: right;
 }
 
 h3{
@@ -54,34 +80,220 @@ h3{
     margin: 0;
     padding: 0;
     padding-left: 18px;
-    top: 10vh;
-    left: max(calc(50% - 300px), 5%);
-    width: calc(90% - 18px);
-    max-width: 582px;
-    height: 60px;
+    top: 28px;
+    left: 0;
+    right: 0;
+    height: 48px;
     background-color: rgba(255,255,255, 0.3);
     border: 1px solid rgba(255,255,255, 0.3);
     border-radius: 6px;
     backdrop-filter: blur(60px) brightness(125%);
     overflow: hidden;
     font-weight: normal;
-    line-height: 60px;
+    line-height: 48px;
     font-size: 24px;
     color: white;
     white-space: nowrap;
 }
 
-embed{
+.component.previewpdf{
     position: absolute;
-    top: calc(10vh + 72px);
-    height: calc(100% - calc(10vh + 72px) * 2);
-    left: max(calc(50% - 300px), 5%);
-    width: 90%;
-    max-width: 600px;
-    border-radius: 6px;
-    opacity: 0.9;
+    top: 88px;
+    left: 0;
+    height: max(0px, calc(100% - 148px));
+    width: 100%;
     border-radius: 6px;
 }
 
+embed{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+}
 
+embed:hover{
+    opacity: 0.9;
+}
+.component.like{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: calc(88px + max(0px, calc(100% - 136px)));
+    right: min(156px, calc(50% + 6px));
+    width: calc(50% - 6px);
+    max-width: 144px;
+    height: 48px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: normal;
+    line-height: 48px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
 
+.button{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    background-color: #00aa8d;
+    border: 1px solid #88ffeb;
+    border-radius: 6px;
+    box-shadow: 0 0 12px 0 #88ffeb inset;
+}
+
+.button:hover{
+    filter: brightness(175%);
+}
+
+.button.download{
+    width: calc(50% - 6px);
+    max-width: 144px;
+    right: 0;
+    top: calc(88px + max(0px, calc(100% - 136px)));
+    height: 48px;
+    background-position: center;
+    background-size: 22px 24px;
+    background-repeat: no-repeat;
+    background-image: url("/static/img/download_icon.webp");
+}
+
+.button:hover{
+    filter: brightness(175%);
+}
+
+.commentsframe{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: max(calc(100% - 120px), 16px);
+    overflow-y: scroll;
+}
+
+.comments{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    width: calc(100% - 24px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 12px 12px;
+}
+
+li.comment{
+    margin: 0;
+    padding: 0;
+    height: 204px;
+    list-style: none;
+    background-color: rgba(255,255,255, 0.3);
+    border: 1px solid rgba(255,255,255, 0.3);
+    border-radius: 6px;
+    backdrop-filter: blur(60px) brightness(125%);
+}
+
+.commentcreator{
+    top: 12px;
+    left: 12px;
+    width: calc(100% - 24px);
+}
+
+.commentdate{
+    top: 28px;
+    left: 12px;
+    width: calc(100% - 24px);
+}
+
+.commenttext{
+    top: 56px;
+    left: 12px;
+    width: calc(100% - 24px);
+}
+
+.add_commentframe{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: max(28px, calc(100% - 108px));
+    left: 0;
+    width: 100%;
+    height: 108px;
+    background-color: rgba(255,255,255, 0.3);
+    border: 1px solid rgba(255,255,255, 0.3);
+    border-radius: 6px;
+    backdrop-filter: blur(60px) brightness(125%);
+}
+
+.component.add_comment{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 12px;
+    left: 12px;
+    width: calc(100% - 96px);
+    height: 84px;
+    border-radius: 6px;
+    outline: none;
+    resize: none;
+    box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3);
+    font-family: Arial, Helvetica, "Microsoft Yahei", sans-serif;
+    font-size: 18px;
+    color: #3f3f3f;
+    overflow-y: scroll;
+}
+
+.component.add_comment:focus{
+    background-color: rgba(255,255,255, 0.5);
+    backdrop-filter: blur(60px) brightness(175%);
+}
+
+.component.add_comment::-webkit-input-placeholder{
+    color: #5e5e5e;
+}
+.component.add_comment::-moz-placeholder{
+    color: #5e5e5e;
+}
+.component.add_comment:-ms-input-placeholder{
+    color: #5e5e5e;
+}
+
+.component.add_comment:focus::-webkit-input-placeholder{
+    color: transparent;
+}
+.component.add_comment:focus::-moz-placeholder{
+    color: transparent;
+}
+.component.add_comment:focus:-ms-input-placeholder{
+    color: transparent;
+}
+
+.button.add_comment{
+    top: 12px;
+    right: 12px;
+    width: 60px;
+    height: 84px;
+    background-position: center;
+    background-size: 24px 22px;
+    background-repeat: no-repeat;
+    background-image: url("/static/img/confirm_icon.webp");
+}
+
+.button.add_comment::after{
+    position: absolute;
+    content: "";
+    margin: 0;
+    padding: 0;
+    width: 60px;
+    height: 84px;
+    border-radius: 6px;
+    box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3);
+}

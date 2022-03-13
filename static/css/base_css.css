@@ -1,4 +1,4 @@
-/* funny rgb */
+/* funny effect */
 @-webkit-keyframes backrgb {
     0% {
 		filter: hue-rotate(0deg) brightness(100%);
@@ -22,6 +22,29 @@
 	}
 }
 
+@-webkit-keyframes backlight {
+    0% {
+		left: -300%;
+	}
+    85% {
+		left: -300%;
+	}
+	100% {
+		left: 300%;
+	}
+}
+@keyframes backlight {
+    0% {
+		left: -300%;
+	}
+    85% {
+		left: -300%;
+	}
+	100% {
+		left: 300%;
+	}
+}
+
 body{
     position: fixed;
     margin: 0;
@@ -38,7 +61,24 @@ body{
     background-size: cover;
     background-position: center center;
     background-image: url("/static/img/background.webp");
-    animation: backrgb 6s linear infinite;
+    animation: backrgb 12s ease-in-out infinite;
+}
+
+.background::before{
+    position: absolute;
+    content: "";
+    left: -300%;
+    width: 150%;
+    height: 100%;
+    background-image: linear-gradient(to right,
+                                        rgb(255,230,175,0) 0%,
+                                        rgb(255,230,175,0.1) 40%,
+                                        rgb(255,230,175,0.1) 60%,
+                                        rgb(255,230,175,0) 100%
+                                        );
+    mix-blend-mode: screen;
+    animation: backlight 27s ease-out infinite;
+    transform: skewX(-30deg);
 }
 
 .navigation.frame, .content.frame{

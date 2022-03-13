@@ -15,13 +15,14 @@ h2{
     font-weight: normal;
     color: white;
     line-height: 72px;
+    white-space: nowrap;
 }
 
 .moduleframe, .noteframe{
     position: absolute;
     margin: 0;
     padding-top: 120px;
-    padding-bottom: 72px;
+    padding-bottom: 120px;
     top: 0;
     bottom: 0;
     overflow-y: scroll;
@@ -57,15 +58,23 @@ h4{
     position: absolute;
     margin: 0;
     padding: 0;
-    top: 18px;
-    left: 12px;
     text-decoration: none;
     font-size: 24px;
     font-weight: normal;
     color: white;
 }
 
+h4.module, .note.component h4{
+    top: 18px;
+    left: 12px;
+}
+
 h4.module{
+    white-space: nowrap;
+}
+
+h4.blank{
+    padding-top: 60px;
     white-space: nowrap;
 }
 
@@ -100,9 +109,9 @@ label.component{
     margin: 0;
     padding: 0;
     top: 120px;
-    right: min(calc(15vw + 36px), 156px);
+    right: min(calc(15vw + 36px), 180px);
     width: 15vw;
-    max-width: 120px;
+    max-width: 144px;
     height: 36px;
     background-position: center;
     background-size: 18px 18px;
@@ -123,7 +132,7 @@ label.component{
     top: 120px;
     right: 24px;
     width: 15vw;
-    max-width: 120px;
+    max-width: 144px;
     height: 36px;
     border-radius: 6px;
     cursor: pointer;
@@ -133,8 +142,8 @@ label.component{
     position: absolute;
     margin: 0;
     padding: 0;
-    padding-top: 144px;
-    padding-bottom: 72px;
+    padding-top: 60px;
+    padding-bottom: 120px;
     top: 72px;
     left: 0;
     display: flex;
