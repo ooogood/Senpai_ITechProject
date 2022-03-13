@@ -34,7 +34,7 @@ def get_home_modules(user, query=''):
 		context_dict['other_modules_dict'] = other_dict
 	else:
 		# get search result
-		context_dict['search_results'] = Module.objects.filter(name__istartswith=query)
+		context_dict['search_results'] = Module.objects.filter(name__icontains=query)
 		search_dict = {}
 		for mod in context_dict['search_results']:
 			# module name as other_dict's key and map to a note list
