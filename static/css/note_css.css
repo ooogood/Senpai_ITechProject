@@ -59,13 +59,13 @@ p{
     font-size: 16px;
     font-weight: normal;
     color: white;
-    white-space: nowrap;
 }
 
 .previewcreator{
     top: 0;
     left: 0;
     width: calc(50% - 6px);
+    white-space: nowrap;
 }
 
 .previewdate{
@@ -73,6 +73,7 @@ p{
     right: 0;
     width: calc(50% - 6px);
     text-align: right;
+    white-space: nowrap;
 }
 
 h3{
@@ -117,7 +118,7 @@ embed{
 }
 
 embed:hover{
-    opacity: 0.9;
+    opacity: 1;
 }
 .component.like{
     position: absolute;
@@ -148,7 +149,7 @@ embed:hover{
 }
 
 .button:hover{
-    filter: brightness(175%);
+    filter: brightness(125%);
 }
 
 .button.download{
@@ -205,18 +206,32 @@ li.comment{
     top: 12px;
     left: 12px;
     width: calc(100% - 24px);
+    white-space: nowrap;
 }
 
 .commentdate{
     top: 28px;
     left: 12px;
     width: calc(100% - 24px);
+    white-space: nowrap;
 }
 
 .commenttext{
     top: 56px;
     left: 12px;
     width: calc(100% - 24px);
+    height: 136px;
+    word-break: break-all;
+}
+
+h4{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 28px;
+    font-size: 24px;
+    font-weight: normal;
+    color: white;
 }
 
 .add_commentframe{

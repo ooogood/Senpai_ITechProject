@@ -1,23 +1,19 @@
-{% extends 'senpai/base.html' %}
+{% extends 'senpai/base_user_func.html' %}
 {% load staticfiles %}
 {% load senpai_template_tags %} 
 
 {% block title_block %}
-	{% if user %}
-		{{ user.username }} 's likes
-	{% else %}
-		Unknown User
-	{% endif %}
+	{{ user.username }} 's likes
+{% endblock %}
+
+{% block navigation %}
+	<h2 class="navigation usertitle">{{ user.username }}'s Likes</h2>
+	<a class="navigation component mynote" href="{% url 'senpai:mynote' %}">My Notes</a>
+	<a class="navigation component mymodule" href="{% url 'senpai:mymodule' %}">My Modules</a>
+	<a class="navigation component logout" href="{% url 'senpai:logout' %}"></a>
 {% endblock %}
 
 {% block body_block %}
-	<div class="top_links">
-		<a href="{% url 'senpai:home' %}">Home Page</a>
-		<a href="{% url 'senpai:logout' %}">Log out</a>
-		<a href="{% url 'senpai:mynote' %}">My Notes</a>
-		<a href="{% url 'senpai:mymodule' %}">My Modules</a>
-	</div>
-	<h1>{{ user.username }}'s likes</h1>
 	{% if user %}
 		{% if note %}
 		<div class="user_liked_notes">

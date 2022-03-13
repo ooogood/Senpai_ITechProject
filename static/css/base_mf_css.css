@@ -1,5 +1,5 @@
 .navigation.component.userprofile{
-    left: calc(100% - 72px);
+    right: 0;
     width: 72px;
     background-position: 22px 18px;
     background-size: 28px 36px;

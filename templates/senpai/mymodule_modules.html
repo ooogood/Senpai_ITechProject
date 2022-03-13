@@ -2,7 +2,7 @@
 
 <div class = "user_modules">
 {% if user_modules %}
-	<h2>Added Modules</h2>
+	<h3>Added Modules</h3>
 	{% for m in user_modules %}
 		<li>
 		<a href="{% url 'senpai:show_module' m.slug %}">{{ m.name }}</a>
@@ -13,7 +13,7 @@
 </div>
 
 <div class = "other_modules">
-<h2>Avaliable Modules</h2>
+<h3>Avaliable Modules</h3>
 {% for m in other_modules %}
 	<li>
 	<a href="{% url 'senpai:show_module' m.slug %}">{{ m.name }}</a>

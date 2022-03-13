@@ -1,0 +1,55 @@
+.navigation.component.homepage{
+    width: 36vw;
+    max-width: 360px;
+    border-radius: 20px 10px 62px 20px;
+}
+
+h2{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    left: min(calc(36vw + 30px), 390px);
+    right: calc(max(min(24vw, 480px), 144px) + 96px);
+    overflow: hidden;
+    font-size: 48px;
+    font-weight: normal;
+    color: white;
+    line-height: 72px;
+    white-space: nowrap;
+}
+
+.navigation.component:nth-child(3), .navigation.component:nth-child(4){
+    margin: 0;
+    padding: 0;
+    width: 12vw;
+    max-width: 240px;
+    min-width: 72px;
+    border-radius: 20px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 36px;
+    font-weight: normal;
+    color: white;
+    white-space: nowrap;
+    line-height: 72px;
+}
+
+.navigation.component:nth-child(3){
+    right: calc(max(min(12vw, 240px), 72px) + 96px);
+    
+
+}
+
+.navigation.component:nth-child(4){
+    right: 84px;
+}
+
+.navigation.component.logout{
+    right: 0;
+    width: 72px;
+    background-position: 18px 20px;
+    background-size: 36px 32px;
+    background-repeat: no-repeat;
+    background-image: url("/static/img/logout_icon.webp");
+    border-radius: 20px;
+}

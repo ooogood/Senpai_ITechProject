@@ -1,11 +1,11 @@
 .navigation.component.homepage{
-    width: calc(100% - 25vw - 96px);
+    width: calc(75% - 96px);
     border-radius: 20px;
 }
 
 .navigation.component.search{
-    left: calc(100% - 25vw - 84px);
-    width: 25vw;
+    left: calc(75% - 84px);
+    right: 84px;
     background-position: 18px 18px;
     background-size: auto 36px;
     background-repeat: no-repeat;
