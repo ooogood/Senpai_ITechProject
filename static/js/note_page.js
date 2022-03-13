@@ -20,7 +20,7 @@ $(document).ready(function() {
 			},
 			function(response) {
 				$("#txt_comment").val("");
-				$('.content.commentarea.commentpage').html(response);
+				$('.commentsframe').html(response);
 			});
 	});
 
@@ -38,7 +38,7 @@ $(document).ready(function() {
 		cursorcolor: 'white',
 		cursorwidth: '12px',
 		cursorborder:'none',
-		autohidemode: false,
+		autohidemode: 'leave',
 		horizrailenabled: false,
 	});
 });
