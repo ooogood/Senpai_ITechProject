@@ -137,6 +137,8 @@ class Mynote(View):
             need_del_note = request.GET.get('noteid')
             # there should add delete file lines
             if Note.objects.filter(id=need_del_note).exists():
+                file = Note.objects.get(id=need_del_note).file
+                file.delete()
                 Note.objects.filter(id=need_del_note).delete()
             result_dict = get_mynote_notes(request.user)
             return render(request, 'senpai/mynote_notes.html', context=result_dict)
