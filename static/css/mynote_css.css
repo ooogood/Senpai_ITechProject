@@ -1,0 +1,104 @@
+.notesframe{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: scroll;
+}
+
+.notes{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 144px;
+    top: 192px;
+    left: 84px;
+    right: 108px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+    grid-gap: 72px 72px;
+}
+
+li.note{
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 100px;
+    list-style: none;
+}
+
+a.note{
+    position: absolute;
+    padding-left: 18px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 28px;
+    text-decoration: none;
+    border-radius: 6px;
+    white-space: nowrap;
+    line-height: 72px;
+    font-size: 24px;
+    font-weight: normal;
+    color: white;
+    white-space: nowrap;
+}
+
+.delete_note{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 48px;
+    height: 48px;
+    background-color: #aa4400;
+    background-position: center;
+    background-size: 22px 24px;
+    background-repeat: no-repeat;
+    background-image: url("/static/img/delete_icon.webp");
+    border: 1px solid #ff8888;
+    border-radius: 6px;
+    box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3), 0 0 12px 0 #ff8888 inset;
+    cursor: pointer;
+}
+
+.delete_note:hover{
+    filter: brightness(125%);
+}
+
+p{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: normal;
+    color: white;
+    white-space: nowrap;
+}
+
+.notedate{
+    bottom: 0;
+    left: 0;
+    width: calc(100% - 24px);
+}
+.notedata{
+    bottom: 0;
+    right: 0;
+    width: calc(100% - 24px);
+    text-align: right;
+}
+
+h3{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 192px;
+    left: 84px;
+    font-size: 36px;
+    font-weight: normal;
+    color: white;
+}

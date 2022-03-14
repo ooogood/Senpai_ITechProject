@@ -10,6 +10,7 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 			crossorigin="anonymous"></script>
 	<script src="{% static 'js/mynote_page.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/scroll_plugin.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'css/mynote_css.css' %}"/>
 {% endblock %}
 {% block navigation %}
@@ -18,12 +19,9 @@
 	<a class="navigation component mymodule" href="{% url 'senpai:mymodule' %}">My Modules</a>
 	<a class="navigation component logout" href="{% url 'senpai:logout' %}"></a>
 {% endblock %}
+
 {% block body_block %}
-	{% if user %}
-		<div class="notelist">
-			{% get_mynote_notes user %}
-		</div>
-	{% else %}
-		This user does not exist.
-	{% endif %}
+	<div class="notesframe">
+	{% get_mynote_notes user %}
+	</div>
 {% endblock %}

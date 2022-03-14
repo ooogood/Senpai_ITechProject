@@ -164,10 +164,6 @@ embed:hover{
     background-image: url("/static/img/download_icon.webp");
 }
 
-.button:hover{
-    filter: brightness(175%);
-}
-
 .commentsframe{
     position: absolute;
     margin: 0;

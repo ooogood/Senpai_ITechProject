@@ -9,7 +9,7 @@ h2{
     margin: 0;
     padding: 0;
     left: min(calc(36vw + 30px), 390px);
-    right: calc(max(min(24vw, 480px), 144px) + 96px);
+    right: calc(max(min(24vw, 480px), 144px) + 108px);
     overflow: hidden;
     font-size: 48px;
     font-weight: normal;
@@ -36,8 +36,6 @@ h2{
 
 .navigation.component:nth-child(3){
     right: calc(max(min(12vw, 240px), 72px) + 96px);
-    
-
 }
 
 .navigation.component:nth-child(4){
