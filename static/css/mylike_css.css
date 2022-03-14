@@ -1,4 +1,4 @@
-.notesframe{
+.likesframe{
     position: absolute;
     margin: 0;
     padding: 0;
@@ -10,7 +10,7 @@
     overflow-x: hidden;
 }
 
-.notes{
+.likes{
     position: absolute;
     margin: 0;
     padding: 0;
@@ -19,7 +19,7 @@
     left: 84px;
     right: 108px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
     grid-gap: 72px 72px;
 }
 
@@ -46,27 +46,6 @@ a.note{
     font-weight: normal;
     color: white;
     white-space: nowrap;
-}
-
-.delete_note{
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 48px;
-    height: 48px;
-    background-color: #aa4400;
-    background-position: center;
-    background-size: 22px 24px;
-    background-repeat: no-repeat;
-    background-image: url("/static/img/delete_icon.webp");
-    border: 1px solid #ff8888;
-    border-radius: 6px;
-    box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3), 0 0 12px 0 #ff8888 inset;
-    cursor: pointer;
-}
-
-.delete_note:hover{
-    filter: brightness(125%);
 }
 
 p{

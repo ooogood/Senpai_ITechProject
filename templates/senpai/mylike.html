@@ -6,6 +6,14 @@
 	{{ user.username }} 's likes
 {% endblock %}
 
+{% block header_block_uf %}
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			crossorigin="anonymous"></script>
+	<script src="{% static 'js/mylike_page.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/scroll_plugin.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/mylike_css.css' %}"/>
+{% endblock %}
+
 {% block navigation %}
 	<h2 class="navigation usertitle">{{ user.username }}'s Likes</h2>
 	<a class="navigation component mynote" href="{% url 'senpai:mynote' %}">My Notes</a>
@@ -14,24 +22,20 @@
 {% endblock %}
 
 {% block body_block %}
-	{% if user %}
-		{% if note %}
-		<div class="user_liked_notes">
-		<ul>
+	{% if note %}
+	<div class="likesframe">
+		<ul class="likes">
 			{% for n in note %}
-			<li><a href="{% url 'senpai:show_note' n.note.id %}">{{ n.note.title }}</a>
+			<li class="note">
+				<a class="component note" href="{% url 'senpai:show_note' n.note.id %}">{{ n.note.title }}</a>
+				<p class="notedate">{{ n.note.date }}</p>
+				<p class="notedata">Comments:{{ comments|get_dict_item:n.note.id }} Likes:{{ n.note.likes }}</p>	
 			</li>
-			upload date:{{ n.note.date }}
-			comments:{{ comments|get_dict_item:n.note.id }}
-			likes:{{ n.note.likes }}
 			{% endfor %}
 		</ul>
-		</div>
-		{% else %}
-			<strong>You have no liked notes.</strong>
-		{% endif %}
-		</div>
+	</div>
 	{% else %}
-		This user does not exist.
+	<h3>You have no favourites yet.</h3>
 	{% endif %}
+	</div>
 {% endblock %}
