@@ -286,7 +286,7 @@ def module_manage(request):
     current_user = request.user
     statue = UserProfile.objects.get(user=current_user).is_admin
     if statue == 0:
-        return redirect('')
+        return redirect(reverse('senpai:home'))
 
     if request.method == 'GET':
         Modules = Module.objects.filter()
@@ -301,7 +301,7 @@ def addModule(request):
     current_user = request.user
     statue = UserProfile.objects.get(user=current_user).is_admin
     if statue == 0:
-        return redirect('')
+        return redirect(reverse('senpai:home'))
     form = ModuleForm()
     if request.method == 'POST':
         form = ModuleForm(request.POST)
@@ -321,7 +321,7 @@ def delModule(request):
     current_user = request.user
     statue = UserProfile.objects.get(user=current_user).is_admin
     if statue == 0:
-        return redirect('')
+        return redirect(reverse('senpai:home'))
 
     mid = request.GET.get('id')
     try:

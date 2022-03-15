@@ -12,12 +12,12 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    is_admin = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    is_admin = forms.IntegerField(widget=forms.HiddenInput(), initial=0, required=False)
     admin_key = forms.IntegerField(initial=0)
 
     class Meta:
         model = UserProfile
-        fields = ('is_admin', 'admin_key')
+        fields = ('admin_key',)
 
 
 class ModuleForm(forms.ModelForm):
