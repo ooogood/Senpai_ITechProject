@@ -8,7 +8,9 @@ $(document).ready(function() {
 				'module_id': module_id
 			},
 			function(response) {
-				$('.content.frame').html(response);
+				console.log(response);
+				/* $('.user_modules').html(response['usermodules']);
+				$('.other_modules').html(response['othermodules']); */
 			})
 	});
 

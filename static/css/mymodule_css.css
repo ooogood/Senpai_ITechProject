@@ -13,7 +13,7 @@
     overflow-x: hidden;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 120px 0;
+    gap: 72px 0;
     justify-content: center;
 }
 

@@ -22,7 +22,12 @@
 {% endblock %}
 
 {% block body_block %}
-	{% get_mymodule_modules user %}
+<ul class = "user_modules">
+	{% get_mymodule_usermodules user %}
+</ul>
+<ul class = "other_modules">
+	{% get_mymodule_othermodules user %}
+</ul>
 {% endblock %}
 	
 		
