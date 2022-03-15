@@ -19,7 +19,7 @@ from datetime import datetime, time
 ## helper
 import os, math, mimetypes
 
-from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments, get_mynote_notes, \
+from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_mymodule_usermodules, get_mymodule_othermodules
     get_mymodule_modules
 import urllib
 from urllib import parse
@@ -179,7 +179,7 @@ def mylike(request):
 @login_required
 def mymodule(request):
     user = request.user
-    context_dict = get_mymodule_modules(user)
+    context_dict = {}
     if request.is_ajax():
         action_type = request.GET.get('action_type')
         module_id = request.GET.get('module_id')
@@ -191,10 +191,9 @@ def mymodule(request):
         if action_type == 'delete':
             if Enrollment.objects.filter(module=this_module, user=request.user).exists():
                 Enrollment.objects.filter(module=this_module, user=request.user).delete()
-        returned_dict = get_mymodule_modules(user)
-        return render(request, 'senpai/mymodule_modules.html', context=returned_dict)
-    response = render(request, 'senpai/mymodule.html', context=context_dict)
-    return response
+        response= '123'
+        return response
+    return render(request, 'senpai/mymodule.html', context=context_dict)
 
 
 def register(request):
