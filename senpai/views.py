@@ -20,7 +20,6 @@ from datetime import datetime, time
 import os, math, mimetypes
 
 from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_mymodule_usermodules, get_mymodule_othermodules
-    get_mymodule_modules
 import urllib
 from urllib import parse
 
