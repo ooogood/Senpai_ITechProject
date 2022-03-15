@@ -208,8 +208,11 @@ def register(request):
             if key != 0:
                 keySet = UserProfile.objects.filter(admin_key=key)
                 if keySet:
-                    UserProfile.is_admin = 1
-                    # 用完后将key置0
+                    profile_form.is_admin = 1
+                    # Set key to 0 after used
+                    admin_key = UserProfile.objects.get(admin_key=key)
+                    admin_key.admin_key = 0
+                    admin_key.save()
                 else:
                     print("Admin Key error or non-existent, please re-input")
 
@@ -264,16 +267,14 @@ def user_logout(request):
 @login_required
 def generateAdminKey(request):
     """This function generate 10 character long hash"""
-    user = request.user
-    keyValue = UserProfile.objects.select_related(user.id).values('admin_key')
-    profileKey = UserProfile.objects.select_related(user.id)
-    if keyValue == 0:
+    current_user = request.user
+    statue = UserProfile.objects.get(user=current_user)
+    if statue.admin_key == 0:
         hashCode = hashlib.sha1()
         hashCode.update(str(time.time()))
-        profileKey.admin_key = hashCode.hexdigest()[:-10]
-        profileKey.save()
-        key = profileKey.admin_key
-        # user.generate_statue = True  # 修改生成key的状态
+        statue.admin_key = hashCode.hexdigest()[:-10]
+        statue.save()
+        key = statue.admin_key
         return hashCode.hexdigest()[:-10]
     else:
         return render(request, 'senpai/generateKey.html', context="Key has been generated.")
