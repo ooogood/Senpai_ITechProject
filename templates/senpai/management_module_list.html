@@ -1,0 +1,8 @@
+{% load senpai_template_tags %}
+
+{% for m in modules %}
+<li class="module">
+	<a class="component module" href="{% url 'senpai:show_module' m.slug %}">{{ m.name }}</a>
+	<button class="delete" data-modid={{m.id}}>delete</button>
+</li>
+{% endfor %}

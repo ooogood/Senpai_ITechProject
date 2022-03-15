@@ -109,3 +109,9 @@ def get_mymodule_othermodules(user):
 	context_dict['other_modules'] = Module.objects.exclude(enrollment__in=my_enrollment).order_by('name')
 	context_dict['user']=user
 	return context_dict
+	
+@register.inclusion_tag('senpai/management_module_list.html')
+def get_all_module_list():
+	context_dict = {}
+	context_dict['modules'] = Module.objects.all().order_by('name')
+	return context_dict

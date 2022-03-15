@@ -38,6 +38,7 @@ def add_user(uname):
     u.set_password(pw)
     u.save()
     up = UserProfile.objects.get_or_create(user=u)[0]
+    up.is_admin = 1
     up.save()
     return u
 

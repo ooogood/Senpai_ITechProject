@@ -19,7 +19,7 @@ from datetime import datetime, time
 ## helper
 import os, math, mimetypes
 
-from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments, get_mynote_notes, get_mymodule_usermodules, get_mymodule_othermodules
+from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments, get_mynote_notes, get_mymodule_usermodules, get_mymodule_othermodules, get_all_module_list
 import urllib
 from urllib import parse
 
@@ -283,56 +283,23 @@ def generateAdminKey(request):
 
 
 @login_required
-def module_manage(request):
-    # Verify login
-    current_user = request.user
-    statue = UserProfile.objects.get(user=current_user).is_admin
-    if statue == 0:
-        return redirect(reverse('senpai:home'))
-
-    if request.method == 'GET':
-        Modules = Module.objects.filter()
-        response = {
-            'modules': Modules,
-        }
-        return render(request, 'senpai/module-manage.html', response)
-
-
-@login_required
-def addModule(request):
-    current_user = request.user
-    statue = UserProfile.objects.get(user=current_user).is_admin
-    if statue == 0:
-        return redirect(reverse('senpai:home'))
-    form = ModuleForm()
-    if request.method == 'POST':
-        form = ModuleForm(request.POST)
-        if form.is_valid():
-            form.save(commit=True)
-            return redirect('/senpai/module-manage/')
-        else:
-            print(form.errors)
-    else:
-        form = ModuleForm()
-
-    return render(request, 'senpai/module-manage.html', {'form': form})
-
-
-@login_required
-def delModule(request):
-    current_user = request.user
-    statue = UserProfile.objects.get(user=current_user).is_admin
-    if statue == 0:
-        return redirect(reverse('senpai:home'))
-
-    mid = request.GET.get('id')
-    try:
-        obj = models.Module.objects.get(id=mid)
-    except Exception as e:
-        print('---delete book get error %s' % (e))
-        return HttpResponse('---The book id is error')
-    if obj:
-        obj.delete()
-        return HttpResponseRedirect('/senpai/module-manage/')
-
-    return HttpResponse("---The module id is error")
+def module_management(request):
+	user = request.user
+	statue = UserProfile.objects.get(user=user).is_admin
+	context_dict = {}
+	if statue == 0:
+		return redirect(reverse('senpai:home'))
+		
+	if request.is_ajax():
+		action_type = request.GET.get('action_type')
+		if action_type == 'add':
+			module_name = request.GET.get('module_name')
+			m = Module.objects.get_or_create(name=module_name)[0]
+			m.save()
+		elif action_type == 'delete':
+			module_id = request.GET.get('module_id')
+			if Module.objects.filter(id=module_id).exists():
+				Module.objects.filter(id=module_id).delete()
+		return render(request, 'senpai/management_module_list.html', context=get_all_module_list())
+	return render(request, 'senpai/module-manage.html', context=context_dict)
+	

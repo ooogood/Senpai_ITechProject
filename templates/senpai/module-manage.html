@@ -1,59 +1,32 @@
 {% extends 'senpai/base.html' %}
 {% load staticfiles %}
+{% load senpai_template_tags %} 
 
 {% block title_block %}
     <title>Module Management</title>
-     <div>
-         <ul>
-             <li>
-                 <a href="{% url 'senpai:moduleManage' %}">Welcome，Administer</a>
-             </li>
-         </ul>
-     </div>
 {% endblock %}
 {% block body_block %}
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			crossorigin="anonymous"></script>
+	<script src="{% static 'js/module_manage.js' %}"></script>
     <h3>Module Management</h3>
 
     <div class="row">
 
         <table class="table">
-            <thead>
-            <tr>
-                <th style="width: 20%;">Number</th>
-                <th>Module Name</th>
-                <th style="width: 25%;text-align: right;"></th>
-            </tr>
-            </thead>
             <tbody>
-            {% for module in modules %}
-                <tr>
-                    <td>{{ module.id }}</td>
-                    <td>{{ module.name }}</td>
-                    <td>
-                        <a onclick="javascript:return confirm('Do you want to delete？')" href="/senpai/delModule?id={{ module.id }}">delete</a>
-
-                    </td>
-                </tr>
-            {% endfor %}
+			<div class = "modulelist">
+            {% get_all_module_list %}
+			</div>
             </tbody>
         </table>
     </div>
 <br/>
     <div>
-                    <form id="module_form" method="post" action="{% url 'senpai:addModule' %}">
-                            {% csrf_token %}
-                        <span>add module</span>
-                            {% for hidden in form.hidden_fields %}
-                            {{ hidden }}
-                            {% endfor %}
-
-                        {% for field in form.visible_fields %}
-                            {{ field.errors }}
-                            {{ field.help_text }}
-                            {{ field }}
-                        {% endfor %}
-                        <input type="submit" name="submit" value="Create module" />
-                    </form>
+			<div class="add_module_frame">
+			<textarea class="add_module" id="txt_module" rows="4" cols="50" maxlength="300" placeholder="Input the name of Module..."></textarea><br>
+			<button class="add_module" id="btn_add_module">add module</button>
+			</div>
     </div>
 
 {% endblock %}
