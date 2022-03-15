@@ -44,6 +44,7 @@ h2{
 }
 
 .module.component{
+    position: relative;
     margin: 0;
     margin-bottom: 12px;
     padding: 0;
