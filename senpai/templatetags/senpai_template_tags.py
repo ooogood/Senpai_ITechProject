@@ -95,17 +95,17 @@ def get_mynote_notes(user):
 @register.inclusion_tag('senpai/mymodule_usermodules.html')
 def get_mymodule_usermodules(user):
 	context_dict = {}
-	# get module_list
+	# get user module_list
 	my_enrollment = Enrollment.objects.filter(user=user)
 	context_dict['user_modules'] = Module.objects.filter(enrollment__in=my_enrollment).order_by('name')
-	
+	context_dict['user']=user
 	return context_dict
 
 @register.inclusion_tag('senpai/mymodule_othermodules.html')
 def get_mymodule_othermodules(user):
 	context_dict = {}
-	# get module_list
+	# get other module_list
 	my_enrollment = Enrollment.objects.filter(user=user)
 	context_dict['other_modules'] = Module.objects.exclude(enrollment__in=my_enrollment).order_by('name')
-	
+	context_dict['user']=user
 	return context_dict

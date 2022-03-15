@@ -2,15 +2,27 @@ $(document).ready(function() {
 	$(".content.frame").on('click',"div.module",function(){
 		var action_type = $(this).data("modtype");
 		var module_id = $(this).data("modid");
+		/**
+		 * Seperately refresh two blocks otherwise beautiful scroll might go wrong
+		 */
+		// refresh user module block (do add or delete module action in this response)
 		$.get($(location).attr('href'),
 			{
 				'action_type': action_type,
-				'module_id': module_id
+				'module_id': module_id,
+				'block': 'user'
 			},
 			function(response) {
-				console.log(response);
-				/* $('.user_modules').html(response['usermodules']);
-				$('.other_modules').html(response['othermodules']); */
+				$('.user_modules').html(response);
+				// refresh other module block after user block is refreshed
+				// to prevent the other module refresh before the database is updated
+				$.get($(location).attr('href'),
+					{
+						'block': 'other'
+					},
+					function(response) {
+						$('.other_modules').html(response);
+					})
 			})
 	});
 

@@ -180,18 +180,22 @@ def mymodule(request):
     user = request.user
     context_dict = {}
     if request.is_ajax():
-        action_type = request.GET.get('action_type')
-        module_id = request.GET.get('module_id')
-        this_module = Module.objects.get(id=module_id)
-        if action_type == 'select':
-            if not Enrollment.objects.filter(module=this_module, user=request.user).exists():
-                e = Enrollment.objects.get_or_create(module=this_module, user=request.user)[0]
-                e.save()
-        if action_type == 'delete':
-            if Enrollment.objects.filter(module=this_module, user=request.user).exists():
-                Enrollment.objects.filter(module=this_module, user=request.user).delete()
-        response= '123'
-        return response
+        # only do the action when refreshing user block
+        if request.GET.get('block') == 'user':
+            action_type = request.GET.get('action_type')
+            module_id = request.GET.get('module_id')
+            this_module = Module.objects.get(id=module_id)
+            if action_type == 'select':
+                if not Enrollment.objects.filter(module=this_module, user=request.user).exists():
+                    e = Enrollment.objects.get_or_create(module=this_module, user=request.user)[0]
+                    e.save()
+            elif action_type == 'delete':
+                if Enrollment.objects.filter(module=this_module, user=request.user).exists():
+                    Enrollment.objects.filter(module=this_module, user=request.user).delete()
+            return render(request, 'senpai/mymodule_usermodules.html', context=get_mymodule_usermodules(request.user) )
+        else:
+            return render(request, 'senpai/mymodule_othermodules.html', context=get_mymodule_othermodules(request.user) )
+
     return render(request, 'senpai/mymodule.html', context=context_dict)
 
 
