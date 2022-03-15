@@ -24,4 +24,8 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('restricted/', views.restricted, name='restricted'),
     path('logout/', views.user_logout, name='logout'),
+    path('module-manage/', views.module_manage, name='moduleManage'),
+    path('addModule/', views.addModule, name='addModule'),
+    path('delModule/', views.delModule, name='delModule'),
+    path('generateKey/', views.generateAdminKey, name='generateAdminKey'),
 ]

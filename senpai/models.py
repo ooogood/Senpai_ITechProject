@@ -16,12 +16,6 @@ class UserProfile(models.Model):
         return self.user.username
 
 
-# class AdminKey(models.Model):
-#    user = models.OneToOneField(User, on_delete=models.CASCADE)
-#    adminKey = models.CharField(default='adminKey', max_length=16, unique=True)
-#    adminKeyStatus = models.IntegerField(default=0)
-
-
 class Module(models.Model):
     NAME_MAX_LENGTH = 32
     id = models.AutoField(primary_key=True)

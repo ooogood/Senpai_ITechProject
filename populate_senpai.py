@@ -10,6 +10,7 @@ from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 from django.contrib.auth.models import User
 from senpai.tests import add_user, add_note, add_comment, add_enrollment, add_like, add_module
 
+
 def populate():
     Joseph_notes = [
         {'mod': 'Programming', 'title': 'Jotest_note1'},
@@ -64,19 +65,23 @@ def populate():
 
     user_module = [
         {'uname': 'Joseph',
-         'module': ['Programming', 'Software Engineering', 'Cyber Security', 'Robotics', 'Advance Manufacturing', 'Signal Processing'],
+         'module': ['Programming', 'Software Engineering', 'Cyber Security', 'Robotics', 'Advance Manufacturing',
+                    'Signal Processing'],
          'notes': Joseph_notes,
          },
         {'uname': 'Jin',
-         'module': ['Programming', 'Internet Technology', 'Computer System', 'Robotics', 'Embedded System', 'Linear Algebra'],
+         'module': ['Programming', 'Internet Technology', 'Computer System', 'Robotics', 'Embedded System',
+                    'Linear Algebra'],
          'notes': Jin_notes,
          },
         {'uname': 'Marco',
-         'module': ['Computer Network', 'Human Computer Interface', 'Computer System', 'Robotics', 'Embedded System', 'Signal Processing', 'Japanese'],
+         'module': ['Computer Network', 'Human Computer Interface', 'Computer System', 'Robotics', 'Embedded System',
+                    'Signal Processing', 'Japanese'],
          'notes': Marco_notes,
          },
         {'uname': 'Xiaowei',
-         'module': ['Artificial Intelligence', 'Big Data', 'Digital Forensics', 'Robotics', 'Japanese', 'Spanish', 'Chinese'],
+         'module': ['Artificial Intelligence', 'Big Data', 'Digital Forensics', 'Robotics', 'Japanese', 'Spanish',
+                    'Chinese'],
          'notes': Xiaowei_notes,
          },
         {'uname': 'Amy',
@@ -122,10 +127,10 @@ def populate():
     for n in Note.objects.all():
         comment_cnt = random.randint(0, 10)
         like_cnt = random.randint(0, 10)
-        for i in range( 0, len(user_module) ):
+        for i in range(0, len(user_module)):
             u = User.objects.get(username=user_module[i]['uname'])
             if comment_cnt > i:
-                add_comment(n, u, u.username+' says nice note!')
+                add_comment(n, u, u.username + ' says nice note!')
             if like_cnt > i:
                 add_like(u, n)
 
@@ -139,6 +144,7 @@ def populate():
     for n in Note.objects.all():
         print(f'Note: {n}')
         print(Comment.objects.filter(note=n).count())
+
 
 # Start execution here!
 if __name__ == '__main__':
