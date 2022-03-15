@@ -20,7 +20,7 @@
     right: 108px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-    grid-gap: 72px 72px;
+    grid-gap: 144px 144px;
 }
 
 li.note{

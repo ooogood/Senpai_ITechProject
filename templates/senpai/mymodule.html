@@ -3,17 +3,15 @@
 {% load senpai_template_tags %} 
 
 {% block title_block %}
-	{% if user %}
-		{{ user.username }} 's module
-	{% else %}
-		Unknown User
-	{% endif %}
+	{{ user.username }} 's module
 {% endblock %}
 
 {% block header_block_uf %}
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 			crossorigin="anonymous"></script>
-	<script src="{% static 'js/mymodule_mod.js' %}"></script>
+			<script type="text/javascript" src="{% static 'js/scroll_plugin.js' %}"></script>
+	<script src="{% static 'js/mymodule.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/mymodule_css.css' %}"/>
 {% endblock %}
 
 {% block navigation %}
@@ -24,11 +22,7 @@
 {% endblock %}
 
 {% block body_block %}
-	{% if user %}
-		<div class = "modulelist">
-		{% get_mymodule_modules user %}
-		</div>
-	{% endif %}
+	{% get_mymodule_modules user %}
 {% endblock %}
 	
 		

@@ -1,23 +1,21 @@
 {% load senpai_template_tags %}
 
-<div class = "user_modules">
+<ul class = "user_modules">
 {% if user_modules %}
-	<h3>Added Modules</h3>
 	{% for m in user_modules %}
-		<li>
-		<a href="{% url 'senpai:show_module' m.slug %}">{{ m.name }}</a>
-		<button class="mymodule" data-modtype="delete" data-modid={{m.id}}>delete</button>
-		</li>
+	<li class="module">
+		<a class="component module" href="{% url 'senpai:show_module' m.slug %}">{{ m.name }}</a>
+		<div class="remove module" type="button" data-modtype="delete" data-modid={{m.id}}></div>
+	</li>
 	{% endfor %}
 {% endif %}
-</div>
+</ul>
 
-<div class = "other_modules">
-<h3>Avaliable Modules</h3>
-{% for m in other_modules %}
-	<li>
-	<a href="{% url 'senpai:show_module' m.slug %}">{{ m.name }}</a>
-	<button class="mymodule" data-modtype="select" data-modid={{m.id}}>select</button>
+<ul class = "other_modules">
+	{% for m in other_modules %}
+	<li class="module">
+		<a class="component module" href="{% url 'senpai:show_module' m.slug %}">{{ m.name }}</a>
+		<div class="add module" type="button" data-modtype="select" data-modid={{m.id}}></div>
 	</li>
-{% endfor %}
-</div>
+	{% endfor %}
+</ul>

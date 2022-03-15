@@ -1,0 +1,84 @@
+.user_modules, .other_modules{
+    position: absolute;
+    margin: 0;
+    padding-top: 192px;
+    padding-left: max(12px, calc(25% - 228px));
+    padding-right: max(24px, calc(25% - 216px));
+    padding-bottom: 144px;
+    top: 0;
+    left: 0;
+    right: 50%;
+    bottom: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 120px 0;
+    justify-content: center;
+}
+
+.user_modules{
+    left: 0;
+    right: 50%;
+}
+
+.other_modules{
+    left: 50%;
+    right: 0;
+}
+
+li.module{
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 72px;
+    list-style: none;
+}
+
+a.module{
+    position: absolute;
+    padding-left: 18px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-decoration: none;
+    border-radius: 6px;
+    white-space: nowrap;
+    line-height: 72px;
+    font-size: 24px;
+    font-weight: normal;
+    color: white;
+    white-space: nowrap;
+}
+
+div.module{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 48px;
+    height: 48px;
+    background-position: center;
+    background-size: 22px 24px;
+    background-repeat: no-repeat;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+div.remove.module{
+    background-color: #aa4400;
+    background-image: url("/static/img/remove_icon.webp");
+    border: 1px solid #ff8888;
+    box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3), 0 0 12px 0 #ff8888 inset;
+}
+
+div.add.module{
+    background-color: #00aa8d;
+    background-image: url("/static/img/add_icon.webp");
+    border: 1px solid #88ffeb;
+    box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3), 0 0 12px 0 #88ffeb inset;
+}
+
+div.module:hover{
+    filter: brightness(125%);
+}
