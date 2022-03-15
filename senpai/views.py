@@ -2,10 +2,11 @@ import hashlib
 
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.views.generic.base import View
 
-from senpai.forms import UserForm, UserProfileForm
+from senpai import models
+from senpai.forms import UserForm, UserProfileForm, ModuleForm
 from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 ## import modelForms
 from django.shortcuts import redirect
@@ -18,7 +19,10 @@ from datetime import datetime, time
 ## helper
 import os, math, mimetypes
 
-from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments, get_mynote_notes, get_mymodule_modules
+from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments, get_mynote_notes, \
+    get_mymodule_modules
+import urllib
+from urllib import parse
 
 
 # Create your views here.
@@ -52,6 +56,7 @@ class ModulePage(View):
         context_dict['all_modules'] = Module.objects.all().order_by('name')
         return render(request, 'senpai/module.html', context=context_dict)
 
+
 @login_required
 def upload_note(request, module_name_slug):
     file = request.FILES.get('file', False)
@@ -60,7 +65,8 @@ def upload_note(request, module_name_slug):
         new_note = Note.objects.create(module=module, user=request.user, file=file)
         new_note.save()
     return redirect(reverse('senpai:show_module',
-					kwargs={'module_name_slug':module_name_slug}))
+                            kwargs={'module_name_slug': module_name_slug}))
+
 
 # note page
 class NotePage(View):
@@ -128,7 +134,7 @@ class Mynote(View):
     def get(self, request):
         context_dict = {}
         result_dict = get_mynote_notes(request.user)
-        
+
         context_dict['notes'] = result_dict['notes']
         context_dict['user'] = request.user
         context_dict['comments'] = result_dict['comments']
@@ -159,7 +165,7 @@ def mylike(request):
         comment = {}
         for n in like_list:
             comment[n.note.id] = Comment.objects.filter(note=n.note).count()
-			
+
         context_dict['note'] = like_list
         context_dict['user'] = request.user
         context_dict['comments'] = comment
@@ -168,68 +174,27 @@ def mylike(request):
     response = render(request, 'senpai/mylike.html', context=context_dict)
     return response
 
+
 # user - mymodule
 @login_required
 def mymodule(request):
-	user = request.user
-	context_dict = get_mymodule_modules(user)
-	if request.is_ajax():
-		action_type = request.GET.get('action_type')
-		module_id = request.GET.get('module_id')
-		this_module = Module.objects.get(id=module_id)
-		if (action_type == 'select'):
-			if not Enrollment.objects.filter(module=this_module, user=request.user).exists():
-				e = Enrollment.objects.get_or_create(module=this_module, user=request.user)[0]
-				e.save()
-		if (action_type == 'delete'):
-			if Enrollment.objects.filter(module=this_module, user=request.user).exists():
-				Enrollment.objects.filter(module=this_module, user=request.user).delete()
-		returned_dict = get_mymodule_modules(user)
-		return render(request, 'senpai/mymodule_modules.html', context=returned_dict)
-	response = render(request, 'senpai/mymodule.html', context=context_dict)
-	return response
-
-'''
-def user_register(request):
-    registered = False
-
-    if request.method == 'POST':
-
-        user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST)
-        key = request.POST.get('adminKey', "")
-
-        if user_form.is_valid() and profile_form.is_valid():
-
-            if key != '0':
-                keySet = UserProfile.objects.filter(admin_key=key)
-                if keySet:
-                    UserProfile.is_admin = '1'
-                else:
-                    print("Admin Key error or non-existent, please re-input")
-
-            user = user_form.save()
-
-            user.set_password(user.password)
-            user.save()
-            print("test1\n")
-            profile = profile_form.save(commit=False)
-            print("test2\n")
-            profile.user = user
-            print("test3\n")
-            profile.save()
-            print("test4\n")
-            registered = True
-        else:
-            print(user_form.errors, profile_form.errors)
-    else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
-
-        return render(request,
-                      'senpai/register.html',
-                      {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
-'''
+    user = request.user
+    context_dict = get_mymodule_modules(user)
+    if request.is_ajax():
+        action_type = request.GET.get('action_type')
+        module_id = request.GET.get('module_id')
+        this_module = Module.objects.get(id=module_id)
+        if action_type == 'select':
+            if not Enrollment.objects.filter(module=this_module, user=request.user).exists():
+                e = Enrollment.objects.get_or_create(module=this_module, user=request.user)[0]
+                e.save()
+        if action_type == 'delete':
+            if Enrollment.objects.filter(module=this_module, user=request.user).exists():
+                Enrollment.objects.filter(module=this_module, user=request.user).delete()
+        returned_dict = get_mymodule_modules(user)
+        return render(request, 'senpai/mymodule_modules.html', context=returned_dict)
+    response = render(request, 'senpai/mymodule.html', context=context_dict)
+    return response
 
 
 def register(request):
@@ -244,6 +209,7 @@ def register(request):
                 keySet = UserProfile.objects.filter(admin_key=key)
                 if keySet:
                     UserProfile.is_admin = 1
+                    # 用完后将key置0
                 else:
                     print("Admin Key error or non-existent, please re-input")
 
@@ -294,12 +260,76 @@ def user_logout(request):
     logout(request)
     return redirect(reverse('senpai:home'))
 
-'''
-def generateAdminKey(request, UserProfile):
+
+@login_required
+def generateAdminKey(request):
     """This function generate 10 character long hash"""
-    hashCode = hashlib.sha1()
-    hashCode.update(str(time.time()))
-    UserProfile.admin_key = hashCode.hexdigest()[:-10]
-    # user.generate_statue = True  # 修改生成key的状态
-    return hashCode.hexdigest()[:-10]
-'''
+    user = request.user
+    keyValue = UserProfile.objects.select_related(user.id).values('admin_key')
+    profileKey = UserProfile.objects.select_related(user.id)
+    if keyValue == 0:
+        hashCode = hashlib.sha1()
+        hashCode.update(str(time.time()))
+        profileKey.admin_key = hashCode.hexdigest()[:-10]
+        profileKey.save()
+        key = profileKey.admin_key
+        # user.generate_statue = True  # 修改生成key的状态
+        return hashCode.hexdigest()[:-10]
+    else:
+        return render(request, 'senpai/generateKey.html', context="Key has been generated.")
+
+
+@login_required
+def module_manage(request):
+    # Verify login
+    current_user = request.user
+    statue = UserProfile.objects.get(user=current_user).is_admin
+    if statue == 0:
+        return redirect('')
+
+    if request.method == 'GET':
+        Modules = Module.objects.filter()
+        response = {
+            'modules': Modules,
+        }
+        return render(request, 'senpai/module-manage.html', response)
+
+
+@login_required
+def addModule(request):
+    current_user = request.user
+    statue = UserProfile.objects.get(user=current_user).is_admin
+    if statue == 0:
+        return redirect('')
+    form = ModuleForm()
+    if request.method == 'POST':
+        form = ModuleForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/senpai/module-manage/')
+        else:
+            print(form.errors)
+    else:
+        form = ModuleForm()
+
+    return render(request, 'senpai/module-manage.html', {'form': form})
+
+
+@login_required
+def delModule(request):
+    current_user = request.user
+    statue = UserProfile.objects.get(user=current_user).is_admin
+    if statue == 0:
+        return redirect('')
+
+    mid = request.GET.get('id')
+    try:
+        obj = models.Module.objects.get(id=mid)
+    except Exception as e:
+        print('---delete book get error %s' % (e))
+        return HttpResponse('---The book id is error')
+    if obj:
+        obj.delete()
+        return HttpResponseRedirect('/senpai/module-manage/')
+
+    return HttpResponse("---The module id is error")
