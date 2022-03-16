@@ -21,7 +21,8 @@ urlpatterns = [
     path('mymodule/', views.mymodule, name='mymodule'),
     # register/log
     path('register/', views.register, name='register'),
-    path('login/', views.user_login, name='login'),
+    path('loginreg/', views.user_login, name='loginReg'),
+    path('login/', views.register, name='login'),
     path('restricted/', views.restricted, name='restricted'),
     path('logout/', views.user_logout, name='logout'),
     # path('module-manage/', views.module_manage, name='moduleManage'),

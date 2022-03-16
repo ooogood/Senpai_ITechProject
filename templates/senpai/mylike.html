@@ -37,5 +37,15 @@
 	{% else %}
 	<h3>You have no favourites yet.</h3>
 	{% endif %}
-	</div>
+
+    <div>
+        {% if status %}
+            <a href="{% url 'senpai:moduleManage' %}">Module Manage</a>
+               <br />
+            <a href="{% url 'senpai:generateAdminKey' %}">Generate AdminKey</a>
+        {% endif %}
+    </div>
+
+
+
 {% endblock %}

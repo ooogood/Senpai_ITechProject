@@ -11,7 +11,7 @@ class UserProfile(models.Model):
     NAME_MAX_LENGTH = 32
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_admin = models.IntegerField(default=0)
-    admin_key = models.CharField(max_length=NAME_MAX_LENGTH, default='0')
+    admin_key = models.CharField(max_length=NAME_MAX_LENGTH, default=None, blank=True)
 
     def __str__(self):
         return self.user.username

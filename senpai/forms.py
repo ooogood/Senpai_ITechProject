@@ -4,16 +4,23 @@ from senpai.models import UserProfile, Module
 
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
+    password = forms.CharField(widget=forms.PasswordInput(), label='Password *')
 
     class Meta:
         model = User
+        help_texts = {
+            'username': None,
+        }
+        labels = {
+            'username': 'Username *',
+            'email': 'Email Address *',
+        }
         fields = ('username', 'email', 'password')
 
 
 class UserProfileForm(forms.ModelForm):
     is_admin = forms.IntegerField(widget=forms.HiddenInput(), initial=0, required=False)
-    admin_key = forms.CharField(max_length=32, initial='0', required=False)
+    admin_key = forms.CharField(max_length=32, initial=None, required=False, label='Sign Up for Admin?')
 
     class Meta:
         model = UserProfile
@@ -28,4 +35,3 @@ class ModuleForm(forms.ModelForm):
     class Meta:
         model = Module
         fields = ('name',)
-

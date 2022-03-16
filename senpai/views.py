@@ -155,7 +155,11 @@ class Mynote(View):
 # user - mylike
 @login_required
 def mylike(request):
-    context_dict = {}
+    currentUser = request.user
+    statueAdmin = UserProfile.objects.get(user=currentUser).is_admin
+
+    context_dict = {'status': statueAdmin}
+
     if request.user.is_authenticated:
         # get note_list
         like_list = Like.objects.filter(user=request.user)
@@ -205,26 +209,37 @@ def register(request):
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
-        key = request.POST.get('adminKey', "")
-        if user_form.is_valid() and profile_form.is_valid():
-            if key:
-                keySet = UserProfile.objects.filter(admin_key=key)
-                if keySet:
-                    profile_form.is_admin = 1
-                    # Set key to 0 after used
-                    admin_key = UserProfile.objects.get(admin_key=key)
-                    admin_key.admin_key = None
-                    admin_key.save()
-                else:
-                    print("Admin Key error or non-existent, please re-input")
 
+        if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
             user.save()
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
+
+        try:
+            key = profile.admin_key
+            print(key)
+            if key:
+                keySet = UserProfile.objects.filter(admin_key=key)
+                print(keySet)
+                if keySet:
+                    profileUser = UserProfile.objects.get(user=user)
+                    print(profileUser.is_admin)
+                    profileUser.is_admin(1)
+                    profileUser.admin_key = None
+                    profileUser.save()
+                    # Set key to 0 after used
+                    admin_key = UserProfile.objects.get(admin_key=key)
+                    admin_key.admin_key = None
+                    admin_key.save()
+                    registered = True
+                else:
+                    print("Admin Key error or non-existent, please re-input")
+        except:
             registered = True
+        # registered = True
         else:
             print(user_form.errors, profile_form.errors)
     else:
@@ -277,8 +292,7 @@ def generateAdminKey(request):
     current_user = request.user
     statue = UserProfile.objects.get(user=current_user)
     key = statue.admin_key
-
-    if statue.admin_key == '0':
+    if statue.admin_key is None or not statue.admin_key:
         code = hashlib.md5(str(time()).encode("utf-8"))
         key = code.hexdigest()[:-10]
         statue.admin_key = key

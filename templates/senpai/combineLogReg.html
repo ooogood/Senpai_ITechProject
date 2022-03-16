@@ -5,22 +5,26 @@
 	Login & Register
 {% endblock %}
 {% block body_block %}
-	<h1>Login to Senpai</h1>
-	<form id="login_form" method="post" action="{% url 'senpai:login' %}">
+    <div style="display: flex;justify-content: center">
+        <div style="width: 80%;display: flex;justify-content: space-between">
+            <div style="width: 45%">
+                <h1>Login</h1>
+	<form id="login_form" method="post" action="{% url 'senpai:loginReg' %}">
 		{% csrf_token %}
-		Username: <input type="text" name="username" value="" size="50" />
+		Username* <input type="text" name="username" value="" size="50" />
 		<br />
-		Password: <input type="password" name="password" value="" size="50" />
+		Password*: <input type="password" name="password" value="" size="50" />
 		<br />
 		<input type="submit" value="submit" />
 	</form>
     <br />
-
-        {% if registered %}
-        Senpai says: <strong>thank you for registering!</strong>
+            </div>
+            <div style="width: 45%">
+                {% if registered %}
+        <strong>Thank you for registering!</strong>
         <a href="{% url 'senpai:home' %}">Return to the homepage.</a><br />
         {% else %}
-        Senpai says: <strong>register here!</strong><br />
+        <h1>Sign up</h1><br />
 	<form id="user_form" method="post" action="{% url 'senpai:register' %}"
 			enctype="multipart/form-data">
 			{% csrf_token %}
@@ -35,11 +39,37 @@
                 {{ field }}
             {% endfor %}
             {{ user_form.errors }}
-            {{ user_form.as_p }}
+{#            {{ user_form.as_p }}#}
             {{ profile_form.errors }}
-            {{ profile_form.as_p }}
+{#            {{ profile_form.as_p }}#}
+            <div style="display: flex;justify-content: space-between;width: 100%">
+                <div style="width: 45%">
+                    {{ user_form.username.label }}
+                    {{ user_form.username }}
+                </div>
+                 <div style="width: 45%">
+                      {{ user_form.email.label }}
+                    {{ user_form.email }}
+                </div>
+            </div>
+    <div style="display: flex;justify-content: space-between;width: 100%;margin-top: 30px">
+                <div style="width: 45%">
+                    {{ user_form.password.label }}
+                    {{ user_form.password }}
+                </div>
+                 <div style="width: 45%">
+                      {{ profile_form.admin_key.label }}
+                    {{ profile_form.admin_key }}
+                </div>
+            </div>
 			<!-- Provide a button to click to submit the form. -->
-			<input type="submit" name="submit" value="Register" />
+			<input type="submit" name="submit" value="Register" style="margin-top: 30px"/>
 	</form>
     {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+
 {% endblock %}
