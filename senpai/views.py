@@ -15,11 +15,12 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from datetime import datetime, time
+from time import time
 ## helper
 import os, math, mimetypes
 
-from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments, get_mynote_notes, get_mymodule_usermodules, get_mymodule_othermodules, get_all_module_list
+from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments, get_mynote_notes, \
+    get_mymodule_usermodules, get_mymodule_othermodules, get_all_module_list
 import urllib
 from urllib import parse
 
@@ -192,9 +193,9 @@ def mymodule(request):
             elif action_type == 'delete':
                 if Enrollment.objects.filter(module=this_module, user=request.user).exists():
                     Enrollment.objects.filter(module=this_module, user=request.user).delete()
-            return render(request, 'senpai/mymodule_usermodules.html', context=get_mymodule_usermodules(request.user) )
+            return render(request, 'senpai/mymodule_usermodules.html', context=get_mymodule_usermodules(request.user))
         else:
-            return render(request, 'senpai/mymodule_othermodules.html', context=get_mymodule_othermodules(request.user) )
+            return render(request, 'senpai/mymodule_othermodules.html', context=get_mymodule_othermodules(request.user))
 
     return render(request, 'senpai/mymodule.html', context=context_dict)
 
@@ -206,14 +207,13 @@ def register(request):
         profile_form = UserProfileForm(data=request.POST)
         key = request.POST.get('adminKey', "")
         if user_form.is_valid() and profile_form.is_valid():
-
-            if key != 0:
+            if key:
                 keySet = UserProfile.objects.filter(admin_key=key)
                 if keySet:
                     profile_form.is_admin = 1
                     # Set key to 0 after used
                     admin_key = UserProfile.objects.get(admin_key=key)
-                    admin_key.admin_key = 0
+                    admin_key.admin_key = None
                     admin_key.save()
                 else:
                     print("Admin Key error or non-existent, please re-input")
@@ -268,38 +268,45 @@ def user_logout(request):
 
 @login_required
 def generateAdminKey(request):
+    user = request.user
+    statueAdmin = UserProfile.objects.get(user=user).is_admin
+    if statueAdmin == 0:
+        return redirect(reverse('senpai:home'))
     """This function generate 10 character long hash"""
+
     current_user = request.user
     statue = UserProfile.objects.get(user=current_user)
-    if statue.admin_key == 0:
-        hashCode = hashlib.sha1()
-        hashCode.update(str(time.time()))
-        statue.admin_key = hashCode.hexdigest()[:-10]
+    key = statue.admin_key
+
+    if statue.admin_key == '0':
+        code = hashlib.md5(str(time()).encode("utf-8"))
+        key = code.hexdigest()[:-10]
+        statue.admin_key = key
         statue.save()
-        key = statue.admin_key
-        return hashCode.hexdigest()[:-10]
+        context_dict = {'key': key}
+        return render(request, 'senpai/generateKey.html', context=context_dict)
     else:
-        return render(request, 'senpai/generateKey.html', context="Key has been generated.")
+        context_dict_err = {'errinfo': "Key has already been generated.", 'key': key}
+        return render(request, 'senpai/generateKey.html', context=context_dict_err)
 
 
 @login_required
 def module_management(request):
-	user = request.user
-	statue = UserProfile.objects.get(user=user).is_admin
-	context_dict = {}
-	if statue == 0:
-		return redirect(reverse('senpai:home'))
-		
-	if request.is_ajax():
-		action_type = request.GET.get('action_type')
-		if action_type == 'add':
-			module_name = request.GET.get('module_name')
-			m = Module.objects.get_or_create(name=module_name)[0]
-			m.save()
-		elif action_type == 'delete':
-			module_id = request.GET.get('module_id')
-			if Module.objects.filter(id=module_id).exists():
-				Module.objects.filter(id=module_id).delete()
-		return render(request, 'senpai/management_module_list.html', context=get_all_module_list())
-	return render(request, 'senpai/module-manage.html', context=context_dict)
-	
+    user = request.user
+    statue = UserProfile.objects.get(user=user).is_admin
+    context_dict = {}
+    if statue == 0:
+        return redirect(reverse('senpai:home'))
+
+    if request.is_ajax():
+        action_type = request.GET.get('action_type')
+        if action_type == 'add':
+            module_name = request.GET.get('module_name')
+            m = Module.objects.get_or_create(name=module_name)[0]
+            m.save()
+        elif action_type == 'delete':
+            module_id = request.GET.get('module_id')
+            if Module.objects.filter(id=module_id).exists():
+                Module.objects.filter(id=module_id).delete()
+        return render(request, 'senpai/management_module_list.html', context=get_all_module_list())
+    return render(request, 'senpai/module-manage.html', context=context_dict)

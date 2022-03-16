@@ -13,7 +13,7 @@ class UserForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     is_admin = forms.IntegerField(widget=forms.HiddenInput(), initial=0, required=False)
-    admin_key = forms.IntegerField(initial=0)
+    admin_key = forms.CharField(max_length=32, initial='0', required=False)
 
     class Meta:
         model = UserProfile

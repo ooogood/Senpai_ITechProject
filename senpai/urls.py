@@ -27,6 +27,6 @@ urlpatterns = [
     # path('module-manage/', views.module_manage, name='moduleManage'),
     # path('addModule/', views.addModule, name='addModule'),
     # path('delModule/', views.delModule, name='delModule'),
-    path('module-manage/',views.module_management, name='moduleManage'),
+    path('module-manage/', views.module_management, name='moduleManage'),
     path('generateKey/', views.generateAdminKey, name='generateAdminKey'),
 ]

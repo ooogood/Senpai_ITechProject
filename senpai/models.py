@@ -8,9 +8,10 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class UserProfile(models.Model):
+    NAME_MAX_LENGTH = 32
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_admin = models.IntegerField(default=0)
-    admin_key = models.IntegerField(default=0)  # 生成key后，修改该字段，不限定key使用次数
+    admin_key = models.CharField(max_length=NAME_MAX_LENGTH, default='0')
 
     def __str__(self):
         return self.user.username
