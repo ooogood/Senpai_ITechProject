@@ -35,7 +35,7 @@ p.keygen{
     line-height: 36px;
 }
 
-a.keygen{
+#genkey_button{
     position: absolute;
     margin: 0;
     padding: 0;
@@ -47,7 +47,7 @@ a.keygen{
     background-color: #00aa8d;
     border: 1px solid #88ffeb;
     box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3), 0 0 12px 0 #88ffeb inset;
-    text-decoration: none;
+    border-radius: 6px;
     font-size: 24px;
     font-weight: normal;
     color: white;
@@ -55,22 +55,10 @@ a.keygen{
     word-break: unset;
     text-align: center;
     line-height: 48px;
-    border-radius: 6px;
+    user-select: none;
     cursor: pointer;
 }
 
-a.keygen:after{
-    position: absolute;
-    content: "";
-    margin: 0;
-    padding: 0;
-    top: 0;
-    left: 0;
-    right: 0px;
-    bottom: 0;
-    
-}
-
-a.keygen:hover{
+#genkey_button:hover{
     filter: brightness(125%);
 }

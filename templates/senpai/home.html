@@ -18,7 +18,16 @@
 	</div>
 {% endblock %}
 {% block body_block %}
-	<h2 class="content welcome">Hi, {{ user.username }}!</h2>
+	{% if is_admin is True %}
+	<h2 class="content welcome">
+		Hi, Administrator {{ user.username }}!
+        <a class="component modulemanage" href="{% url 'senpai:moduleManage' %}"></a>
+	</h2>
+	{% else %}
+	<h2 class="content welcome">
+		Hi, {{ user.username }}!
+	</h2>
+	{% endif %}
 	<div class="content links">
 		{% get_home_modules user %}
 	</div>
