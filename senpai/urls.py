@@ -20,14 +20,10 @@ urlpatterns = [
     # my module
     path('mymodule/', views.mymodule, name='mymodule'),
     # register/log
-    path('register/', views.register, name='register'),
-    path('loginreg/', views.user_login, name='loginReg'),
-    path('login/', views.register, name='login'),
-    path('restricted/', views.restricted, name='restricted'),
+    path('signinup/', views.signinup, name='signinup'),
     path('logout/', views.user_logout, name='logout'),
-    # path('module-manage/', views.module_manage, name='moduleManage'),
-    # path('addModule/', views.addModule, name='addModule'),
-    # path('delModule/', views.delModule, name='delModule'),
+    # module management page
     path('manage/', views.module_management, name='moduleManage'),
+    # generate admin key page
     path('genAdminKey/', views.genAdminKey, name='genAdminKey'),
 ]

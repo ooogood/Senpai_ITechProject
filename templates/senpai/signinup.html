@@ -1,0 +1,63 @@
+{% extends 'senpai/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Login & Register
+{% endblock %}
+{% block body_block %}
+
+<h1>Login</h1>
+<br />
+<form id="login_form" method="post" action="{% url 'senpai:signinup' %}">
+		{% csrf_token %}
+		Username* <input type="text" name="username" value="" size="50" />
+		<br />
+		Password*: <input type="password" name="password" value="" size="50" />
+		<br />
+		<input type="submit" value="submit" name="signin_form" />
+    {% if signin_errmsg != '' %}
+        {{ signin_errmsg }}
+    {% endif %}
+</form>
+
+<br />
+
+<h1>Sign up</h1>
+<br />
+<form id="user_form" method="post" action="{% url 'senpai:signinup' %}"
+	enctype="multipart/form-data">
+	{% csrf_token %}
+	<!-- Display each form -->
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    {% for field in form.visible_fields %}
+        {{ field.errors }}
+        {{ field.help_text }}
+        {{ field }}
+    {% endfor %}
+    {{ user_form.errors }}
+    {{ profile_form.errors }}
+<br />
+    {{ user_form.username.label }}
+    {{ user_form.username }}
+<br />
+    {{ user_form.email.label }}
+    {{ user_form.email }}
+<br />
+    {{ user_form.password.label }}
+    {{ user_form.password }}
+<br />
+    {{ profile_form.admin_key.label }}
+    {{ profile_form.admin_key }}
+<br />
+	<!-- Provide a button to click to submit the form. -->
+	<input type="submit" value="submit" name="signup_form" />
+    {% if signup_errmsg != '' %}
+        {{ signup_errmsg }}
+    {% endif %}
+
+</form>
+
+
+{% endblock %}

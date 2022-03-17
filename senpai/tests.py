@@ -3,6 +3,8 @@ from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 from django.contrib.auth.models import User
 from django.core.files import File
 
+from senpai.templatetags.senpai_template_tags import gen_admin_key
+
 
 # Create your tests here.
 # test method name should start with 'test_'
@@ -107,6 +109,8 @@ def add_user(uname, is_admin=0):
     u.save()
     up = UserProfile.objects.get_or_create(user=u)[0]
     up.is_admin = is_admin
+    if is_admin == 1:
+        gen_admin_key( up )
     up.save()
     return u
 
