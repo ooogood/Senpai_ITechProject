@@ -7,6 +7,7 @@ $(document).ready(function() {
 			$("#sort p").text("Most Comments");
 			$.get($(location).attr('href'),
 				{
+					action: 'sort',
 					sort_type: 'cmt'
 				},
 				function(response) {
@@ -18,6 +19,7 @@ $(document).ready(function() {
 			$("#sort p").text("Newest");
 			$.get($(location).attr('href'),
 				{
+					action: 'sort',
 					sort_type: 'new'
 				},
 				function(response) {
@@ -29,6 +31,7 @@ $(document).ready(function() {
 			$("#sort p").text("Oldest");
 			$.get($(location).attr('href'),
 				{
+					action: 'sort',
 					sort_type: 'old'
 				},
 				function(response) {
@@ -40,6 +43,7 @@ $(document).ready(function() {
 			$("#sort p").text("Most Likes");
 			$.get($(location).attr('href'),
 				{
+					action: 'sort',
 					sort_type: 'lik'
 				},
 				function(response) {
@@ -47,6 +51,17 @@ $(document).ready(function() {
 			})
 
 		}
+	});
+	// click like module button
+	$("#like").click(function(){
+		$.get($(location).attr('href'),
+			{
+				action: 'like',
+			},
+			function(response) {
+				// erase the like button
+				$("#like").html('');
+		})
 	});
 
 	// scroll beautify

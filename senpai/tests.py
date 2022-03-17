@@ -88,12 +88,12 @@ class RunningTest(TestCase):
 	def test_module_manage(self):
 		u = add_user('JoJo')
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
-		response = self.client.get('/senpai/module-manage/')
+		response = self.client.get('/senpai/management_module/')
 		self.assertEqual(response.status_code,302)
 		up = UserProfile.objects.get(user=u)
 		up.is_admin = 1
 		up.save()
-		response = self.client.get('/senpai/module-manage/')
+		response = self.client.get('/senpai/management_module/')
 		self.assertEqual(response.status_code,200)
 	
 '''
