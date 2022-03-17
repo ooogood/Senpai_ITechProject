@@ -1,24 +1,26 @@
-{% extends 'senpai/base.html' %}
+{% extends 'senpai/base_admin_func.html' %}
 {% load staticfiles %}
 {% load senpai_template_tags %} 
 
 {% block title_block %}
-	Admin User Page
+	Admin Key Generation
 {% endblock %}
-{% block header_block %}
-<h1>Generate Admin key</h1>
 
+{% block header_block_ad %}
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			crossorigin="anonymous"></script>
+	<script type="text/javascript" src="{% static 'js/scroll_plugin.js' %}"></script>
+	<script src="{% static 'js/manage_page.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/keygen_css.css' %}"/>
+{% endblock %}
+
+{% block navigation %}
+    <h2 class="navigation managetitle">Generate Admin key</h2>
+    <a class="navigation component manage" href="{% url 'senpai:moduleManage' %}"></a>
 {% endblock %}
 {% block body_block %}
-
-    <a href="{% url 'senpai:genAdminKey' %}">Generate</a>
-    <br/>
-    <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        Your admin key is:
-        {{ key }}
-
+    <div class="keygen">
+        <p class="keygen">The current admin registration key is:<br>{{ key }}</p>
+        <a class="keygen" href="{% url 'senpai:genAdminKey' %}">Generate a New Key</a>
+    </div>
 {% endblock %}

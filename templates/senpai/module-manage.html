@@ -16,7 +16,6 @@
 
 {% block navigation %}
 	<h2 class="navigation managetitle">Module Management</h2>
-	<!-- <a class="navigation component mynote" href="{% url 'senpai:mynote' %}">My Notes</a> -->
     <a class="navigation component keygen" href="{% url 'senpai:genAdminKey' %}"></a>
 {% endblock %}
 
@@ -25,7 +24,7 @@
         {% get_all_module_list %}
     </ul>
     <div class="add_module_frame">
-        <input class="component add_module" id="txt_module" maxlength="50" placeholder="Input the name of Module..." />
+        <input class="component add_module" id="txt_module" maxlength="50" placeholder="Input the module title..." />
         <div class="add_module" type="button" id="btn_add_module">Create a New Module</div>
     </div>
 
