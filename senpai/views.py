@@ -25,7 +25,7 @@ from urllib import parse
 # Create your views here.
 # home page
 class HomePage(View):
-    @method_decorator(login_required)
+    @method_decorator(login_required(redirect_field_name=None))
     def get(self, request):
         if request.is_ajax():
             context_dict = get_home_modules(request.user, request.GET['search'])
@@ -38,7 +38,7 @@ class HomePage(View):
 
 # module page
 class ModulePage(View):
-    @method_decorator(login_required)
+    @method_decorator(login_required(redirect_field_name=None))
     def get(self, request, module_name_slug):
         context_dict = {}
         try:
@@ -58,7 +58,7 @@ class ModulePage(View):
         return render(request, 'senpai/module.html', context=context_dict)
 
 
-@login_required
+@login_required(redirect_field_name=None)
 def upload_note(request, module_name_slug):
     file = request.FILES.get('file', False)
     if file != False:
@@ -71,7 +71,7 @@ def upload_note(request, module_name_slug):
 
 # note page
 class NotePage(View):
-    @method_decorator(login_required)
+    @method_decorator(login_required(redirect_field_name=None))
     def get(self, request, note_id):
         context_dict = {}
         if request.is_ajax():
@@ -97,7 +97,7 @@ class NotePage(View):
         return render(request, 'senpai/note.html', context=context_dict)
 
 
-@login_required
+@login_required(redirect_field_name=None)
 def note_like_clicked(request, note_id):
     context_dict = {}
     note = Note.objects.get(id=note_id)
@@ -119,7 +119,7 @@ def note_like_clicked(request, note_id):
     return render(request, 'senpai/note_like_info.html', context=context_dict)
 
 
-@login_required
+@login_required(redirect_field_name=None)
 def note_download(request, note_id):
     note = Note.objects.get(id=note_id)
     if os.path.exists(note.file.path):
@@ -133,7 +133,7 @@ def note_download(request, note_id):
 
 # user - my note
 class Mynote(View):
-    @method_decorator(login_required)
+    @method_decorator(login_required(redirect_field_name=None))
     def get(self, request):
         context_dict = {}
         result_dict = get_mynote_notes(request.user)
@@ -157,7 +157,7 @@ class Mynote(View):
 
 
 # user - mylike
-@login_required
+@login_required(redirect_field_name=None)
 def mylike(request):
     context_dict = {}
     context_dict['uf_type'] = 'mylikes'
@@ -182,7 +182,7 @@ def mylike(request):
 
 
 # user - mymodule
-@login_required
+@login_required(redirect_field_name=None)
 def mymodule(request):
     context_dict = {}
     context_dict['uf_type'] = 'mymodules'
@@ -271,13 +271,13 @@ def signinup(request):
     return render(request, 'senpai/signinup.html', context=context_dict)
 
 
-@login_required
+@login_required(redirect_field_name=None)
 def user_logout(request):
     logout(request)
     return redirect(reverse('senpai:home'))
 
 
-@login_required
+@login_required(redirect_field_name=None)
 def genAdminKey(request):
     user = request.user
     statusAdmin = UserProfile.objects.get(user=user).is_admin
@@ -293,7 +293,7 @@ def genAdminKey(request):
     context_dict = {'key': status.admin_key}
     return render(request, 'senpai/generateKey.html', context=context_dict)
 
-@login_required
+@login_required(redirect_field_name=None)
 def module_management(request):
     user = request.user
     status = UserProfile.objects.get(user=user).is_admin
