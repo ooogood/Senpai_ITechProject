@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$(".modulelist").on('click',"button.delete",function(){
+	$(".modules").on('click',"div.delete",function(){
 		var action = 'delete';
 		var module_id = $(this).data("modid");
 		$.get($(location).attr('href'),
@@ -8,11 +8,11 @@ $(document).ready(function() {
 				'module_id': module_id,
 			},
 			function(response) {
-				$('.modulelist').html(response);
+				$('.modules').html(response);
 			});
 	});
 
-	$(".add_module_frame").on('click',"button.add_module",function(){
+	$(".add_module_frame").on('click',"div.add_module",function(){
 		var action = 'add';
 		var txt = $("#txt_module").val();
 		$.get($(location).attr('href'),
@@ -22,7 +22,17 @@ $(document).ready(function() {
 			},
 			function(response) {
 				$("#txt_module").val("");
-				$('.modulelist').html(response);
+				$('.modules').html(response);
 			});
+	});
+
+	// scroll beautify
+	$('.modules').niceScroll({
+		cursorcolor: 'white',
+		cursorwidth: '12px',
+		cursorborder:'none',
+		autohidemode: 'leave',
+		horizrailenabled:false,
+		railpadding: { top: 96, right: 0, left: 0, bottom: 12 }
 	});
 });

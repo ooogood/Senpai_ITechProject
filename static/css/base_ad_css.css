@@ -1,0 +1,26 @@
+.navigation.component.homepage{
+    width: 36vw;
+    max-width: 360px;
+    border-radius: 20px 10px 62px 20px;
+}
+
+h2{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    left: min(calc(36vw + 30px), 390px);
+    right: 84px;
+    overflow: hidden;
+    font-size: 48px;
+    font-weight: normal;
+    color: white;
+    line-height: 72px;
+    white-space: nowrap;
+}
+
+.navigation.component:nth-child(3){
+    right: 0;
+    width: 72px;
+    background-repeat: no-repeat;
+    border-radius: 20px;
+}

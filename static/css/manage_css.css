@@ -1,0 +1,131 @@
+.navigation.component.keygen{
+    background-position: center;
+    background-size: auto 36px;
+    background-image: url("/static/img/key_icon.webp");
+}
+
+.modules{
+    position: absolute;
+    margin: 0;
+    padding-top: 192px;
+    padding-left: max(12px, calc(25% - 228px));
+    padding-right: max(24px, calc(25% - 216px));
+    padding-bottom: 144px;
+    top: 0;
+    left: 0;
+    right: 50%;
+    bottom: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 72px 0;
+    justify-content: center;
+}
+
+li.module{
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 72px;
+    list-style: none;
+}
+
+a.module{
+    position: absolute;
+    padding-left: 18px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-decoration: none;
+    border-radius: 6px;
+    white-space: nowrap;
+    line-height: 72px;
+    font-size: 24px;
+    font-weight: normal;
+    color: white;
+    white-space: nowrap;
+}
+
+div.delete.module{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 48px;
+    height: 48px;
+    background-position: center;
+    background-size: 22px 24px;
+    background-repeat: no-repeat;
+    background-color: #aa4400;
+    background-image: url("/static/img/delete_icon.webp");
+    border: 1px solid #ff8888;
+    box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3), 0 0 12px 0 #ff8888 inset;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.add_module_frame{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: max(192px, calc(50% - 60px));
+    left: calc(50% + max(12px, calc(25% - 228px)));
+    right: max(12px, calc(25% - 228px));
+    height: 132px;
+    background-color: rgba(255,255,255, 0.3);
+    border: 1px solid rgba(255,255,255, 0.3);
+    border-radius: 6px;
+    backdrop-filter: blur(60px) brightness(125%);
+}
+
+input.component.add_module{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    bottom: 72px;
+    box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+}
+
+div.add_module{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 72px;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    overflow: hidden;
+    background-color: #00aa8d;
+    border: 1px solid #88ffeb;
+    box-shadow: 0 0 12px 0 #88ffeb inset;
+    font-size: 24px;
+    font-weight: normal;
+    color: white;
+    white-space: nowrap;
+    word-break: unset;
+    text-align: center;
+    line-height: 48px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+div.add_module:after{
+    position: absolute;
+    content: "";
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3);
+}
+
+div.module:hover, div.add_module:hover{
+    filter: brightness(125%);
+}
