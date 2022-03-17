@@ -17,8 +17,8 @@ $(document).ready(function() {
 		var txt = $("#txt_module").val();
 		$.get($(location).attr('href'),
 			{
-				action_type: action,
-				module_name: txt,
+				'action_type': action,
+				'module_name': txt,
 			},
 			function(response) {
 				$("#txt_module").val("");

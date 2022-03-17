@@ -285,8 +285,7 @@ def genAdminKey(request):
         return redirect(reverse('senpai:home'))
     """This function generate 10 character long hash"""
 
-    current_user = request.user
-    status = UserProfile.objects.get(user=current_user)
+    status = UserProfile.objects.get(user=request.user)
     if request.is_ajax() and request.GET.get('req') == 'gen_admin_key':
         gen_admin_key( status )
         status.save()
@@ -310,7 +309,10 @@ def module_management(request):
             m.save()
         elif action_type == 'delete':
             module_id = request.GET.get('module_id')
-            if Module.objects.filter(id=module_id).exists():
-                Module.objects.filter(id=module_id).delete()
+            try:
+                Module.objects.get(id=module_id).delete()
+            except Module.DoesNotExist:
+                # if no this module, do nothing
+                pass
         return render(request, 'senpai/management_module_list.html', context=get_all_module_list())
     return render(request, 'senpai/module-manage.html', context=context_dict)
