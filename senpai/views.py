@@ -287,8 +287,10 @@ def genAdminKey(request):
 
     current_user = request.user
     status = UserProfile.objects.get(user=current_user)
-    gen_admin_key( status )
-    status.save()
+    if request.is_ajax() and request.GET.get('req') == 'gen_admin_key':
+        gen_admin_key( status )
+        status.save()
+        return HttpResponse(f"{status.admin_key}")
     context_dict = {'key': status.admin_key}
     return render(request, 'senpai/generateKey.html', context=context_dict)
 

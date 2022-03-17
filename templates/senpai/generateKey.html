@@ -10,7 +10,7 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 			crossorigin="anonymous"></script>
 	<script type="text/javascript" src="{% static 'js/scroll_plugin.js' %}"></script>
-	<script src="{% static 'js/manage_page.js' %}"></script>
+	<script src="{% static 'js/genAdminKey.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'css/keygen_css.css' %}"/>
 {% endblock %}
 
@@ -20,7 +20,7 @@
 {% endblock %}
 {% block body_block %}
     <div class="keygen">
-        <p class="keygen">The current admin registration key is:<br>{{ key }}</p>
-        <a class="keygen" href="{% url 'senpai:genAdminKey' %}">Generate a New Key</a>
+        <p class="keygen">The current admin registration key is:<br><span class="adminkey">{{ key }}</span></p>
+        <div type="button" class="keygen" id="genkey_button">Generate a New Key</a>
     </div>
 {% endblock %}
