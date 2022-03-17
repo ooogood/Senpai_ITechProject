@@ -11,7 +11,7 @@ class UserProfile(models.Model):
     NAME_MAX_LENGTH = 32
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_admin = models.IntegerField(default=0)
-    admin_key = models.CharField(max_length=NAME_MAX_LENGTH, default=None, blank=True)
+    admin_key = models.CharField(max_length=NAME_MAX_LENGTH, default=None, blank=True, null=True)
 
     def __str__(self):
         return self.user.username
@@ -47,11 +47,12 @@ class Note(models.Model):
     def save(self, *args, **kwargs):
         # if title not specified, auto-filled with file name
         if not self.title:
-            self.title = os.path.splitext( os.path.basename(self.file.name) )[0]
+            self.title = os.path.splitext(os.path.basename(self.file.name))[0]
         # only save the upload date, instead of record date whenever it is saved
         if not self.date:
             self.date = datetime.now()
         super(Note, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.title
 

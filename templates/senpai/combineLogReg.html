@@ -64,6 +64,12 @@
             </div>
 			<!-- Provide a button to click to submit the form. -->
 			<input type="submit" name="submit" value="Register" style="margin-top: 30px"/>
+            {% if errorInfo != '' %}
+
+                {{ errorInfo }}
+
+            {% endif %}
+
 	</form>
     {% endif %}
             </div>

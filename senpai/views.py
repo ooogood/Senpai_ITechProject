@@ -204,42 +204,58 @@ def mymodule(request):
     return render(request, 'senpai/mymodule.html', context=context_dict)
 
 
+def testFunction(request):
+    pass
+
+
 def register(request):
     registered = False
+    errorInfo = ''
+    context_dic = {}
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
 
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
+            user = user_form.save(commit=False)
             user.set_password(user.password)
-            user.save()
+
             profile = profile_form.save(commit=False)
             profile.user = user
-            profile.save()
 
-        try:
-            key = profile.admin_key
-            print(key)
-            if key:
-                keySet = UserProfile.objects.filter(admin_key=key)
-                print(keySet)
+            # 从from获得用户输入的key
+            getKey = profile.admin_key
+            print(getKey)
+            if getKey:
+                # 进入判断
+                try:
+                    keySet = UserProfile.objects.get(admin_key=getKey)
+
+                except:
+                    errorInfo = "Invalid admin key supplied."
+                    context_dic = {'errorInfo': errorInfo}
+                    return render(request, 'senpai/combineLogReg.html', context=context_dic)
+                # 获得与用户输入key相对应的项
                 if keySet:
-                    profileUser = UserProfile.objects.get(user=user)
-                    print(profileUser.is_admin)
-                    profileUser.is_admin(1)
-                    profileUser.admin_key = None
-                    profileUser.save()
-                    # Set key to 0 after used
-                    admin_key = UserProfile.objects.get(admin_key=key)
-                    admin_key.admin_key = None
-                    admin_key.save()
-                    registered = True
-                else:
-                    print("Admin Key error or non-existent, please re-input")
-        except:
+                    user = user_form.save(commit=True)
+                    user.save()
+                    currentUserProfile = UserProfile.objects.create(user=user, is_admin=1, admin_key='')
+                    currentUserProfile.save()
+                    # 下面对查询出来的key进行清除
+                    keySet.admin_key = ''
+                    keySet.save()
+
+        #
+        # 判断用户是不是没有输入，如果没有输入就不进入下面的key校验直接注册为普通用户
+        # 如果用户输入，首先要有profile项生成(响应器生成)，虽然没有输入，
+        # 然后将传过来的key在数据库中进行校验，如果输错就不让注册，前端显示一条错误信息
+        # 验证成功后清除已经使用的adminKey，并且更新is_admin=1
+        # 最后注册成功
+        #
+            user = user_form.save(commit=True)
+            user.save()
+#            profile.save()
             registered = True
-        # registered = True
         else:
             print(user_form.errors, profile_form.errors)
     else:
