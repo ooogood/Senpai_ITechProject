@@ -6,6 +6,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static' )
 MEDIA_DIR = os.path.join(BASE_DIR, 'media' )
 MEDIA_ROOT = MEDIA_DIR # define the full path to a directory where you’d like Django to store uploaded files.
+STATIC_ROOT = STATIC_DIR
 STATICFILES_DIRS = [STATIC_DIR, ]
 
 # Quick-start development settings - unsuitable for production
