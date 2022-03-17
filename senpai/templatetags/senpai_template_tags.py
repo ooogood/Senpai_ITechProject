@@ -50,6 +50,13 @@ def get_three_notes_list(module):
 		note_list.append( note )
 	return note_list
 
+# helper function: is this user an admin
+def is_user_admin(user):
+	if UserProfile.objects.get(user=user).is_admin == 1:
+		return True
+	else:
+		return False
+
 # for module pages
 @register.inclusion_tag('senpai/notelist.html')
 def get_sorted_notes(module=None, sort_type='lik'):

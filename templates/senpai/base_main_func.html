@@ -9,5 +9,9 @@
 {% block navigation %}
 	{% block navigation_mf %}
 	{% endblock %}
+    {% if is_admin is True %}
+        <a class="navigation component modulemanage" href="{% url 'senpai:moduleManage' %}">Module Manage</a>
+        <a class="navigation component genAdminKey" href="{% url 'senpai:genAdminKey' %}">Generate AdminKey</a>
+    {% endif %}
 	<a class="navigation component userprofile" href="{% url 'senpai:mynote' %}"></a>
 {% endblock %}

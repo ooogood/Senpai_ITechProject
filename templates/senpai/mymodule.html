@@ -14,11 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/mymodule_css.css' %}"/>
 {% endblock %}
 
-{% block navigation %}
-	<h2 class="navigation usertitle">{{ user.username }}'s Modules</h2>
-	<a class="navigation component mynote" href="{% url 'senpai:mynote' %}">My Notes</a>
-	<a class="navigation component mylike" href="{% url 'senpai:mylike' %}">My likes</a>
-	<a class="navigation component logout" href="{% url 'senpai:logout' %}"></a>
+{% block navigation_block_uf %}
 {% endblock %}
 
 {% block body_block %}

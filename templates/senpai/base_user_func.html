@@ -6,3 +6,28 @@
 	{% block header_block_uf %}
 	{% endblock %}
 {% endblock %}
+
+{% block navigation %}
+	<h2 class="navigation usertitle">
+		{{ user.username }}'s 
+		{% if uf_type == "mylikes" %}
+			Likes
+		{% elif uf_type == "mynotes" %}
+			Notes
+		{% elif uf_type == "mymodules" %}
+			Modules
+		{% endif %}
+	</h2>
+	{% if uf_type != "mylikes" %}
+		<a class="navigation component mylike" href="{% url 'senpai:mylike' %}">My Likes</a>
+	{% endif %}
+	{% if uf_type != "mynotes" %}
+		<a class="navigation component mynote" href="{% url 'senpai:mynote' %}">My Notes</a>
+	{% endif %}
+	{% if uf_type != "mymodules" %}
+		<a class="navigation component mymodule" href="{% url 'senpai:mymodule' %}">My Modules</a>
+	{% endif %}
+	<a class="navigation component logout" href="{% url 'senpai:logout' %}"></a>
+	{% block navigation_block_uf %}
+	{% endblock %}
+{% endblock %}

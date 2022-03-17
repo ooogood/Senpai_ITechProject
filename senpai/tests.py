@@ -99,14 +99,14 @@ class RunningTest(TestCase):
 '''
 
 
-def add_user(uname):
+def add_user(uname, is_admin=0):
     email = uname + '@fakemail.com'
     pw = uname + 'isnumber1!'
     u = User.objects.get_or_create(username=uname, email=email)[0]
     u.set_password(pw)
     u.save()
     up = UserProfile.objects.get_or_create(user=u)[0]
-    up.is_admin = 0
+    up.is_admin = is_admin
     up.save()
     return u
 

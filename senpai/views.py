@@ -20,7 +20,7 @@ from time import time
 import os, math, mimetypes
 
 from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments, get_mynote_notes, \
-    get_mymodule_usermodules, get_mymodule_othermodules, get_all_module_list
+    get_mymodule_usermodules, get_mymodule_othermodules, get_all_module_list, is_user_admin
 import urllib
 from urllib import parse
 
@@ -34,6 +34,8 @@ class HomePage(View):
             context_dict = get_home_modules(request.user, request.GET['search'])
             return render(request, 'senpai/home_modules.html', context=context_dict)
         context_dict = get_home_modules(request.user)
+        # put extra info: is this an admin login
+        context_dict['is_admin'] = is_user_admin(request.user)
         return render(request, 'senpai/home.html', context=context_dict)
 
 
@@ -54,6 +56,8 @@ class ModulePage(View):
             result_dict = get_sorted_notes(module, sort_type)
             return render(request, 'senpai/notelist.html', context=result_dict)
         context_dict['all_modules'] = Module.objects.all().order_by('name')
+        # put extra info: is this an admin login
+        context_dict['is_admin'] = is_user_admin(request.user)
         return render(request, 'senpai/module.html', context=context_dict)
 
 
@@ -91,6 +95,8 @@ class NotePage(View):
             context_dict['note'] = None
             context_dict['likes'] = None
             context_dict['liked'] = None
+        # put extra info: is this an admin login
+        context_dict['is_admin'] = is_user_admin(request.user)
         return render(request, 'senpai/note.html', context=context_dict)
 
 
@@ -138,6 +144,7 @@ class Mynote(View):
         context_dict['notes'] = result_dict['notes']
         context_dict['user'] = request.user
         context_dict['comments'] = result_dict['comments']
+        context_dict['uf_type'] = 'mynotes'
         # if it is ajax request, only return the note list
         if request.is_ajax():
             need_del_note = request.GET.get('noteid')
@@ -155,10 +162,8 @@ class Mynote(View):
 # user - mylike
 @login_required
 def mylike(request):
-    currentUser = request.user
-    statueAdmin = UserProfile.objects.get(user=currentUser).is_admin
-
-    context_dict = {'status': statueAdmin}
+    context_dict = {}
+    context_dict['uf_type'] = 'mylikes'
 
     if request.user.is_authenticated:
         # get note_list
@@ -184,6 +189,7 @@ def mylike(request):
 def mymodule(request):
     user = request.user
     context_dict = {}
+    context_dict['uf_type'] = 'mymodules'
     if request.is_ajax():
         # only do the action when refreshing user block
         if request.GET.get('block') == 'user':
@@ -303,21 +309,21 @@ def user_logout(request):
 
 
 @login_required
-def generateAdminKey(request):
+def genAdminKey(request):
     user = request.user
-    statueAdmin = UserProfile.objects.get(user=user).is_admin
-    if statueAdmin == 0:
+    statusAdmin = UserProfile.objects.get(user=user).is_admin
+    if statusAdmin == 0:
         return redirect(reverse('senpai:home'))
     """This function generate 10 character long hash"""
 
     current_user = request.user
-    statue = UserProfile.objects.get(user=current_user)
-    key = statue.admin_key
-    if statue.admin_key is None or not statue.admin_key:
+    status = UserProfile.objects.get(user=current_user)
+    key = status.admin_key
+    if status.admin_key is None or not status.admin_key:
         code = hashlib.md5(str(time()).encode("utf-8"))
         key = code.hexdigest()[:-10]
-        statue.admin_key = key
-        statue.save()
+        status.admin_key = key
+        status.save()
         context_dict = {'key': key}
         return render(request, 'senpai/generateKey.html', context=context_dict)
     else:
@@ -328,9 +334,9 @@ def generateAdminKey(request):
 @login_required
 def module_management(request):
     user = request.user
-    statue = UserProfile.objects.get(user=user).is_admin
+    status = UserProfile.objects.get(user=user).is_admin
     context_dict = {}
-    if statue == 0:
+    if status == 0:
         return redirect(reverse('senpai:home'))
 
     if request.is_ajax():
