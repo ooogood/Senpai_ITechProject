@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase,Client
 from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 from django.contrib.auth.models import User
 from django.core.files import File
@@ -24,8 +24,76 @@ class ModelTests(TestCase):
     # test note id, date, likes
 
     # test comment id, date
+	
+class RunningTest(TestCase):
+	#test user can get access to home
+	def test_home(self):
+		u = add_user('TestUser')
+		u.set_password('1')
+		response = self.client.get('/senpai/')
+		self.assertEqual(response.status_code,302)
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		response = self.client.get('/senpai/')
+		self.assertEqual(response.status_code,200)
+		
+	def test_module(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		mod1 = add_module('Testing Module')
+		response = self.client.get('/senpai/module/testing-module/')
+		self.assertEqual(response.status_code,200)
+		
+	def test_note(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		mod1 = add_module('Testing Module')
+		note1 = add_note(mod1,u,'testnote','example_note.pdf')
+		url = '/senpai/note/'+str(note1.id)+'/'
+		print(url)
+		response = self.client.get(url)
+		self.assertEqual(response.status_code,200)
+		
+	def test_mynote(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		response = self.client.get('/senpai/mynote/')
+		self.assertEqual(response.status_code,200)
+		
+	def test_mymodule(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		response = self.client.get('/senpai/mymodule/')
+		self.assertEqual(response.status_code,200)
+		
+	def test_mylike(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		response = self.client.get('/senpai/mylike/')
+		self.assertEqual(response.status_code,200)
 
-
+	def test_generatekey(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		response = self.client.get('/senpai/generateKey/')
+		self.assertEqual(response.status_code,302)
+		up = UserProfile.objects.get(user=u)
+		up.is_admin = 1
+		up.save()
+		response = self.client.get('/senpai/generateKey/')
+		self.assertEqual(response.status_code,200)
+		
+	def test_module_manage(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		response = self.client.get('/senpai/module-manage/')
+		self.assertEqual(response.status_code,302)
+		up = UserProfile.objects.get(user=u)
+		up.is_admin = 1
+		up.save()
+		response = self.client.get('/senpai/module-manage/')
+		self.assertEqual(response.status_code,200)
+	
 '''
  helper functions: add model objects
 '''
@@ -38,7 +106,7 @@ def add_user(uname):
     u.set_password(pw)
     u.save()
     up = UserProfile.objects.get_or_create(user=u)[0]
-    up.is_admin = 1
+    up.is_admin = 0
     up.save()
     return u
 
