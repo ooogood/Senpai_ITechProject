@@ -6,17 +6,22 @@ from time import time
 
 register = template.Library()
 
+# get a value from dictuionary according to key in templates
 @register.filter
 def get_dict_item(dic, key):
 	return dic.get( key )
+
+# get username
 @register.filter
 def get_username(user):
 	return user.username
 
-# for home page
+# for home page #
+# get module lists for home page
 @register.inclusion_tag('senpai/home_modules.html')
 def get_home_modules(user, query=''):
 	context_dict = {}
+	# if this is not a search request
 	# get normal home page: my_modules / other_modules
 	if query == '':
 		# get my modules
@@ -34,6 +39,7 @@ def get_home_modules(user, query=''):
 			# module name as other_dict's key and map to a note list
 			other_dict[ mod.name ] = get_three_notes_list(mod)
 		context_dict['other_modules_dict'] = other_dict
+	# if this is a search request
 	else:
 		# get search result
 		context_dict['search_results'] = Module.objects.filter(name__icontains=query).order_by('name')
@@ -52,22 +58,17 @@ def get_three_notes_list(module):
 		note_list.append( note )
 	return note_list
 
-# helper function: is this user an admin
-def is_user_admin(user):
-	if UserProfile.objects.get(user=user).is_admin == 1:
-		return True
-	else:
-		return False
-
-# for module pages
+# for module pages #
+# get note list for this module page
 @register.inclusion_tag('senpai/notelist.html')
 def get_sorted_notes(module=None, sort_type='lik'):
 	note_dict = {}
+	# get all note for this module first
 	notes = Note.objects.filter(module=module)
 	for note in notes:
 		cnt = Comment.objects.filter(note=note).count()
 		note_dict[ note.title ] = cnt
-	# sort the result
+	# sort the result according to input argument
 	if sort_type == 'lik':
 		notes = notes.order_by('-likes')
 	elif sort_type == 'cmt':
@@ -79,7 +80,8 @@ def get_sorted_notes(module=None, sort_type='lik'):
 	return {'notes': notes,
 			'note_dict': note_dict}
 
-# for note pages
+# for note pages #
+# get all comments for this note page
 @register.inclusion_tag('senpai/commentlist.html')
 def get_comments(note, user):
 	context_dict = {}
@@ -88,7 +90,7 @@ def get_comments(note, user):
 	context_dict['user'] = user
 	return context_dict
 	
-# for mynote page
+# for mynote page #
 # get all notes that this user uploaded, including their comment counts
 @register.inclusion_tag('senpai/mynote_notes.html')
 def get_mynote_notes(user):
@@ -102,6 +104,8 @@ def get_mynote_notes(user):
 	context_dict['comments'] = comment
 	return context_dict
 	
+# for mymodule page #
+# get all modules that the user has enrolled
 @register.inclusion_tag('senpai/mymodule_usermodules.html')
 def get_mymodule_usermodules(user):
 	context_dict = {}
@@ -111,6 +115,7 @@ def get_mymodule_usermodules(user):
 	context_dict['user']=user
 	return context_dict
 
+# get all modules that the user hasn't enrolled
 @register.inclusion_tag('senpai/mymodule_othermodules.html')
 def get_mymodule_othermodules(user):
 	context_dict = {}
@@ -120,13 +125,21 @@ def get_mymodule_othermodules(user):
 	context_dict['user']=user
 	return context_dict
 	
+# for module management page #
+# get all modules in this website
 @register.inclusion_tag('senpai/management_module_list.html')
 def get_all_module_list():
 	context_dict = {}
 	context_dict['modules'] = Module.objects.all().order_by('name')
 	return context_dict
 
+# for generate admin key page #
+# generate new admin key for this user
 def gen_admin_key(userprofile):
     code = hashlib.md5(str(time()).encode("utf-8"))
     key = code.hexdigest()[:-10]
     userprofile.admin_key = key
+
+# return true if this user is an admin
+def is_admin(user):
+	return ( UserProfile.objects.get(user=user).is_admin == 1 )

@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 import os, mimetypes
 
 from senpai.templatetags.senpai_template_tags import get_sorted_notes, get_home_modules, get_comments, get_mynote_notes, \
-    get_mymodule_usermodules, get_mymodule_othermodules, get_all_module_list, is_user_admin, gen_admin_key
+    get_mymodule_usermodules, get_mymodule_othermodules, get_all_module_list, gen_admin_key, is_admin
 import urllib
 from urllib import parse
 
@@ -35,7 +35,7 @@ class HomePage(View):
         # get home page modules from helper function (including user modules and other modules) 
         context_dict = get_home_modules(request.user)
         # put extra info for admin button: is this an admin login
-        context_dict['is_admin'] = is_user_admin(request.user)
+        context_dict['is_admin'] = is_admin(request.user)
         return render(request, 'senpai/home.html', context=context_dict)
 
 
@@ -201,7 +201,7 @@ def mylike(request):
     return render(request, 'senpai/mylike.html', context=context_dict)
 
 
-# user - mymodule
+# user function: modules that I enrolled
 @login_required(redirect_field_name=None)
 def mymodule(request):
     context_dict = {}
@@ -211,15 +211,17 @@ def mymodule(request):
     # only do the add or delete enrollment in backend when refreshing user block
     # to avoid duplicate operations
     if request.is_ajax():
-        # if thie request is to refresh modules that user has enrolled
+        # if the request is to refresh modules that user has enrolled
         if request.GET.get('block') == 'user':
             action_type = request.GET.get('action_type')
             module_id = request.GET.get('module_id')
             this_module = Module.objects.get(id=module_id)
+            # action: enroll a module (add an enrollmenet)
             if action_type == 'select':
                 if not Enrollment.objects.filter(module=this_module, user=request.user).exists():
                     e = Enrollment.objects.get_or_create(module=this_module, user=request.user)[0]
                     e.save()
+            # action: unenroll a module (delete an enrollment)
             elif action_type == 'delete':
                 if Enrollment.objects.filter(module=this_module, user=request.user).exists():
                     Enrollment.objects.filter(module=this_module, user=request.user).delete()
@@ -227,36 +229,36 @@ def mymodule(request):
         # if thie request is to refresh modules that user hasn't enrolled
         else:
             return render(request, 'senpai/mymodule_othermodules.html', context=get_mymodule_othermodules(request.user))
-
+    # normal request
     return render(request, 'senpai/mymodule.html', context=context_dict)
 
-
-def testFunction(request):
-    pass
-
-# main entry of sign in/up page
+# sign in/up page
 def signinup(request):
     context_dict = {}
     context_dict['cust_errmsg'] = ''
     context_dict['form_errmsg'] = ''
-    # if this is a sign in request
+    # if this is a sign in POST request
     if request.method == 'POST' and request.POST.get('signin_form') == 'submit':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
         if user:
+            # if sign in successfully, redirect to homepage
             if user.is_active:
                 login(request, user)
                 return redirect(reverse('senpai:home'))
+            # error: disabled user
             else:
                 context_dict['cust_errmsg']="Your senpai account is disabled."
+        # error: invalid login
         else:
             context_dict['cust_errmsg']=(f"Invalid signin details: {username}, {password}")
-    # if this is a sign up request
+    # if this is a sign up POST request
     elif request.method == 'POST' and request.POST.get('signup_form') == 'submit':
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
 
+        # validate forms for User and UserProfile model
         if user_form.is_valid() and profile_form.is_valid():
             # render form into objects without saving
             user = user_form.save(commit=False)
@@ -282,7 +284,7 @@ def signinup(request):
                 user.save()
                 profile.user = user
                 profile.save()
-                # login and redirect to home if sign up successful
+                # if sign up successfully, auto login and redirect to home if sign up successful
                 login(request, user)
                 return redirect(reverse('senpai:home'))
             except UserProfile.DoesNotExist:
@@ -293,48 +295,59 @@ def signinup(request):
                 # only shows the first error message for beauty
                 context_dict['form_errmsg'] += value
                 break
-    # if there is no sign in or sign up request
+    # if there is no sign in/up request or sign in/up unsuccessful
+    # render empty forms
     context_dict['user_form'] = UserForm()
     context_dict['profile_form'] = UserProfileForm()
     return render(request, 'senpai/signinup.html', context=context_dict)
 
 
+# user function: logout handler
 @login_required(redirect_field_name=None)
 def user_logout(request):
     logout(request)
-    return redirect(reverse('senpai:home'))
+    # redirect to signin/up page after logging out
+    return redirect(reverse('senpai:signinup'))
 
 
+# admin function: generate admin key page handler
+# this page is for admins to generate hashkey to allow others to sign up another admin account
 @login_required(redirect_field_name=None)
 def genAdminKey(request):
-    user = request.user
-    statusAdmin = UserProfile.objects.get(user=user).is_admin
-    if statusAdmin == 0:
+    # validate if this user is an admin
+    # if not an admin, redirect to homepage
+    if not is_admin(request.user):
         return redirect(reverse('senpai:home'))
     """This function generate 10 character long hash"""
 
     status = UserProfile.objects.get(user=request.user)
+    # ajax: generate new admin key button
     if request.is_ajax() and request.GET.get('req') == 'gen_admin_key':
         gen_admin_key( status )
         status.save()
         return HttpResponse(f"{status.admin_key}")
+    # normal request
     context_dict = {'key': status.admin_key}
     return render(request, 'senpai/generateKey.html', context=context_dict)
 
+
+# admin function: manage modules in this website
 @login_required(redirect_field_name=None)
 def module_management(request):
-    user = request.user
-    status = UserProfile.objects.get(user=user).is_admin
-    context_dict = {}
-    if status == 0:
+    # validate if this user is an admin
+    # if not an admin, redirect to homepage
+    if not is_admin(request.user):
         return redirect(reverse('senpai:home'))
-
+    context_dict = {}
+    # ajax: add or delete module
     if request.is_ajax():
         action_type = request.GET.get('action_type')
+        # add a module
         if action_type == 'add':
             module_name = request.GET.get('module_name')
             m = Module.objects.get_or_create(name=module_name)[0]
             m.save()
+        # delete a module
         elif action_type == 'delete':
             module_id = request.GET.get('module_id')
             try:
@@ -342,5 +355,7 @@ def module_management(request):
             except Module.DoesNotExist:
                 # if no this module, do nothing
                 pass
+        # only render the module list after ajax request
         return render(request, 'senpai/management_module_list.html', context=get_all_module_list())
+    # normal request
     return render(request, 'senpai/management_module.html', context=context_dict)
