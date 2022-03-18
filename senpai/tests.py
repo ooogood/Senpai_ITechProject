@@ -99,7 +99,127 @@ class PageAvailabilityTest(TestCase):
 		# test if admin can access module management page
 		response = self.client.get(reverse('senpai:moduleManage'))
 		self.assertEqual(response.status_code,200)
+
+class PageUseAblilityTest(TestCase):
 	
+	def test_homepage_module_appears(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		mod1 = add_module('Testing Module')
+		mod2 = add_module('Testing Module2')
+		add_enrollment(mod2,u)
+		
+		response = self.client.get(reverse('senpai:home'))
+		self.assertContains(response,mod1.name)
+		self.assertContains(response,mod2.name)
+		self.assertIn(mod1,response.context['other_modules'])
+		self.assertIn(mod2,response.context['my_modules'])
+		
+	def test_module_page_note_appears(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		mod1 = add_module('Testing Module')
+		n = add_note(mod1,u,'test_note','example_note.pdf')
+		
+		response = self.client.get(reverse('senpai:show_module',kwargs={'module_name_slug':mod1.slug}))
+		self.assertContains(response,n.title)
+		self.assertIn(n,response.context['notes'])
+		
+	def test_notepage_comments_and_likes(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		mod1 = add_module('Testing Module')
+		n = add_note(mod1,u,'test_note','example_note.pdf')
+		Comment = 'Good note!'
+		response = self.client.get(reverse('senpai:show_note',kwargs={'note_id':n.id}))
+		
+		self.assertEqual(response.context['likes'],0)
+		self.assertEqual(response.context['liked'],0)
+		self.assertNotContains(response,Comment)
+		
+		add_like(u, n)
+		add_comment(n,u,Comment)
+		
+		response = self.client.get(reverse('senpai:show_note',kwargs={'note_id':n.id}))
+		self.assertEqual(response.context['likes'],1)
+		self.assertEqual(response.context['liked'],1)
+		self.assertContains(response,Comment)
+		
+	def test_my_note_note_list(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		mod1 = add_module('Testing Module')
+		n = add_note(mod1,u,'test_note','example_note.pdf')
+		
+		response = self.client.get(reverse('senpai:mynote'))
+		self.assertContains(response,n.title)
+		self.assertIn(n,response.context['notes'])
+		
+	def test_my_module_module_list(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		mod1 = add_module('Testing Module')
+		mod2 = add_module('Testing Module2')
+		add_enrollment(mod2,u)
+		
+		response = self.client.get(reverse('senpai:mymodule'))
+		self.assertContains(response,mod1.name)
+		self.assertContains(response,mod2.name)
+		self.assertIn(mod1,response.context['other_modules'])
+		self.assertIn(mod2,response.context['user_modules'])
+		
+	def test_my_like_liked_note_list(self):
+		u = add_user('JoJo')
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		mod1 = add_module('Testing Module')
+		n = add_note(mod1,u,'test_note','example_note.pdf')
+		
+		response = self.client.get(reverse('senpai:mylike'))
+		self.assertNotContains(response,n.title)
+		
+		like = add_like(u,n)
+		
+		response = self.client.get(reverse('senpai:mylike'))
+		self.assertContains(response,n.title)
+		
+	def test_sign_inup_and_logout(self):
+		self.client.post(reverse('senpai:signinup'),{'username': 'admintest', 'password':'1', 'email':'sb@1.com', 'signup_form':'submit'})
+		response = self.client.get(reverse('senpai:home'))
+		self.assertEqual(response.status_code,200)
+		
+		self.client.get(reverse('senpai:logout'))
+		response = self.client.get(reverse('senpai:home'))
+		self.assertEqual(response.status_code,302)
+		
+		self.client.post(reverse('senpai:signinup'),{'username': 'admintest', 'password':'1', 'signin_form':'submit'})
+		response = self.client.get(reverse('senpai:home'))
+		self.assertEqual(response.status_code,200)
+	
+	def test_admin_signup(self):
+		u = add_user('JoJo',1)
+		up = UserProfile.objects.get(user=u)
+		self.client.post(reverse('senpai:signinup'),{'username': 'admintest', 'password':'1', 'email':'sb@1.com', 'admin_key':up.admin_key, 'signup_form':'submit'})
+		response = self.client.get(reverse('senpai:home'))
+		self.assertEqual(response.status_code,200)
+		
+		admin = User.objects.get(username = 'admintest')
+		adminp = UserProfile.objects.get(user=admin)
+		self.assertEqual(adminp.is_admin,1)
+		
+	def test_module_management_module_list(self):
+		u = add_user('JoJo',1)
+		self.client.login(username='JoJo', password='JoJoisnumber1!')
+		modname = 'Testing Module'
+		
+		response = self.client.get(reverse('senpai:moduleManage'))
+		self.assertNotContains(response,modname)
+		
+		mod1 = add_module('Testing Module')
+		response = self.client.get(reverse('senpai:moduleManage'))
+		self.assertContains(response,modname)
+		
+		
+		
 '''
  helper functions: add model objects
 '''
