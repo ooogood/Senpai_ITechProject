@@ -26,6 +26,7 @@ h2{
     left: max(calc(50% - 360px), 0px);
     width: 720px;
     height: 480px;
+    overflow: hidden;
     background-color: rgba(255,255,255, 0.3);
     border: 1px solid rgba(255,255,255, 0.3);
     border-radius: 6px;
@@ -55,19 +56,20 @@ form{
 
 #user_form{
     right: 0;
-    opacity: 0.3;
+    opacity: 0;
+    display: none;
 }
 
 p{
     position: absolute;
     margin: 0;
     padding: 0;
-    overflow: hidden;
     font-weight: normal;
     color: white;
 }
 
 p.login{
+    overflow: hidden;
     font-size: 18px;
     line-height: 18px;
 }
@@ -99,7 +101,7 @@ p.login.password{
     background-color: #00aa8d;
     border: 1px solid #88ffeb;
     border-radius: 6px;
-    box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3), 0 0 12px 0 #88ffeb inset;
+    box-shadow: 6px 12px 24px 0px rgba(0, 0, 0, 0.3), 0 0 12px 0 #88ffeb inset;
     cursor: pointer;
 }
 
@@ -113,7 +115,7 @@ p.login.password{
 
 input{
     position: absolute;
-    box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 6px 12px 24px 0px rgba(0, 0, 0, 0.3);
     border-radius: 6px;
     outline: none;
     font-size: 18px;
@@ -216,29 +218,64 @@ p.delimeter{
     line-height: 408px;
 }
 
-div.switch{
+div.sign{
     position: absolute;
     margin: 0;
     padding: 0;
-    border-radius: 6px;
     cursor: pointer;
 }
 
-div.switch::after{
-    position: absolute;
-    content: "";
+.sign.in{
+    top: 36px;
+    left: 0px;
+    right: 540px;
+    height: 36px;
 }
 
-.switch.signin{
-}
-
-.switch.signup{
+.sign.up{
     top: 240px;
     left: 576px;
     right: 48px;
     height: 36px;
+}
+
+.switch{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+div.switch{
+    background-color: rgba(255,255,255, 0.3);
+    border: 1px solid rgba(255,255,255, 0.3);
+    backdrop-filter: blur(60px) brightness(125%);
+    box-shadow: 6px 12px 24px 0px rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+}
+
+div.sign:hover div.switch{
+    background-color: rgba(255,255,255, 0.5);
+    backdrop-filter: blur(60px) brightness(175%);
+}
+
+div.switch.signin{
+    opacity: 0;
+}
+
+p.switch{
     text-align: center;
-    font-size: 18px;
     line-height: 36px;
+}
+
+p.switch.signin{
+    font-size: 36px;
+}
+
+p.switch.signup{
+    font-size: 18px;
 }
 

@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block header_block %}
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			crossorigin="anonymous"></script>
+	<script src="{% static 'js/signinup_page.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'css/signinup_css.css' %}"/>
 {% endblock %}
 
@@ -62,8 +65,14 @@
             {% endif %}
         </form>
     </div>
-    <div class="switch signin" type="button">Sign In</div>
-    <div class="switch signup" type="button">Sign Up</div>
+    <div class="sign in">
+        <div class="switch signin" type="button"></div>
+        <p class="switch signin">Sign In</p>
+    </div>
+    <div class="sign up">
+        <div class="switch signup" type="button"></div>
+        <p class="switch signup">Sign Up</p>
+    </div>
 </div>
 
 {% endblock %}
