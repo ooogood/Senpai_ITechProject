@@ -21,18 +21,18 @@
     <div class="forms">
         <div class="delimeter"></div>
         <p class="delimeter">OR</p>
-        <form id="login_form" method="post" action="{% url 'senpai:signinup' %}">
+        <form id="login_form" method="post">
                 {% csrf_token %}
                 <p class="login username">Username</p>
                 <input class="login component username" type="text" name="username" value=""/>
                 <p class="login password">Password</p>
                 <input class="login component password" type="password" name="password" value="" autocomplete="new-password"/>
                 <label class="login button submit">
-                    <input type="submit" value="submit" name="signin_form" />
+                    <input type="button" value="submit" name="signin_form" />
                 </label>
+                <p class="loginerr"></p>
         </form>
-        <form id="user_form" method="post" action="{% url 'senpai:signinup' %}"
-            enctype="multipart/form-data">
+        <form id="user_form" method="post">
             {% csrf_token %}
             <!-- Display each form -->
             {% for hidden in form.hidden_fields %}
@@ -43,6 +43,7 @@
                 {{ field.help_text }}
                 {{ field }}
             {% endfor %}
+            <p class="required">* is required</p>
             <p class="register username"> {{ user_form.username.label }}</p>
             {{ user_form.username }}
             <p class="register email">{{ user_form.email.label }}</p>
@@ -53,8 +54,9 @@
             {{ profile_form.admin_key }}
             <!-- Provide a button to click to submit the form. -->
             <label class="register button submit">
-                <input type="submit" value="submit" name="signup_form" />
+                <input type="button" value="submit" name="signup_form" />
             </label>
+            <p class="registererr"></p>
         </form>
     </div>
     <div class="sign in">
@@ -64,15 +66,6 @@
     <div class="sign up">
         <div class="switch signup" type="button"></div>
         <p class="switch signup">Sign Up</p>
-    </div>
-    <div class="errmsgs">
-        {% if cust_errmsg != '' %}
-            <ul>
-                <li>{{ cust_errmsg }}</li>
-            </ul>
-        {% elif form_errmsg %}
-            {{ form_errmsg }}
-        {% endif %}
     </div>
 </div>
 

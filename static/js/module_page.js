@@ -52,6 +52,7 @@ $(document).ready(function() {
 
 		}
 	});
+	
 	// click like module button
 	$("#like").click(function(){
 		$.get($(location).attr('href'),

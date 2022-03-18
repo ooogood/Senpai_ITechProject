@@ -105,7 +105,7 @@ p.login.password{
     cursor: pointer;
 }
 
-[type='submit']{
+input[type='button']{
     display: none;
 }
 
@@ -113,7 +113,7 @@ p.login.password{
     filter: brightness(125%);
 }
 
-input{
+input.login, input.register{
     position: absolute;
     box-shadow: 6px 12px 24px 0px rgba(0, 0, 0, 0.3);
     border-radius: 6px;
@@ -135,6 +135,16 @@ input.login.username{
 input.login.password{
     top: 204px;
     bottom: 168px;
+}
+
+p.required{
+    top: 270px;
+    left: 72px;
+    right: 72px;
+    height: 14px;
+    font-size: 14px;
+    line-height: 14px;
+    white-space: nowrap;
 }
 
 p.register.username{
@@ -222,7 +232,6 @@ div.sign{
     position: absolute;
     margin: 0;
     padding: 0;
-    cursor: pointer;
 }
 
 .sign.in{
@@ -237,6 +246,7 @@ div.sign{
     left: 576px;
     right: 48px;
     height: 36px;
+    cursor: pointer;
 }
 
 .switch{
@@ -269,6 +279,7 @@ div.switch.signin{
 p.switch{
     text-align: center;
     line-height: 36px;
+    user-select: none;
 }
 
 p.switch.signin{
@@ -277,5 +288,15 @@ p.switch.signin{
 
 p.switch.signup{
     font-size: 18px;
+}
+
+p.loginerr, p.registererr{
+    top: 48px;
+    left: 72px;
+    right: 72px;
+    height: 18px;
+    font-size: 18px;
+    line-height: 18px;
+    white-space: nowrap;
 }
 

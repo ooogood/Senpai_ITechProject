@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from django.views.generic.base import View
 
 from senpai import models
@@ -237,30 +237,24 @@ def mymodule(request):
 # sign in/up page
 def signinup(request):
     context_dict = {}
-    context_dict['cust_errmsg'] = ''
-    context_dict['form_errmsg'] = ''
-    # if this is a sign in POST request
-    if request.method == 'POST' and request.POST.get('signin_form') == 'submit':
+    # if this is a sign in request
+    if request.is_ajax() and request.POST.get('type') == 'signin':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
         if user:
-            # if sign in successfully, redirect to homepage
             if user.is_active:
                 login(request, user)
-                return redirect(reverse('senpai:home'))
-            # error: disabled user
+                return JsonResponse({'result': 'success'})
             else:
-                context_dict['cust_errmsg']="Your senpai account is disabled."
-        # error: invalid login
+                return JsonResponse({'result': 'Your senpai account is disabled.'})
         else:
-            context_dict['cust_errmsg']=(f"Invalid signin details: {username}, {password}")
-    # if this is a sign up POST request
-    elif request.method == 'POST' and request.POST.get('signup_form') == 'submit':
+            return JsonResponse({'result': 'Invalid username or password.'})
+    # if this is a sign up request
+    elif request.is_ajax() and request.POST.get('type') == 'signup':
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
 
-        # validate forms for User and UserProfile model
         if user_form.is_valid() and profile_form.is_valid():
             # render form into objects without saving
             user = user_form.save(commit=False)
@@ -286,19 +280,15 @@ def signinup(request):
                 user.save()
                 profile.user = user
                 profile.save()
-                # if sign up successfully, auto login and redirect to home if sign up successful
+                # login and redirect to home if sign up successful
                 login(request, user)
-                return redirect(reverse('senpai:home'))
+                return JsonResponse({'result': 'success'})
             except UserProfile.DoesNotExist:
                 # cannot find a adminkey like this.
-                context_dict['cust_errmsg'] = "Invalid admin key supplied."
+                return JsonResponse({'result': 'Invalid admin key.'})
         else:
-            for value in user_form.errors.values():
-                # only shows the first error message for beauty
-                context_dict['form_errmsg'] += value
-                break
-    # if there is no sign in/up request or sign in/up unsuccessful
-    # render empty forms
+            return JsonResponse({'result': list(user_form.errors.values())[0][0]})
+    # if there is no sign in or sign up request
     context_dict['user_form'] = UserForm()
     context_dict['profile_form'] = UserProfileForm()
     return render(request, 'senpai/signinup.html', context=context_dict)
