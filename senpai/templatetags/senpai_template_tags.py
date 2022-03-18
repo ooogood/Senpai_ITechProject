@@ -89,6 +89,7 @@ def get_comments(note, user):
 	return context_dict
 	
 # for mynote page
+# get all notes that this user uploaded, including their comment counts
 @register.inclusion_tag('senpai/mynote_notes.html')
 def get_mynote_notes(user):
 	context_dict = {}

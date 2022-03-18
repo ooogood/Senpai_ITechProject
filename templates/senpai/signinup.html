@@ -67,11 +67,10 @@
     </div>
     <div class="errmsgs">
         {% if cust_errmsg != '' %}
-        <ul>
-            <li>{{ cust_errmsg }}</li>
-        </ul>
-        {% endif %}
-        {% if form_errmsg %}
+            <ul>
+                <li>{{ cust_errmsg }}</li>
+            </ul>
+        {% elif form_errmsg %}
             {{ form_errmsg }}
         {% endif %}
     </div>
