@@ -16,14 +16,15 @@
 	<h2 class="navigation moduletitle">{{ module.name }}</h2>
 {% endblock %}
 {% block body_block %}
+	{% if haventLiked %}
+		<div type="button" class="like component" id="like">
+			<p>Enroll</p>
+		</div>
+	{% endif %}
 	<div class="upload">
 		{% include 'senpai/module_upload_note.html' %}
 	</div>
-	{% if haventLiked %}
-		<div type="button" class="like component" id="like">
-			<p>Like</p>
-		</div>
-	{% endif %}
+	
 	<div type="button" class="sort component" id="sort">
 		<p>Most Likes</p>
 	</div>

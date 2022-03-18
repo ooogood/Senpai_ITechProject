@@ -33,8 +33,9 @@ h2{
     left: 0;
     width: 36vw;
     max-width: 360px;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 12px 0px;
 }
 
 .noteframe{
@@ -46,7 +47,6 @@ h2{
 .module.component{
     position: relative;
     margin: 0;
-    margin-bottom: 12px;
     padding: 0;
     width: calc(36vw - 24px);
     max-width: 336px;
@@ -89,11 +89,18 @@ p{
     color: white;
 }
 
-.sort.component p{
-    top: 8px;
+.like.component p{
     width: 100%;
     text-align: center;
     white-space: nowrap;
+    line-height: 36px;
+}
+
+.sort.component p{
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    line-height: 36px;
 }
 
 .note.component p{
@@ -105,13 +112,26 @@ p{
     white-space: nowrap;
 }
 
+.like.component{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 120px;
+    right: min(calc(24vw + 48px), 336px);
+    width: 12vw;
+    max-width: 144px;
+    height: 36px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
 label.component{
     position: absolute;
     margin: 0;
     padding: 0;
     top: 120px;
-    right: min(calc(15vw + 36px), 180px);
-    width: 15vw;
+    right: min(calc(12vw + 36px), 180px);
+    width: 12vw;
     max-width: 144px;
     height: 36px;
     background-position: center;
@@ -132,7 +152,7 @@ label.component{
     padding: 0;
     top: 120px;
     right: 24px;
-    width: 15vw;
+    width: 12vw;
     max-width: 144px;
     height: 36px;
     border-radius: 6px;
