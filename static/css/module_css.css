@@ -90,6 +90,8 @@ p{
 }
 
 .like.component p{
+    top: 0;
+    height: 72px;
     width: 100%;
     text-align: center;
     white-space: nowrap;

@@ -1,6 +1,6 @@
 $(document).ready(function() {
+
 	$(".login.button.submit").click(function(){
-		console.log($('#login_form').serialize()+"&type=signin");
 		$.ajax({
 			type: "POST",
 			dataType: "json",
@@ -14,8 +14,27 @@ $(document).ready(function() {
 					$(".loginerr").html("Error: " + response[0]);
 				}
 			}
-		});
-	})
+		})
+	});
+
+	$("input.login.password").keydown(function(e){
+		if(e.which == 13){
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: $(location).attr('href'),
+				data: $('#login_form').serialize()+"&type=signin",
+				success: function (response) {
+					response = Object.values(response);
+					if(response[0]=='success'){
+						window.location.href="/senpai";
+					}else{
+						$(".loginerr").html("Error: " + response[0]);
+					}
+				}
+			})
+		}
+	});
 
 	$(".register.button.submit").click(function(){
 		$.ajax({
@@ -31,8 +50,27 @@ $(document).ready(function() {
 					$(".registererr").html("Error: " + response[0]);
 				}
 			}
-		});
-	})
+		})
+	});
+
+	$("input.register.password, #id_admin_key").keydown(function(e){
+		if(e.which == 13){
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: $(location).attr('href'),
+				data: $('#user_form').serialize()+"&type=signup",
+				success: function (response) {
+					response = Object.values(response);
+					if(response[0]=='success'){
+						window.location.href="/senpai";
+					}else{
+						$(".registererr").html("Error: " + response[0]);
+					}
+				}
+			})
+		}
+	});
 
 	$(".sign.up").click(function(){
 		$(".sign.in").css({'cursor': 'pointer'});

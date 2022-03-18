@@ -61,7 +61,17 @@ $(document).ready(function() {
 			},
 			function(response) {
 				// erase the like button
-				$("#like").html('');
+				$("#like p").animate({'opacity': '0'}, 500, function(){
+					$("#like p").text("");
+					$("#like p").css({'opacity': '1', 'background-position': 'center 45px', 'background-size': '20px 18px', 'background-repeat': 'no-repeat', 'background-image': "url('/static/img/confirm_icon.webp')"});
+					$("#like p").animate({'top': '-36px'}, 500, function(){
+						$("#like p").animate({'top': '-36px'}, 700, function(){
+							$("#like").animate({'opacity': '0'}, 300, function(){
+								$("#like p").css({'display': 'none'})
+							});
+						});
+					});
+				})
 		})
 	});
 
