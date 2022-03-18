@@ -44,7 +44,7 @@ class PageAvailabilityTest(TestCase):
 		u = add_user('JoJo')
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
 		mod1 = add_module('Testing Module')
-		response = self.client.get('/senpai/module/'+ mod1.slug+'/')
+		response = self.client.get(reverse('senpai:show_module',kwargs={'module_name_slug':mod1.slug}))
 		self.assertEqual(response.status_code,200)
 		
 	def test_note(self):
@@ -52,46 +52,46 @@ class PageAvailabilityTest(TestCase):
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
 		mod1 = add_module('Testing Module')
 		note1 = add_note(mod1,u,'testnote','example_note.pdf')
-		url = '/senpai/note/'+str(note1.id)+'/'
+		url = reverse('senpai:show_note',kwargs={'note_id':note1.id})
 		response = self.client.get(url)
 		self.assertEqual(response.status_code,200)
 		
 	def test_mynote(self):
 		u = add_user('JoJo')
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
-		response = self.client.get('/senpai/mynote/')
+		response = self.client.get(reverse('senpai:mynote'))
 		self.assertEqual(response.status_code,200)
 		
 	def test_mymodule(self):
 		u = add_user('JoJo')
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
-		response = self.client.get('/senpai/mymodule/')
+		response = self.client.get(reverse('senpai:mymodule'))
 		self.assertEqual(response.status_code,200)
 		
 	def test_mylike(self):
 		u = add_user('JoJo')
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
-		response = self.client.get('/senpai/mylike/')
+		response = self.client.get(reverse('senpai:mylike'))
 		self.assertEqual(response.status_code,200)
 
 	def test_generatekey(self):
 		u = add_user('JoJo')
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
 		# test if non admin can access admin generation page
-		response = self.client.get('/senpai/genAdminKey/')
+		response = self.client.get(reverse('senpai:genAdminKey'))
 		self.assertEqual(response.status_code,302)
 		up = UserProfile.objects.get(user=u)
 		up.is_admin = 1
 		up.save()
 		# test if admin can access admin generation page
-		response = self.client.get('/senpai/genAdminKey/')
+		response = self.client.get(reverse('senpai:genAdminKey'))
 		self.assertEqual(response.status_code,200)
 		
 	def test_module_manage(self):
 		u = add_user('JoJo')
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
 		# test if non admin can access module management page
-		response = self.client.get('/senpai/manage/')
+		response = self.client.get(reverse('senpai:moduleManage'))
 		self.assertEqual(response.status_code,302)
 		up = UserProfile.objects.get(user=u)
 		up.is_admin = 1
