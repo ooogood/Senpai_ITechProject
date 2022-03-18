@@ -6,7 +6,6 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static' )
 MEDIA_DIR = os.path.join(BASE_DIR, 'media' )
 MEDIA_ROOT = MEDIA_DIR # define the full path to a directory where you’d like Django to store uploaded files.
-STATIC_ROOT = STATIC_DIR
 STATICFILES_DIRS = [STATIC_DIR, ]
 
 # Quick-start development settings - unsuitable for production
@@ -121,4 +120,7 @@ USE_TZ = False
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/' # define the public url for media directory
 LOGIN_URL = 'senpai:signinup'
-ALLOWED_HOSTS = ['ooogood.pythonanywhere.com']
+
+## for pythonanywhere hosting
+# STATIC_ROOT = STATIC_DIR
+# ALLOWED_HOSTS = ['ooogood.pythonanywhere.com']
