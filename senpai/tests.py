@@ -2,6 +2,7 @@ from django.test import TestCase,Client
 from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 from django.contrib.auth.models import User
 from django.core.files import File
+from django.urls import reverse
 
 from senpai.templatetags.senpai_template_tags import gen_admin_key
 
@@ -15,7 +16,7 @@ class ModelTests(TestCase):
         u = add_user('JoJo')
         up = UserProfile.objects.get(user=u)
         self.assertEquals(up.is_admin, 0)
-        self.assertEquals(up.admin_key, 0)
+        self.assertEquals(up.admin_key, None)
         # test module id, slug
         mod1 = add_module('Testing Module')
         mod2 = add_module('TestingModule')
@@ -27,23 +28,23 @@ class ModelTests(TestCase):
 
     # test comment id, date
 	
-class RunningTest(TestCase):
+class PageAvailabilityTest(TestCase):
 	#test user can get access to home
 	def test_home(self):
 		u = add_user('TestUser')
 		u.set_password('1')
-		response = self.client.get('/senpai/')
+		response = self.client.get(reverse('senpai:home'))
 		self.assertEqual(response.status_code,302)
 		u = add_user('JoJo')
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
-		response = self.client.get('/senpai/')
+		response = self.client.get(reverse('senpai:home'))
 		self.assertEqual(response.status_code,200)
 		
 	def test_module(self):
 		u = add_user('JoJo')
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
 		mod1 = add_module('Testing Module')
-		response = self.client.get('/senpai/module/testing-module/')
+		response = self.client.get('/senpai/module/'+ mod1.slug+'/')
 		self.assertEqual(response.status_code,200)
 		
 	def test_note(self):
@@ -52,7 +53,6 @@ class RunningTest(TestCase):
 		mod1 = add_module('Testing Module')
 		note1 = add_note(mod1,u,'testnote','example_note.pdf')
 		url = '/senpai/note/'+str(note1.id)+'/'
-		print(url)
 		response = self.client.get(url)
 		self.assertEqual(response.status_code,200)
 		
@@ -77,23 +77,27 @@ class RunningTest(TestCase):
 	def test_generatekey(self):
 		u = add_user('JoJo')
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
-		response = self.client.get('/senpai/generateKey/')
+		# test if non admin can access admin generation page
+		response = self.client.get('/senpai/genAdminKey/')
 		self.assertEqual(response.status_code,302)
 		up = UserProfile.objects.get(user=u)
 		up.is_admin = 1
 		up.save()
-		response = self.client.get('/senpai/generateKey/')
+		# test if admin can access admin generation page
+		response = self.client.get('/senpai/genAdminKey/')
 		self.assertEqual(response.status_code,200)
 		
 	def test_module_manage(self):
 		u = add_user('JoJo')
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
-		response = self.client.get('/senpai/management_module/')
+		# test if non admin can access module management page
+		response = self.client.get('/senpai/manage/')
 		self.assertEqual(response.status_code,302)
 		up = UserProfile.objects.get(user=u)
 		up.is_admin = 1
 		up.save()
-		response = self.client.get('/senpai/management_module/')
+		# test if admin can access module management page
+		response = self.client.get(reverse('senpai:moduleManage'))
 		self.assertEqual(response.status_code,200)
 	
 '''
@@ -126,7 +130,6 @@ def add_note(mod, user, title, note_path):
     # django will auto generate id
     # date will be auto generated
     n = Note.objects.get_or_create(module=mod, user=user, title=title)[0]
-    # all note are associated to pdf/Design Specification.pdf for now
     fhandle = open(note_path, 'rb')
     if fhandle:
         fcontent = File(fhandle)
