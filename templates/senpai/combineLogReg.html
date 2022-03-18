@@ -5,9 +5,9 @@
 	Login & Register
 {% endblock %}
 {% block body_block %}
-    <div style="display: flex;justify-content: center">
-        <div style="width: 80%;display: flex;justify-content: space-between">
-            <div style="width: 45%">
+    <div>
+        <div>
+            <div>
                 <h1>Login</h1>
 	<form id="login_form" method="post" action="{% url 'senpai:loginReg' %}">
 		{% csrf_token %}
@@ -19,9 +19,8 @@
 	</form>
     <br />
             </div>
-            <div style="width: 45%">
+            <div>
                 {% if registered %}
-        <strong>Thank you for registering!</strong>
         <a href="{% url 'senpai:home' %}">Return to the homepage.</a><br />
         {% else %}
         <h1>Sign up</h1><br />

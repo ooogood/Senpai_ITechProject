@@ -1,0 +1,8 @@
+{% extends 'senpai/base.html' %}
+{% load staticfiles %}
+
+{% block header_block %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/base_ad_css.css' %}"/>
+	{% block header_block_ad %}
+	{% endblock %}
+{% endblock %}

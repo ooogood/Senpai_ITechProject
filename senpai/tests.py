@@ -3,6 +3,8 @@ from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 from django.contrib.auth.models import User
 from django.core.files import File
 
+from senpai.templatetags.senpai_template_tags import gen_admin_key
+
 
 # Create your tests here.
 # test method name should start with 'test_'
@@ -86,12 +88,12 @@ class RunningTest(TestCase):
 	def test_module_manage(self):
 		u = add_user('JoJo')
 		self.client.login(username='JoJo', password='JoJoisnumber1!')
-		response = self.client.get('/senpai/module-manage/')
+		response = self.client.get('/senpai/management_module/')
 		self.assertEqual(response.status_code,302)
 		up = UserProfile.objects.get(user=u)
 		up.is_admin = 1
 		up.save()
-		response = self.client.get('/senpai/module-manage/')
+		response = self.client.get('/senpai/management_module/')
 		self.assertEqual(response.status_code,200)
 	
 '''
@@ -99,14 +101,16 @@ class RunningTest(TestCase):
 '''
 
 
-def add_user(uname):
+def add_user(uname, is_admin=0):
     email = uname + '@fakemail.com'
     pw = uname + 'isnumber1!'
     u = User.objects.get_or_create(username=uname, email=email)[0]
     u.set_password(pw)
     u.save()
     up = UserProfile.objects.get_or_create(user=u)[0]
-    up.is_admin = 0
+    up.is_admin = is_admin
+    if is_admin == 1:
+        gen_admin_key( up )
     up.save()
     return u
 

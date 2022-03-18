@@ -1,5 +1,5 @@
 /* funny effect */
-@-webkit-keyframes backrgb {
+/* @-webkit-keyframes backrgb {
     0% {
 		filter: hue-rotate(0deg) brightness(100%);
 	}
@@ -20,7 +20,7 @@
 	100% {
 		filter: hue-rotate(-360deg) brightness(100%);
 	}
-}
+} */
 
 @-webkit-keyframes backlight {
     0% {
@@ -61,7 +61,7 @@ body{
     background-size: cover;
     background-position: center center;
     background-image: url("/static/img/background.webp");
-    animation: backrgb 12s ease-in-out infinite;
+    /* animation: backrgb 12s ease-in-out infinite; */
 }
 
 .background::before{

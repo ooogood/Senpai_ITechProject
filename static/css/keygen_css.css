@@ -1,0 +1,64 @@
+.navigation.component.manage{
+    background-position: center;
+    background-size: 36px 36px;
+    background-image: url("/static/img/module_icon.webp");
+}
+
+div.keygen{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: max(192px, calc(50% - 72px));
+    left: max(0px, calc(50% - 240px));
+    right: max(0px, calc(50% - 240px));
+    height: 156px;
+    background-color: rgba(255,255,255, 0.3);
+    border: 1px solid rgba(255,255,255, 0.3);
+    border-radius: 6px;
+    backdrop-filter: blur(60px) brightness(125%);
+}
+
+p.keygen{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    font-size: 24px;
+    font-weight: normal;
+    color: white;
+    white-space: nowrap;
+    word-break: unset;
+    text-align: center;
+    line-height: 36px;
+}
+
+#genkey_button{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 96px;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    overflow: hidden;
+    background-color: #00aa8d;
+    border: 1px solid #88ffeb;
+    box-shadow: 6px 12px 24px 6px rgba(0, 0, 0, 0.3), 0 0 12px 0 #88ffeb inset;
+    border-radius: 6px;
+    font-size: 24px;
+    font-weight: normal;
+    color: white;
+    white-space: nowrap;
+    word-break: unset;
+    text-align: center;
+    line-height: 48px;
+    user-select: none;
+    cursor: pointer;
+}
+
+#genkey_button:hover{
+    filter: brightness(125%);
+}

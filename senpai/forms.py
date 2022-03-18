@@ -4,7 +4,8 @@ from senpai.models import UserProfile, Module
 
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput(), label='Password *')
+    username = forms.CharField(widget=forms.TextInput(attrs={'class':'register component username'}), label='Username *')
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'register component password', 'autocomplete':'new-password'}), label='Password *')
 
     class Meta:
         model = User
@@ -12,7 +13,6 @@ class UserForm(forms.ModelForm):
             'username': None,
         }
         labels = {
-            'username': 'Username *',
             'email': 'Email Address *',
         }
         fields = ('username', 'email', 'password')
@@ -20,7 +20,7 @@ class UserForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     is_admin = forms.IntegerField(widget=forms.HiddenInput(), initial=0, required=False)
-    admin_key = forms.CharField(max_length=32, initial=None, required=False, label='Sign Up for Admin?')
+    admin_key = forms.CharField(widget=forms.TextInput(attrs={'class':'register component key'}), max_length=32, initial=None, required=False, label='Sign Up for Admin?')
 
     class Meta:
         model = UserProfile

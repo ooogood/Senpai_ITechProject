@@ -119,4 +119,8 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/' # define the public url for media directory
-LOGIN_URL = 'senpai:login'
+LOGIN_URL = 'senpai:signinup'
+
+## for pythonanywhere hosting
+# STATIC_ROOT = STATIC_DIR
+# ALLOWED_HOSTS = ['ooogood.pythonanywhere.com']

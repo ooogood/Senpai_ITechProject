@@ -1,0 +1,31 @@
+{% extends 'senpai/base_admin_func.html' %}
+{% load staticfiles %}
+{% load senpai_template_tags %} 
+
+{% block title_block %}
+    Module Management
+{% endblock %}
+
+{% block header_block_ad %}
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			crossorigin="anonymous"></script>
+	<script type="text/javascript" src="{% static 'js/scroll_plugin.js' %}"></script>
+	<script src="{% static 'js/manage_page.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/manage_css.css' %}"/>
+{% endblock %}
+
+{% block navigation %}
+	<h2 class="navigation managetitle">Module Management</h2>
+    <a class="navigation component keygen" href="{% url 'senpai:genAdminKey' %}"></a>
+{% endblock %}
+
+{% block body_block %}
+    <ul class="modules">
+        {% get_all_module_list %}
+    </ul>
+    <div class="add_module_frame">
+        <input class="component add_module" id="txt_module" maxlength="50" placeholder="Input the module title..." />
+        <div class="add_module" type="button" id="btn_add_module">Create a New Module</div>
+    </div>
+
+{% endblock %}

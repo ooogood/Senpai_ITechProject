@@ -1,6 +1,8 @@
 from django import template
 from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 from django.db.models import Count
+import hashlib
+from time import time
 
 register = template.Library()
 
@@ -49,6 +51,13 @@ def get_three_notes_list(module):
 	for note in Note.objects.filter(module=module).order_by("-likes")[:3]:
 		note_list.append( note )
 	return note_list
+
+# helper function: is this user an admin
+def is_user_admin(user):
+	if UserProfile.objects.get(user=user).is_admin == 1:
+		return True
+	else:
+		return False
 
 # for module pages
 @register.inclusion_tag('senpai/notelist.html')
@@ -115,3 +124,8 @@ def get_all_module_list():
 	context_dict = {}
 	context_dict['modules'] = Module.objects.all().order_by('name')
 	return context_dict
+
+def gen_admin_key(userprofile):
+    code = hashlib.md5(str(time()).encode("utf-8"))
+    key = code.hexdigest()[:-10]
+    userprofile.admin_key = key
