@@ -30,9 +30,6 @@
                 <label class="login button submit">
                     <input type="submit" value="submit" name="signin_form" />
                 </label>
-            {% if signin_errmsg != '' %}
-                {{ signin_errmsg }}
-            {% endif %}
         </form>
         <form id="user_form" method="post" action="{% url 'senpai:signinup' %}"
             enctype="multipart/form-data">
@@ -58,9 +55,6 @@
             <label class="register button submit">
                 <input type="submit" value="submit" name="signup_form" />
             </label>
-            {% if signup_errmsg != '' %}
-                {{ signup_errmsg }}
-            {% endif %}
         </form>
     </div>
     <div class="sign in">
@@ -70,6 +64,16 @@
     <div class="sign up">
         <div class="switch signup" type="button"></div>
         <p class="switch signup">Sign Up</p>
+    </div>
+    <div class="errmsgs">
+        {% if cust_errmsg != '' %}
+        <ul>
+            <li>{{ cust_errmsg }}</li>
+        </ul>
+        {% endif %}
+        {% if form_errmsg %}
+            {{ form_errmsg }}
+        {% endif %}
     </div>
 </div>
 

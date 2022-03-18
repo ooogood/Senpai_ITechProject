@@ -216,8 +216,8 @@ def testFunction(request):
 # main entry of sign in/up page
 def signinup(request):
     context_dict = {}
-    context_dict['signin_errmsg'] = ''
-    context_dict['signup_errmsg'] = ''
+    context_dict['cust_errmsg'] = ''
+    context_dict['form_errmsg'] = ''
     # if this is a sign in request
     if request.method == 'POST' and request.POST.get('signin_form') == 'submit':
         username = request.POST.get('username')
@@ -228,9 +228,9 @@ def signinup(request):
                 login(request, user)
                 return redirect(reverse('senpai:home'))
             else:
-                context_dict['signin_errmsg']="Your senpai account is disabled."
+                context_dict['cust_errmsg']="Your senpai account is disabled."
         else:
-            context_dict['signin_errmsg']=(f"Invalid signin details: {username}, {password}")
+            context_dict['cust_errmsg']=(f"Invalid signin details: {username}, {password}")
     # if this is a sign up request
     elif request.method == 'POST' and request.POST.get('signup_form') == 'submit':
         user_form = UserForm(data=request.POST)
@@ -266,9 +266,10 @@ def signinup(request):
                 return redirect(reverse('senpai:home'))
             except UserProfile.DoesNotExist:
                 # cannot find a adminkey like this.
-                context_dict['signup_errmsg'] = "Invalid admin key supplied."
+                context_dict['cust_errmsg'] = "Invalid admin key supplied."
         else:
-            context_dict['signup_errmsg'] = user_form.errors.as_ul() 
+            for value in user_form.errors.values():
+                context_dict['form_errmsg'] += value
     # if there is no sign in or sign up request
     context_dict['user_form'] = UserForm()
     context_dict['profile_form'] = UserProfileForm()
