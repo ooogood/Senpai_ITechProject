@@ -121,19 +121,17 @@ def note_like_clicked(request, note_id):
     # assert: We definitely can get the note because this function can only called in note page
     note = Note.objects.get(id=note_id)
     liked = Like.objects.filter(note=note).filter(user=request.user).count()
+    l = Like.objects.get_or_create(user=request.user, note=note)[0]
     # use filter count to check if this user has liked this note
     if liked == 0:
         # action: like
         note.likes += 1
         note.save()
-        l = Like.objects.get_or_create(user=request.user, note=note)[0]
         l.save()
-        print(liked)
     else:
         # action: dislike
         note.likes -= 1
         note.save()
-        l = Like.objects.get(user=request.user, note=note)
         l.delete()
     # render new like info to replace current page content
     like = Like.objects.filter(note=note)
