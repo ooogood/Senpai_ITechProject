@@ -46,8 +46,6 @@
                 {{ field.help_text }}
                 {{ field }}
             {% endfor %}
-            {{ user_form.errors }}
-            {{ profile_form.errors }}
             <p class="register username"> {{ user_form.username.label }}</p>
             {{ user_form.username }}
             <p class="register email">{{ user_form.email.label }}</p>

@@ -6,14 +6,12 @@ from senpai.models import UserProfile, Module
 class UserForm(forms.ModelForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'register component username'}), label='Username *')
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'register component password', 'autocomplete':'new-password'}), label='Password *')
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'register component email'}), label='Email Address *')
 
     class Meta:
         model = User
         help_texts = {
             'username': None,
-        }
-        labels = {
-            'email': 'Email Address *',
         }
         fields = ('username', 'email', 'password')
 

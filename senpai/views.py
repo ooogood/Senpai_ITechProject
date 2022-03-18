@@ -268,7 +268,7 @@ def signinup(request):
                 # cannot find a adminkey like this.
                 context_dict['signup_errmsg'] = "Invalid admin key supplied."
         else:
-            context_dict['signup_errmsg'] = user_form.errors.as_text() + profile_form.errors.as_text()
+            context_dict['signup_errmsg'] = user_form.errors.as_ul() 
     # if there is no sign in or sign up request
     context_dict['user_form'] = UserForm()
     context_dict['profile_form'] = UserProfileForm()
