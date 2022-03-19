@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	$(".login.button.submit").click(function(){
+	$("[name='signin_form']").click(function(){
 		$.ajax({
 			type: "POST",
 			dataType: "json",
@@ -36,7 +36,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$(".register.button.submit").click(function(){
+	$("[name='signup_form']").click(function(){
 		$.ajax({
 			type: "POST",
 			dataType: "json",
