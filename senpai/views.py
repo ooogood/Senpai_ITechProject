@@ -235,6 +235,10 @@ def mymodule(request):
 # sign in/up page
 def signinup(request):
     context_dict = {}
+    # if user has already logged in, redirect to home page
+    if request.user.is_authenticated:
+        return redirect(reverse('senpai:home'))
+
     # if this is a sign in request
     if request.is_ajax() and request.POST.get('type') == 'signin':
         username = request.POST.get('username')
