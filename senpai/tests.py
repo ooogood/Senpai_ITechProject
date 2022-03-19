@@ -3,6 +3,7 @@ from senpai.models import UserProfile, Module, Note, Enrollment, Comment, Like
 from django.contrib.auth.models import User
 from django.core.files import File
 from django.urls import reverse
+from datetime import datetime
 
 from senpai.templatetags.senpai_template_tags import gen_admin_key
 
@@ -25,8 +26,17 @@ class ModelTests(TestCase):
         self.assertEqual(mod2.slug, "testingmodule")
         self.assertEqual(mod2.id, 2)
     # test note id, date, likes
+        note1 = add_note(mod1,u,'testnote','example_note.pdf')
+        date = datetime.now()
+        self.assertEqual(note1.id, 1)
+        self.assertEqual(note1.date.isocalendar(), date.isocalendar())
+        self.assertEqual(note1.likes, 0)
 
     # test comment id, date
+        comment1 = add_comment(note1,u,'Good')
+        date = datetime.now()
+        self.assertEqual(comment1.id, 1)
+        self.assertEqual(note1.date.isocalendar(), date.isocalendar())
 	
 class PageAvailabilityTest(TestCase):
 	#test user can get access to home
