@@ -27,16 +27,27 @@ class ModelTests(TestCase):
         self.assertEqual(mod2.id, 2)
     # test note id, date, likes
         note1 = add_note(mod1,u,'testnote','example_note.pdf')
+        note2 = add_note(mod2,u,'testnote2','example_note.pdf')
         date = datetime.now()
         self.assertEqual(note1.id, 1)
+        self.assertEqual(note2.id, 2)
         self.assertEqual(note1.date.isocalendar(), date.isocalendar())
+        self.assertEqual(note2.date.isocalendar(), date.isocalendar())
         self.assertEqual(note1.likes, 0)
+        self.assertEqual(note2.likes, 0)
+        
+        add_like(u,note1)
+        self.assertEqual(note1.likes, 1)
+        self.assertEqual(note2.likes, 0)
 
     # test comment id, date
         comment1 = add_comment(note1,u,'Good')
+        comment2 = add_comment(note1,u,'Good!')
         date = datetime.now()
         self.assertEqual(comment1.id, 1)
+        self.assertEqual(comment2.id, 2)
         self.assertEqual(note1.date.isocalendar(), date.isocalendar())
+        self.assertEqual(note2.date.isocalendar(), date.isocalendar())
 	
 class PageAvailabilityTest(TestCase):
 	#test user can get access to home
