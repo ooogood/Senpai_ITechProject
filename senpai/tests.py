@@ -216,7 +216,7 @@ class PageUseAblilityTest(TestCase):
 		self.assertEqual(response.status_code,302)
 		
 		# A signed-up user should be auto logged in
-		self.client.post(reverse('senpai:signinup'),{'username': 'admintest', 'password':'1', 'email':'sb@1.com', 'signup_form':'submit'})
+		self.client.post(reverse('senpai:signinup'),{'username': 'testuser', 'password':'1', 'email':'sb@1.com', 'type':'signup'}, **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 		response = self.client.get(reverse('senpai:home'))
 		self.assertEqual(response.status_code,200)
 		
@@ -226,7 +226,7 @@ class PageUseAblilityTest(TestCase):
 		self.assertEqual(response.status_code,302)
 		
 		# And if he logged in, he can get access to home page
-		self.client.post(reverse('senpai:signinup'),{'username': 'admintest', 'password':'1', 'signin_form':'submit'})
+		self.client.post(reverse('senpai:signinup'),{'username': 'testuser', 'password':'1', 'type':'signin'}, **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 		response = self.client.get(reverse('senpai:home'))
 		self.assertEqual(response.status_code,200)
 	
@@ -234,7 +234,7 @@ class PageUseAblilityTest(TestCase):
 	def test_admin_signup(self):
 		u = add_user('JoJo',1)
 		up = UserProfile.objects.get(user=u)
-		self.client.post(reverse('senpai:signinup'),{'username': 'admintest', 'password':'1', 'email':'sb@1.com', 'admin_key':up.admin_key, 'signup_form':'submit'})
+		self.client.post(reverse('senpai:signinup'),{'username': 'admintest', 'password':'1', 'email':'sb@1.com', 'admin_key':up.admin_key, 'type':'signup'}, **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 		
 		# signed up successful
 		response = self.client.get(reverse('senpai:home'))
