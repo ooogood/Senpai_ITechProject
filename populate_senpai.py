@@ -145,15 +145,21 @@ def populate():
                 add_like(u, n)
 
     # Print out all data we have added.
+    print("\nUsers: (login with one of these if you want to test the website)")
     for u in User.objects.all():
-        print(f'User: {u}')
+        str=''
+        if UserProfile.objects.get(user=u).is_admin == 1:
+            str += '(Admin)'
+        password = u.username+'isnumber1!'
+        print(f'Username: {u.username: <10}, Password: {password: <18} '+str)
 
+    print('\nModules:')
     for m in Module.objects.all():
         print(f'Module: {m}')
 
+    print('\nNotes: (notes have been randomly liked and commented)')
     for n in Note.objects.all():
         print(f'Note: {n}')
-        print(Comment.objects.filter(note=n).count())
 
 
 # Start execution here!
